@@ -16,7 +16,7 @@ export default function Header(props) {
             </li>
 
             <li>
-            <a href="tel:+74953627286">+7 495 362-72-86</a>
+              <a href="tel:+74953627286">+7 495 362-72-86</a>
             </li>
           </ul>
         </div>

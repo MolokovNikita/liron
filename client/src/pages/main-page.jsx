@@ -1,6 +1,7 @@
 import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import styles from "../styles/main-content.module.css";
+import { Link } from "react-router-dom";
 import { useState } from "react";
 export default function MainPage() {
   const [faqOpen, setFaqOpen] = useState([false, false, false, false, false]);
@@ -107,7 +108,9 @@ export default function MainPage() {
         </div>
       </div>
       <div className={styles.catalog_btn__container}>
-        <button className={styles.catalog__btn}>Перейти в каталог</button>
+        <Link to="/catalog" className={styles.catalog__btn}>
+          Перейти в каталог
+        </Link>
       </div>
       <div className={styles.often_question__text}>
         Часто задаваемые вопросы
