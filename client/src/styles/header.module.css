@@ -15,7 +15,7 @@ header {
 .top__header {
   display: flex;
   flex-direction: row;
-  height: 20%;
+  height: 30px;
   text-align: center;
   align-items: center;
   font-weight: 400;
@@ -37,7 +37,6 @@ header {
   margin-left: auto;
 }
 .bottom__header {
-  height: 80%;
   display: flex;
   flex-direction: row;
 }

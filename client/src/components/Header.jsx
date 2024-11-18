@@ -1,4 +1,5 @@
 import styles from "../styles/header.module.css";
+import { Link } from "react-router-dom";
 export default function Header(props) {
   return (
     <header>
@@ -15,7 +16,7 @@ export default function Header(props) {
             </li>
 
             <li>
-              <a href="#">+7 495 362-72-86</a>
+            <a href="tel:+74953627286">+7 495 362-72-86</a>
             </li>
           </ul>
         </div>
@@ -31,16 +32,16 @@ export default function Header(props) {
         <div className={styles.left__container}>
           <ul className={styles.left_nav__list}>
             <li className={styles.catalor__item}>
-              <a href="/catalog">Каталог</a>
+              <Link to="/catalog">Каталог</Link>
             </li>
             <li className={styles.sales__item}>
-              <a href="/sales">Калькулятор</a>
+              <Link to="/calculator">Калькулятор</Link>
             </li>
             <li>
-              <a href="/services">Контакты</a>
+              <Link to="/contacts">Контакты</Link>
             </li>
             <li className={styles.services__item}>
-              <a href="/services">О нас</a>
+              <Link to="/aboutus">О нас</Link>
             </li>
           </ul>
         </div>
@@ -48,10 +49,10 @@ export default function Header(props) {
           <ul className={styles.right_nav__list}>
             <li className={styles.basket__item}>
               <img className={styles.basket__icon} src="/basket.png" alt="" />
-              <a to="/basket">
+              <Link to="/basket">
                 Корзина
                 <div className={styles.basket__counter}>0</div>
-              </a>
+              </Link>
             </li>
           </ul>
         </div>

@@ -1,4 +1,5 @@
 import styles from "../styles/footer.module.css";
+import { Link } from "react-router-dom";
 export default function Footer() {
   const now = new Date().getFullYear();
   return (
@@ -7,16 +8,16 @@ export default function Footer() {
         <div className={styles.top_right__container}>
           <ul className={styles.top_right__list}>
             <li>
-              <a href="#">Гарантии</a>
+              <Link to="/warranty">Гарантии</Link>
             </li>
             <li>
-              <a href="#">Оплата</a>
+              <Link to="/payment">Оплата</Link>
             </li>
             <li>
-              <a href="#">Отзывы</a>
+              <Link to="/reviews">Отзывы</Link>
             </li>
             <li>
-              <a href="#">+7 495 362-72-86</a>
+              <a href="tel:+74953627286">+7 495 362-72-86</a>
             </li>
           </ul>
         </div>
