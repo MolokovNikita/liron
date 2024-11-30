@@ -9,6 +9,7 @@ import WarrantyPage from "./pages/warranty-page";
 import PaymentPage from "./pages/payment-page";
 import ReviewsPage from "./pages/reviews-page";
 import MattressesPage from "./pages/mattresses-page";
+import MattressPage from "./pages/mattress-page";
 import { Routes, Route, useLocation } from "react-router-dom";
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/catalog/:company" element={<MattressesPage />} />
-        <Route path="/catalog/:company/:productID" element={<CatalogPage />} />
+        <Route path="/catalog/:company/:productID" element={<MattressPage />} />
         <Route path="/calculator" element={<CalculatorPage />} />
         <Route path="/contacts" element={<ContactsPage />} />
         <Route path="/aboutus" element={<AboutUsPage />} />

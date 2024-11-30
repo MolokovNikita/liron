@@ -17,7 +17,7 @@ export default function Footer() {
               <Link to="/reviews">Отзывы</Link>
             </li>
             <li>
-              <a href="tel:+74953627286">+7 495 362-72-86</a>
+              <a href="tel:+79209219311">+7 920 921-93-11</a>
             </li>
           </ul>
         </div>

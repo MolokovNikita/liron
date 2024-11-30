@@ -4,7 +4,14 @@ import styles from "../styles/main-content.module.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 export default function MainPage() {
-  const [faqOpen, setFaqOpen] = useState([false, false, false, false, false]);
+  const [faqOpen, setFaqOpen] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
 
   const toggleFaq = (index) => {
     const newFaqOpen = [...faqOpen];
@@ -174,6 +181,26 @@ export default function MainPage() {
             <div className={styles.faq_answer}>
               Да, мы изготавливаем матрасы по индивидуальным параметрам.
             </div>
+          )}
+        </div>
+        <div className={styles.faq_item}>
+          <div className={styles.faq_question} onClick={() => toggleFaq(5)}>
+            Мне нужно сделать матрас нестандартной формы и размера. Как
+            заказать? <span>{faqOpen[5] ? "-" : "+"}</span>
+          </div>
+          {faqOpen[5] && (
+            <>
+              <div className={styles.faq_answer}>
+                Мы делаем не только стандартные матрасы, по точно выверенным
+                размерам спального места, но так же матрасы спроектированные по
+                индивидуальным пожеланиям (различные изменения размера/формы
+                спальника, решения в машины где спальник был не предусмотрен).
+              </div>
+              <div className={styles.faq_answer}>
+                Для заказа такого матраса нужно правильно снять размеры.
+                Сделайте заявку — мы свяжемся и поможем решить данный вопрос.
+              </div>
+            </>
           )}
         </div>
       </div>
