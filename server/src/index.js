@@ -4,7 +4,7 @@ const express = require("express");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
 // const dotenv = require("dotenv");
-// const path = require("path");
+const path = require("path");
 
 const PORT = process.env.PORT || 5003;
 const app = express();
@@ -20,10 +20,7 @@ app.use(
   }),
 );
 
-// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
-//http://localhost:5003/uploads/product_pictures/chair_1/01.png
-//http://localhost:5003/uploads/product_pictures/chair_1/02.png
-//и тд для доступа к картинкам на серваке где chair_(id) и /0(цифра) какой по счету является картинка
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use((err, req, res, next) => {
   console.error(err.stack);
