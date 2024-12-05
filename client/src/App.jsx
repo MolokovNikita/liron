@@ -10,6 +10,7 @@ import PaymentPage from "./pages/payment-page";
 import ReviewsPage from "./pages/reviews-page";
 import MattressesPage from "./pages/mattresses-page";
 import MattressPage from "./pages/mattress-page";
+import BasketPage from "./pages/cart-page";
 import { Routes, Route, useLocation } from "react-router-dom";
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/warranty" element={<WarrantyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/reviews" element={<ReviewsPage />} />
+        <Route path="/cart" element={<BasketPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

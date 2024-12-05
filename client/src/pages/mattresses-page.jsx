@@ -4,7 +4,7 @@ import Footer from "../components/Footer";
 import { useEffect, useState } from "react";
 import config from "../config/config";
 import styles from "../styles/mattresses.module.css";
-
+import { Link } from "react-router-dom";
 export default function Mattresses() {
   const { company } = useParams();
   const [mattresses, setMattresses] = useState([]);
@@ -24,8 +24,8 @@ export default function Mattresses() {
     const initialMattresses = [
       {
         id: 1,
-        company: "DAF",
-        name: "DAF XF 95",
+        company: "VOLVO",
+        name: "VOLVO XF 95",
         price: "10 490",
         specifications: {
           width: "450см",
@@ -270,7 +270,6 @@ export default function Mattresses() {
             </button>
           </li>
         </ul>
-
         <div className={styles.mattresses__container}>
           {mattresses.map((mattress) => {
             const currentImage = currentImages.find(
@@ -302,9 +301,12 @@ export default function Mattresses() {
                   ))}
                 </div>
                 <div className={styles.card__details}>
-                  <a href="#" className={styles.card__title}>
+                  <Link
+                    to={`/catalog/${mattress.company.toLowerCase()}/${mattress.id}`}
+                    className={styles.card__title}
+                  >
                     {mattress.name}
-                  </a>
+                  </Link>
                   <p className={styles.card__price}>{mattress.price} ₽</p>
                   <p className={styles.card__specs}>
                     Размер: {mattress.specifications.width} x{" "}

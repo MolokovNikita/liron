@@ -48,8 +48,8 @@ export default function Header(props) {
         <div className={styles.right__container}>
           <ul className={styles.right_nav__list}>
             <li className={styles.basket__item}>
-              <img className={styles.basket__icon} src="/basket.png" alt="" />
-              <Link to="/basket">
+              <Link to="/cart">
+                <img className={styles.basket__icon} src="/basket.png" alt="" />
                 Корзина
                 <div className={styles.basket__counter}>0</div>
               </Link>
