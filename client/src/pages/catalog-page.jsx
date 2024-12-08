@@ -4,49 +4,21 @@ import styles from "../styles/catalog.module.css";
 import config from "../config/config";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
+import axios from "axios";
 export default function Catalog() {
+  const [companies, setCompanies] = useState([]);
+
   useEffect(() => {
-    console.log("fetch companys");
+    axios.get(`${config.API_URL}/company`).then((res) => {
+      setCompanies(
+        res.data.map((item) => ({
+          ...item,
+          pic: `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
+        })),
+      );
+    });
   }, []);
-  const [companies, setCompanies] = useState([
-    {
-      id: 1,
-      name: "DAF",
-      pic: `${config.API_URL}/uploads/companylogo/daf_big.jpg`,
-    },
-    {
-      id: 2,
-      name: "MAN",
-      pic: `${config.API_URL}/uploads/companylogo/man_big.jpg`,
-    },
-    {
-      id: 3,
-      name: "Volvo",
-      pic: `${config.API_URL}/uploads/companylogo/volvo_big.jpg`,
-    },
-    {
-      id: 4,
-      name: "Scania",
-      pic: `${config.API_URL}/uploads/companylogo/scania_big.png`,
-    },
-    {
-      id: 5,
-      name: "Mercedes-Benz",
-      pic: `${config.API_URL}/uploads/companylogo/mers_big.jpg`,
-    },
-    {
-      id: 6,
-      name: "Iveco",
-      pic: `${config.API_URL}/uploads/companylogo/iveco_big.jpg`,
-    },
-    {
-      id: 7,
-      name: "Renault",
-      pic: `${config.API_URL}/uploads/companylogo/renault_big.jpg`,
-    },
-    ,
-  ]);
+
   return (
     <>
       <Header />

@@ -1,6 +1,10 @@
 import styles from "../styles/header.module.css";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CardContext } from "../context/cartContext";
+
 export default function Header(props) {
+  const { basket } = useContext(CardContext);
   return (
     <header>
       <div className={styles.top__header}>
@@ -51,7 +55,9 @@ export default function Header(props) {
               <Link to="/cart">
                 <img className={styles.basket__icon} src="/basket.png" alt="" />
                 Корзина
-                <div className={styles.basket__counter}>0</div>
+                <div className={styles.basket__counter}>
+                  {basket.reduce((acc) => acc + 1, 0)}
+                </div>
               </Link>
             </li>
           </ul>

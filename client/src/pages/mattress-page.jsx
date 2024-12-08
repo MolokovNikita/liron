@@ -1,40 +1,48 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/mattress.module.css";
+import axios from "axios";
+import config from "../config/config";
+import { useContext } from "react";
+import { CardContext } from "../context/cartContext";
+import { Link } from "react-router-dom";
 
 export default function MattressPage() {
+  const { basket, setBasket } = useContext(CardContext);
   const [selectedImage, setSelectedImage] = useState(null);
-  const product = {
-    id: 1,
-    name: "Матрас для фуры DAF XF 105",
-    price: "12 230 ₽",
-    colors: ["Белый", "Черный", "Серый"],
-    specifications: {
-      width: "420 см",
-      length: "190 см",
-      thickness: "12 см",
-      rigidity: "Жесткий",
-      material: "Пенополиуретан",
-    },
-    description: `Матрас класса КОМФОРТ в кабину FOTON AUMAN.
-      ХИТ ПРОДАЖ данноготипоразмера – для тех, кто выбирает лучшее. 
-      Матрасы класса КОМФОРТ – оптимальный «золотой» стандарт настоящихзаводских 
-      беспружинных ортопедических матрасов для грузовиков FOTONAUMAN годов выпуска 2021-нв. 
-      Беспружинные ортопедические матрасыкласса КОМФОРТ для FOTON AUMAN, производятся из 
-      высококачественных материалов по ГОСТу строго по размерам кабины.`,
-    reviews: [
-      { user: "Андрей", text: "Отличный матрас! Очень комфортный." },
-      { user: "Сергей", text: "Хорошее качество за такие деньги." },
-    ],
-    pictures: [
-      "https://via.placeholder.com/600x400?text=Главное+фото",
-      "https://via.placeholder.com/600x400?text=Фото+1",
-      "https://via.placeholder.com/600x400?text=Фото+2",
-    ],
-  };
-  const [currentImage, setCurrentImage] = useState(product.pictures[0]);
-  const [selectedColor, setSelectedColor] = useState(product.colors[0]);
+  const [mattress, setMattress] = useState({});
+  const [currentImage, setCurrentImage] = useState(0);
+  const [selectedColor, setSelectedColor] = useState(0);
+  const [selectedColorBlur, setSelectedColorBlur] = useState("");
+
+  const { company, productID } = useParams();
+
+  useEffect(() => {
+    axios
+      .get(`${config.API_URL}/mattress/${productID}`, {
+        params: {
+          tovar_type: company.toLowerCase(),
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        const matress = {
+          ...res.data,
+          company: company,
+          pictures: Array.from(
+            { length: res.data.pictures_count },
+            (_, index) =>
+              `${config.API_URL}/uploads/mattresses/${res.data.id}/${index + 1}.jpg`,
+          ),
+        };
+        setMattress(matress);
+        setCurrentImage(matress.pictures[0]);
+        setSelectedColor(matress.colors[0]);
+      });
+  }, []);
+
   const openImageModal = (image) => {
     setSelectedImage(image);
   };
@@ -42,24 +50,93 @@ export default function MattressPage() {
   const closeImageModal = () => {
     setSelectedImage(null);
   };
+
+  const addToCart = (product, event) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setBasket((prevBasket) => {
+      const existingProductIndex = prevBasket.findIndex(
+        (item) => item.id === product.id && item.color === selectedColor,
+      );
+      if (existingProductIndex !== -1) {
+        const updatedBasket = [...prevBasket];
+        updatedBasket[existingProductIndex].quantity += 1;
+        return updatedBasket;
+      } else {
+        return [
+          ...prevBasket,
+          { ...product, quantity: 1, color: selectedColor, selected: false },
+        ];
+      }
+    });
+  };
+  const decreaseQuantity = (event, mattress) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setBasket((prevBasket) => {
+      const existingProductIndex = prevBasket.findIndex(
+        (item) => item.id === mattress.id && item.color === selectedColor,
+      );
+      if (existingProductIndex !== -1) {
+        const updatedBasket = [...prevBasket];
+        const newQuantity = updatedBasket[existingProductIndex].quantity - 1;
+        if (newQuantity > 0) {
+          updatedBasket[existingProductIndex].quantity = newQuantity;
+        } else {
+          updatedBasket.splice(existingProductIndex, 1);
+        }
+        return updatedBasket;
+      }
+      return prevBasket;
+    });
+  };
+  const increaseQuantity = (event, mattress) => {
+    event.stopPropagation();
+    event.preventDefault();
+    setBasket((prevBasket) => {
+      const existingProductIndex = prevBasket.findIndex(
+        (item) => item.id === mattress.id && item.color === selectedColor,
+      );
+      if (existingProductIndex !== -1) {
+        const updatedBasket = [...prevBasket];
+        updatedBasket[existingProductIndex].quantity += 1;
+        return updatedBasket;
+      } else {
+        return [
+          ...prevBasket,
+          { ...mattress, quantity: 1, color: selectedColor },
+        ];
+      }
+    });
+  };
+  const getMattressQuantity = (mattress) => {
+    const productInBasket = basket.find(
+      (item) => item.id === mattress.id && item.color === selectedColor,
+    );
+    return productInBasket ? productInBasket.quantity : 0;
+  };
   return (
     <>
       <Header />
       <div className={styles.container}>
         <div className={styles.product__main_spec}>
-          <h1 className={styles.title}>{product.name}</h1>
+          <h1 className={styles.title}>Матрас для фуры {mattress.name}</h1>
           <div className={styles.productContent}>
             <div className={styles.imageGallery}>
-              <img
-                src={currentImage}
-                alt="Основное изображение"
-                className={styles.mainImage}
-                onClick={() =>
-                  openImageModal(currentImage || mattress.pictures[0])
-                }
-              />
+              <div className={styles.imageWrapper}>
+                <img
+                  src={currentImage}
+                  alt="Основное изображение"
+                  className={styles.mainImage}
+                  onClick={() =>
+                    openImageModal(currentImage || mattress.pictures[0])
+                  }
+                  loading="lazy"
+                />
+              </div>
+
               <div className={styles.thumbnails}>
-                {product.pictures.map((img, index) => (
+                {mattress.pictures?.map((img, index) => (
                   <img
                     key={index}
                     src={img}
@@ -73,11 +150,11 @@ export default function MattressPage() {
               </div>
             </div>
             <div className={styles.details}>
-              <h2 className={styles.price}>{product.price}</h2>
+              <h2 className={styles.price}>{mattress.price}</h2>
               <div className={styles.colorSelector}>
                 <p>Цвет:</p>
                 <div className={styles.colors}>
-                  {product.colors.map((color, index) => (
+                  {mattress.colors?.map((color, index) => (
                     <button
                       key={index}
                       className={`${styles.colorOption} ${
@@ -90,6 +167,7 @@ export default function MattressPage() {
                   ))}
                 </div>
               </div>
+              <div className={styles.color_select__container}></div>
               <h3 className={styles.spec__title}>Характеристики</h3>
               <div className={styles.specifications__container}>
                 <ul className={styles.specifications}>
@@ -109,25 +187,57 @@ export default function MattressPage() {
                 </ul>
                 <ul className={styles.specifications__values}>
                   <li>
-                    {product.specifications.width} x{" "}
-                    {product.specifications.length}
+                    {mattress.width} x {mattress.length}
                   </li>
-                  <li>{product.specifications.thickness}</li>
-                  <li>{product.specifications.rigidity}</li>
-                  <li>{product.specifications.material}</li>
+                  <li>{mattress.thickness}</li>
+                  <li>{mattress.rigidity}</li>
+                  <li>{mattress.material}</li>
                 </ul>
               </div>
-              <div></div>
-              <button className={styles.addToCartButton}>
-                Добавить в корзину
-              </button>
+              {getMattressQuantity(mattress) == 0 ? (
+                <div className={styles.basket__control}>
+                  <button
+                    className={styles.basket__button}
+                    onClick={(event) => addToCart(mattress, event)}
+                  >
+                    Добавить в корзину
+                  </button>
+                </div>
+              ) : (
+                <div
+                  className={styles.basket__control}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    event.preventDefault();
+                  }}
+                >
+                  <div className={styles.gotobasket__btn}>
+                    <Link to="/cart">Перейти в корзину</Link>
+                  </div>
+                  <div className={styles.control__container}>
+                    <div
+                      className={styles.increase__btn}
+                      onClick={(event) => decreaseQuantity(event, mattress)}
+                    >
+                      -
+                    </div>
+                    {getMattressQuantity(mattress)}
+                    <div
+                      className={styles.decrease__btn}
+                      onClick={(event) => increaseQuantity(event, mattress)}
+                    >
+                      +
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
         <div className={styles.tabContent__container}>
           <div className={styles.descriptionContainer}>
             <h2 className={styles.title}>Описание</h2>
-            <p className={styles.text}>{product.description}</p>
+            <p className={styles.text}>{mattress.description}</p>
           </div>
 
           <div className={styles.deliveryContainer}>

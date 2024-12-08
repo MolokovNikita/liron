@@ -106,7 +106,47 @@
   gap: 5px;
   margin-top: 10px;
 }
-
+.basket__button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #4e5df9;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 15px;
+  transition: all 0.3s;
+  color: white;
+}
+.basket__control {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #4e5df9;
+  justify-content: space-around;
+  width: 100%;
+  margin: 0 auto;
+  border-radius: 15px;
+  padding: 5px 20px;
+  align-items: center;
+}
+.increase__btn,
+.decrease__btn {
+  display: flex;
+  padding: 0 8px;
+  border-radius: 20px;
+  font-size: 20px;
+  cursor: pointer;
+}
+.increase__btn {
+  padding: 0 9px;
+}
+.increase__btn:hover,
+.decrease__btn:hover {
+  background-color: #4e5df9;
+  color: white;
+}
 .card__thumbnail {
   width: 50px;
   height: 50px;
@@ -338,4 +378,12 @@
 .shapeCheckbox:checked ~ .shapeLabel {
   font-weight: bold;
   color: #4e5df9;
+}
+
+.empty_mattrasses {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  font-size: 25px;
+  font-weight: 500;
 }

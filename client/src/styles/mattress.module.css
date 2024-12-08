@@ -19,12 +19,30 @@
 }
 .imageGallery {
   flex: 1;
+  width: 600px;
 }
-.mainImage {
+.imageWrapper {
+  position: relative;
   width: 100%;
+  padding-top: 75%;
   border-radius: 8px;
-  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
+
+.mainImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
 .thumbnails {
   display: flex;
   gap: 10px;
@@ -75,16 +93,71 @@
   background: #4e5df9;
   color: #fff;
 }
-.addToCartButton {
-  padding: 10px 20px;
-  background: #4e5df9;
-  color: white;
+.basket__button {
+  width: 200px;
+  background: none;
   border: none;
-  border-radius: 4px;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #4e5df9;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 15px;
+  transition: all 0.3s;
+  color: white;
+}
+.basket__control {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 450px;
+  border-radius: 15px;
+  align-items: center;
+}
+.gotobasket__btn {
+  width: 160px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #4e5df9;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 15px;
+  transition: all 0.3s;
+  color: white;
+}
+.control__container {
+  display: flex;
+  width: 200px;
+  flex-direction: row;
+  justify-content: space-around;
+  border: 1px solid #4e5df9;
+  padding: 5px 10px;
+  border-radius: 15px;
+}
+.gotobasket__btn a {
+  color: white;
+}
+.increase__btn,
+.decrease__btn {
+  display: flex;
+  padding: 0 8px;
+  border-radius: 20px;
+  font-size: 20px;
   cursor: pointer;
 }
-.addToCartButton:hover {
-  background: #5e6bf8;
+.increase__btn {
+  padding: 0 9px;
+}
+.increase__btn:hover,
+.decrease__btn:hover {
+  background-color: #4e5df9;
+  color: white;
 }
 .specifications p {
   color: grey;

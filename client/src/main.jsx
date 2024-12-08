@@ -7,13 +7,13 @@ import "./index.css";
 import App from "./App.jsx";
 import { unstable_HistoryRouter as Router } from "react-router-dom";
 import { createBrowserHistory } from "history";
-
+import CartProvider from "./context/cartContext.jsx";
 const history = createBrowserHistory();
 
 createRoot(document.getElementById("root")).render(
-  <StrictMode>
-    <Router history={history} future={{ v7_startTransition: true }}>
+  <Router history={history} future={{ v7_startTransition: true }}>
+    <CartProvider>
       <App />
-    </Router>
-  </StrictMode>,
+    </CartProvider>
+  </Router>,
 );

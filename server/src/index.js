@@ -1,9 +1,9 @@
 const express = require("express");
-// const router = require("./routers/main.js");
-// const pool = require("../config/bdconfig.js");
+const router = require("./routers/mainRouter.js");
+const pool = require("../src/config/bdconfig.js");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
-// const dotenv = require("dotenv");
+const dotenv = require("dotenv");
 const path = require("path");
 
 const PORT = process.env.PORT || 5003;
@@ -27,11 +27,11 @@ app.use((err, req, res, next) => {
   res.status(500).send("Something broke!");
 });
 app.set("view engine", "ejs");
-// app.use("", router);
+app.use("", router);
 
 async function startApp() {
   try {
-    // await pool.connect();
+    await pool.connect();
     console.log("Successful connection to the database");
   } catch (error) {
     console.log("Eror in connection to the database");

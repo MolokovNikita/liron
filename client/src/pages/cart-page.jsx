@@ -1,126 +1,74 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/cart.module.css";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
-
+import { useContext } from "react";
+import { CardContext } from "../context/cartContext";
 export default function Cart() {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      company: "DAF",
-      name: "Матрас Люкс для грузовика",
-      details: "Размер: 200x80x10 см, ткань Премиум",
-      price: 12000,
-      quantity: 1,
-      image: "https://via.placeholder.com/150?text=Матрас+1",
-      selected: false,
-    },
-    {
-      id: 2,
-      company: "DAF",
-      name: "Матрас Комфорт для фуры",
-      details: "Размер: 190x70x8 см, ткань Премиум",
-      price: 9500,
-      quantity: 1,
-      image: "https://via.placeholder.com/150?text=Матрас+2",
-      selected: false,
-    },
-    {
-      id: 3,
-      company: "DAF",
-      name: "Бюджетный матрас для грузовика",
-      details: "Размер: 180x70x6 см, ткань Премиум",
-      price: 7000,
-      quantity: 1,
-      image: "https://via.placeholder.com/150?text=Матрас+3",
-      selected: false,
-    },
-    {
-      id: 4,
-      company: "DAF",
-      name: "Бюджетный матрас для грузовика",
-      details: "Размер: 180x70x6 см, ткань Премиум",
-      price: 7000,
-      quantity: 1,
-      image: "https://via.placeholder.com/150?text=Матрас+3",
-      selected: false,
-    },
-    {
-      id: 5,
-      company: "DAF",
-      name: "Бюджетный матрас для грузовика",
-      details: "Размер: 180x70x6 см, ткань Премиум",
-      price: 7000,
-      quantity: 1,
-      image: "https://via.placeholder.com/150?text=Матрас+3",
-      selected: false,
-    },
-    {
-      id: 6,
-      company: "DAF",
-      name: "Бюджетный матрас для грузовика",
-      details: "Размер: 180x70x6 см, ткань Премиум",
-      price: 7000,
-      quantity: 1,
-      image: "https://via.placeholder.com/150?text=Матрас+3",
-      selected: false,
-    },
-    {
-      id: 7,
-      company: "DAF",
-      name: "Бюджетный матрас для грузовика",
-      details: "Размер: 180x70x6 см, ткань Премиум",
-      price: 7000,
-      quantity: 1,
-      image: "https://via.placeholder.com/150?text=Матрас+3",
-      selected: false,
-    },
-  ]);
+  const { basket, setBasket } = useContext(CardContext);
+  //   useEffect(()=>{
 
-  const handleQuantityChange = (id, amount) => {
-    setCartItems((prevItems) =>
+  //   },[])
+  const handleQuantityChange = (id, amount, color) => {
+    setBasket((prevItems) =>
       prevItems.map((item) =>
-        item.id === id
+        item.id === id && item.color === color
           ? { ...item, quantity: Math.max(1, item.quantity + amount) }
           : item,
       ),
     );
   };
 
+  const getPrice = (price, quantity) => {
+    const numprice = parseInt(price.split(" ").join(""), 10);
+    const totalPrice = numprice * quantity;
+    const formattedPrice = totalPrice
+      .toString()
+      .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
+    return formattedPrice;
+  };
   const handleSelectAll = (checked) => {
-    setCartItems((prevItems) =>
+    setBasket((prevItems) =>
       prevItems.map((item) => ({ ...item, selected: checked })),
     );
   };
 
   const handleRemoveSelected = () => {
-    setCartItems((prevItems) => prevItems.filter((item) => !item.selected));
+    setBasket((prevItems) => prevItems.filter((item) => !item.selected));
   };
-  const handleRemoveItem = (id) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== id));
+  const handleRemoveItem = (id, color) => {
+    setBasket((prevItems) =>
+      prevItems.filter((item) => item.id !== id || item.color !== color),
+    );
   };
-  const handleSelectItem = (id) => {
-    setCartItems((prevItems) =>
+  const handleSelectItem = (id, color) => {
+    setBasket((prevItems) =>
       prevItems.map((item) =>
-        item.id === id ? { ...item, selected: !item.selected } : item,
+        item.id === id && item.color === color
+          ? { ...item, selected: !item.selected }
+          : item,
       ),
     );
   };
 
-  const totalCost = cartItems
+  const totalCost = basket
     .filter((item) => item.selected)
-    .reduce((total, item) => total + item.price * item.quantity, 0);
+    .reduce((total, item) => {
+      const price = item.price.split(" ").join("");
+      return total + price * item.quantity;
+    }, 0);
 
-  const allSelected = cartItems.every((item) => item.selected);
+  const allSelected = basket.every((item) => item.selected);
 
   return (
     <>
       <Header />
       <div className={styles.container}>
         <h1 className={styles.title}>Корзина</h1>
-        {cartItems.length > 0 ? (
+        {basket.length > 0 ? (
           <div className={styles.cartContent}>
             <div className={styles.cartListContainer}>
               <div className={styles.selectAllContainer}>
@@ -144,19 +92,19 @@ export default function Cart() {
                 </button>
               </div>
               <ul className={styles.cartList}>
-                {cartItems.map((item) => (
-                  <li key={item.id} className={styles.cartItem}>
+                {basket.map((item) => (
+                  <li key={item.id + item.color} className={styles.cartItem}>
                     <input
                       type="checkbox"
                       checked={item.selected}
-                      onChange={() => handleSelectItem(item.id)}
+                      onChange={() => handleSelectItem(item.id, item.color)}
                       className={styles.checkbox}
                     />
                     <Link
                       to={`/catalog/${item.company.toLowerCase()}/${item.id}`}
                     >
                       <img
-                        src={item.image}
+                        src={item.pictures[0]}
                         alt={item.name}
                         className={styles.cartImage}
                       />
@@ -164,6 +112,9 @@ export default function Cart() {
                     <div className={styles.itemDetails}>
                       <p className={styles.item__articul}>
                         Артикул - #{item.id}
+                      </p>
+                      <p className={styles.item__articul}>
+                        Цвет - {item.color}
                       </p>
                       <Link
                         to={`/catalog/${item.company.toLowerCase()}/${item.id}`}
@@ -173,11 +124,16 @@ export default function Cart() {
                       </Link>
                       <p className={styles.mattress__details}>{item.details}</p>
                     </div>
-                    <p className={styles.mattress__price}>{item.price} ₽</p>
+                    <p className={styles.mattress__price}>
+                      {" "}
+                      {getPrice(item.price, item.quantity)} ₽
+                    </p>
                     <div className={styles.item__control}>
                       <div className={styles.quantityControl}>
                         <button
-                          onClick={() => handleQuantityChange(item.id, -1)}
+                          onClick={() =>
+                            handleQuantityChange(item.id, -1, item.color)
+                          }
                           className={styles.quantityButton}
                         >
                           -
@@ -186,7 +142,9 @@ export default function Cart() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => handleQuantityChange(item.id, 1)}
+                          onClick={() =>
+                            handleQuantityChange(item.id, 1, item.color)
+                          }
                           className={styles.quantityButton}
                         >
                           +
@@ -196,7 +154,7 @@ export default function Cart() {
                       <button
                         className={styles.delete_item__btn}
                         onClick={() => {
-                          handleRemoveItem(item.id);
+                          handleRemoveItem(item.id, item.color);
                         }}
                       >
                         <RxCross1 size={25} />

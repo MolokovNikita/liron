@@ -118,7 +118,45 @@
 .cartSummary h2 {
   font-size: 20px;
 }
-
+.basket__button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 15px;
+  background-color: #ffc314;
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 15px;
+  transition: all 0.3s;
+}
+.basket__control {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid #ffc314;
+  justify-content: space-around;
+  width: 60%;
+  margin: 0 auto;
+  border-radius: 15px;
+  padding: 5px 20px;
+  align-items: center;
+}
+.increase__btn,
+.decrease__btn {
+  display: flex;
+  padding: 0 8px;
+  border-radius: 20px;
+  font-size: 20px;
+}
+.increase__btn {
+  padding: 0 9px;
+}
+.increase__btn:hover,
+.decrease__btn:hover {
+  background-color: #ffc314;
+}
 .checkoutButton {
   background-color: #4e5df9;
   color: white;
