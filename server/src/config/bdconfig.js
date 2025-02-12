@@ -5,6 +5,6 @@ const pool = new Pool({
   host: "localhost",
   database: "liron",
   password: 1234,
-  port: 5432,
+  port: 5433,
 });
 module.exports = pool;

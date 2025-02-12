@@ -4,7 +4,7 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const path = require("path");
-const db = require("./models"); // Подключаем Sequelize
+const db = require("./models");
 
 dotenv.config();
 
