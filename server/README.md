@@ -1,5 +1,7 @@
-npm install
-npx sequelize-cli db:create
-npx sequelize-cli db:migrate
-npx sequelize db:seed:all
-npm run dev
+## Установка и настройка
+
+npm install<br>
+npx sequelize-cli db:create<br>
+npx sequelize-cli db:migrate<br>
+npx sequelize db:seed:all<br>
+npm run dev<br>
