@@ -1,18 +1,17 @@
-const pool = require("../config/bdconfig.js");
-const bcrypt = require("bcryptjs");
-const { user } = require("pg/lib/defaults.js");
+const { Company } = require("../models");
+
 class CompanyController {
   async getAll(req, res) {
-    const sql = "SELECT * FROM company";
-    pool.query(sql, [], (err, result) => {
-      if (err) {
-        return console.error(err.message);
+    try {
+      const companies = await Company.findAll();
+      if (!companies.length) {
+        return res.status(404).json({ error: "Companies not found" });
       }
-      if (result.rows.length === 0) {
-        return res.status(404).json({ error: "Product not found" });
-      }
-      res.json(result.rows);
-    });
+      res.json(companies);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
 }
 module.exports = new CompanyController();

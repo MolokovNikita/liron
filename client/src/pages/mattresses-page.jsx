@@ -65,8 +65,9 @@ export default function Mattresses() {
           console.log(res.data);
           const shapes = res.data.map((item) => ({
             ...item,
-            image: `https://via.placeholder.com/200x150?text=Матрас+${item.id}`,
+            // image: `https://via.placeholder.com/200x150?text=Матрас+${item.id}`,
           }));
+          console.log(shapes);
           setShapes(shapes);
           axios.get(`${config.API_URL}/mattress-type`).then((res) => {
             setMattressTypes(res.data);
