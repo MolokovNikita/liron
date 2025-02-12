@@ -16,7 +16,7 @@ Web-приложение для магазина матрасов для фур.
 1. **Клонирование репозитория**
 
    Для начала, необходимо клонировать репозиторий проекта на ваш компьютер.
-   git clone https://github.com/MolokovNikita/liron.git
+   git clone https://github.com/MolokovNikita/liron.git <br />
    cd liron
 
 3. **Сборка и запуск контейнеров**
