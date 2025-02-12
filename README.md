@@ -8,16 +8,16 @@ Web-приложение для магазина матрасов для фур.
 
 Перед началом убедитесь, что на вашем компьютере установлены следующие инструменты:
 
-- Установленный [Docker](https://www.docker.com/get-started)
-- Установленный [Docker Compose](https://docs.docker.com/compose/install/)
+- Установленный [Docker](https://www.docker.com/get-started)<br />
+- Установленный [Docker Compose](https://docs.docker.com/compose/install/)<br />
 
 ## Шаги для запуска проекта
 
 1. **Клонирование репозитория**
 
-   Для начала, необходимо клонировать репозиторий проекта на ваш компьютер.
-   git clone https://github.com/MolokovNikita/liron.git <br />
-   cd liron
+   Для начала, необходимо клонировать репозиторий проекта на ваш компьютер.<br />
+   git clone https://github.com/MolokovNikita/liron.git<br />
+   cd liron<br />
 
 3. **Сборка и запуск контейнеров**
 
@@ -39,8 +39,8 @@ Web-приложение для магазина матрасов для фур.
 
 ## Остановка контейнеров
 
-После того как вы закончите работу с проектом, вы можете остановить все контейнеры.
-docker-compose down
+После того как вы закончите работу с проектом, вы можете остановить все контейнеры.<br />
+docker-compose down<br />
 
 ## Примечания
 
