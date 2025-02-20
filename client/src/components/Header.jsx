@@ -2,8 +2,9 @@ import styles from "../styles/header.module.css";
 import { Link } from "react-router-dom";
 import { useContext } from "react";
 import { CardContext } from "../context/cartContext";
+import MenuIcon from "@mui/icons-material/Menu";
 
-export default function Header(props) {
+export default function Header() {
   const { basket } = useContext(CardContext);
   return (
     <header>
@@ -18,7 +19,6 @@ export default function Header(props) {
             <li>
               <a href="#">Ежедневно с 9:00 до 21:00</a>
             </li>
-
             <li>
               <a href="tel:+79209219311">+7 920 921-93-11</a>
             </li>
@@ -32,7 +32,11 @@ export default function Header(props) {
             <i>Матрасы для фур</i>
           </div>
         </a>
-
+        <div className={styles.burger__menu}>
+          <button>
+            <MenuIcon fontSize="large" />
+          </button>
+        </div>
         <div className={styles.left__container}>
           <ul className={styles.left_nav__list}>
             <li className={styles.catalor__item}>

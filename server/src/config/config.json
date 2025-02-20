@@ -3,7 +3,7 @@
     "username": "postgres",
     "password": "1234",
     "database": "liron",
-    "host": "db",
+    "host": "localhost",
     "port": 5432,
     "dialect": "postgres"
   },
@@ -11,7 +11,7 @@
     "username": "postgres",
     "password": "1234",
     "database": "liron_test",
-    "host": "db",
+    "host": "localhost",
     "port": 5432,
     "dialect": "postgres"
   },
@@ -19,7 +19,7 @@
     "username": "postgres",
     "password": "1234",
     "database": "liron_prod",
-    "host": "db",
+    "host": "localhost",
     "port": 5432,
     "dialect": "postgres"
   }

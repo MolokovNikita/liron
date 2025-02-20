@@ -57,7 +57,7 @@
 }
 .choose__list li {
   margin: 0 40px;
-  width: 200px;
+  /*width: 200px;/*/
   display: flex;
   justify-content: center;
   flex-direction: column;
@@ -125,7 +125,7 @@
   font-style: normal;
   font-size: 20px;
   border: 1px solid grey;
-  width: 800px;
+  max-width: 800px;
   border-radius: 8px;
   margin: 0 auto;
   margin-bottom: 100px;

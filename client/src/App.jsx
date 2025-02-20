@@ -11,7 +11,7 @@ import ReviewsPage from "./pages/reviews-page";
 import MattressesPage from "./pages/mattresses-page";
 import MattressPage from "./pages/mattress-page";
 import BasketPage from "./pages/cart-page";
-import { Routes, Route, useLocation } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 function App() {
   return (
     <>
