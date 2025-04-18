@@ -1,97 +1,114 @@
 .reviews {
-  padding: 20px;
-  margin-bottom: 50px;
+    padding: 20px;
+    margin-bottom: 50px;
 }
 
 .reviews__title {
-  text-align: center;
-  font-size: 28px;
-  margin-bottom: 20px;
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 20px;
 }
 
 .reviews__container {
-  max-width: 800px;
-  margin: 0 auto;
-  border-radius: 15px;
-  padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 15px;
+    padding: 20px;
 }
+
 .apply__review__container {
-  display: flex;
-  justify-content: center;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 10px;
-  margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
+
 .apply__review__container p {
-  font-size: 20px;
+    font-size: 20px;
 }
+
 .apply_review__btn {
-  background: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
+
 .apply_review__btn:hover {
-  background: #0056b3;
+    background: #0056b3;
 }
+
 .reviews__info {
-  text-align: center;
-  margin-bottom: 15px;
+    text-align: center;
+    margin-bottom: 15px;
 }
 
 .reviews__user {
-  font-size: 20px;
-  font-weight: bold;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .reviews__date {
-  font-size: 14px;
-  color: gray;
+    font-size: 14px;
+    color: gray;
 }
 
 .reviews__carousel {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .reviews__carouselButton {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 10px;
 }
+
 .reviews__carouselButton:hover {
-  background-color: #dedede;
+    background-color: #dedede;
 }
+
 .reviews__image {
-  object-fit: contain;
-  width: 400px;
-  height: 300px;
-  border-radius: 10px;
+    object-fit: contain;
+    width: 400px;
+    height: 300px;
+    border-radius: 10px;
 }
 
 .reviews__navigation {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
 }
 
 .reviews__navButton {
-  background: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
 }
 
 .reviews__navButton:hover {
-  background: #0056b3;
+    background: #0056b3;
+}
+
+@media (max-width: 510px) {
+    .reviews__image {
+        object-fit: contain;
+        width: 300px;
+        height: 200px;
+        border-radius: 10px;
+    }
+
 }

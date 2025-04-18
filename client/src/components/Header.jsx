@@ -1,13 +1,40 @@
 import styles from "../styles/header.module.css";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
 import { CardContext } from "../context/cartContext";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function Header() {
   const { basket } = useContext(CardContext);
+  const [isBurgerOpen, setIsBurgerOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+        setIsVisible(false); // Скроллим вниз - скрываем хедер
+        if (isBurgerOpen) setIsBurgerOpen(false);
+      } else {
+        setIsVisible(true); // Скроллим вверх - показываем хедер
+      }
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [lastScrollY]);
+
   return (
-    <header>
+    <header
+      className={`${styles.header} ${isVisible ? styles.visible : styles.hidden}`}
+    >
       <div className={styles.top__header}>
         <div className={styles.top_left__container}>
           <p className={styles.city__label}>
@@ -33,9 +60,44 @@ export default function Header() {
           </div>
         </a>
         <div className={styles.burger__menu}>
-          <button>
-            <MenuIcon fontSize="large" />
+          <button onClick={() => setIsBurgerOpen(!isBurgerOpen)}>
+            {isBurgerOpen ? (
+              <CloseIcon fontSize="large" />
+            ) : (
+              <MenuIcon fontSize="large" />
+            )}
           </button>
+          <div
+            className={`${styles.burger__popup} ${isBurgerOpen ? styles.open : ""}`}
+          >
+            <ul className={styles.burger__list}>
+              <li className={styles.burger_basket__item}>
+                <Link to="/cart">
+                  <img
+                    className={styles.basket__icon}
+                    src="/basket.png"
+                    alt=""
+                  />
+                  Корзина
+                  <div className={styles.burger_basket__counter}>
+                    {basket.reduce((acc) => acc + 1, 0)}
+                  </div>
+                </Link>
+              </li>
+              <li>
+                <Link to="/catalog">Каталог</Link>
+              </li>
+              <li>
+                <Link to="/calculator">Калькулятор</Link>
+              </li>
+              <li>
+                <Link to="/contacts">Контакты</Link>
+              </li>
+              <li>
+                <Link to="/aboutus">О нас</Link>
+              </li>
+            </ul>
+          </div>
         </div>
         <div className={styles.left__container}>
           <ul className={styles.left_nav__list}>

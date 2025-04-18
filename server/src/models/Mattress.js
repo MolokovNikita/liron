@@ -9,11 +9,14 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       Mattress.belongsTo(models.MattressType, {
-        foreignKey: "matress_type_id",
+        foreignKey: "mattress_type_id",
       });
       Mattress.belongsTo(models.MattressShape, {
         foreignKey: "mattress_shape_id",
       });
+        Mattress.belongsTo(models.MattressRigidity, {
+            foreignKey: "mattress_rigidity_id",
+        });
     }
   }
 
@@ -27,8 +30,8 @@ module.exports = (sequelize, DataTypes) => {
       width: { type: DataTypes.STRING },
       length: { type: DataTypes.STRING },
       thickness: { type: DataTypes.STRING },
-      rigidity: { type: DataTypes.STRING },
       pictures_count: { type: DataTypes.INTEGER },
+        max_weight: {type: DataTypes.INTEGER},
     },
     {
       sequelize,

@@ -8,6 +8,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { CardContext } from "../context/cartContext";
+import MattressCard from "../components/UI/MattressCard.jsx"; // Карточка матраса
+import FiltersCard from "../components/UI/FiltersCard"; // Карточка с фильтрами и поиском
 
 export default function Mattresses() {
   const { basket, setBasket } = useContext(CardContext);
@@ -16,8 +18,8 @@ export default function Mattresses() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [currentImages, setCurrentImages] = useState([]);
   const [selectedThumbnails, setSelectedThumbnails] = useState({});
-  const [shapes, setShapes] = useState([]);
-  const [mattressTypes, setMattressTypes] = useState([]);
+  const [filteredMattresses, setFilteredMattresses] = useState([]);
+  const [isFilterSelected, setIsFilterSelected] = useState(false);
   const [filters, setFilters] = useState({
     search: "",
     selectedShapes: [],
@@ -60,76 +62,72 @@ export default function Mattresses() {
           return acc;
         }, {});
         setSelectedThumbnails(initialSelectedThumbnails);
-
-        axios.get(`${config.API_URL}/shapes`).then((res) => {
-          console.log(res.data);
-          const shapes = res.data.map((item) => ({
-            ...item,
-            // image: `https://via.placeholder.com/200x150?text=Матрас+${item.id}`,
-          }));
-          console.log(shapes);
-          setShapes(shapes);
-          axios.get(`${config.API_URL}/mattress-type`).then((res) => {
-            setMattressTypes(res.data);
-          });
-        });
       });
   }, []);
 
+  useEffect(() => {
+    handleApplyFilters();
+  }, [filters, mattresses]);
+
   const handleFilterChange = (key, value) => {
-    setFilters((prev) => ({
-      ...prev,
-      [key]: value,
-    }));
+    setFilters((prev) => {
+      const updatedFilters = { ...prev, [key]: value };
+      setIsFilterSelected(checkIfFiltersSelected(updatedFilters));
+      return updatedFilters;
+    });
+  };
+  const checkIfFiltersSelected = (filters) => {
+    return Object.values(filters).some((value) =>
+      Array.isArray(value) ? value.length > 0 : value !== "",
+    );
   };
 
   const handleApplyFilters = () => {
-    const {
-      search,
-      selectedShapes,
-      priceFrom,
-      priceTo,
-      rigidity,
-      type,
-      maxWeightFrom,
-      maxWeightTo,
-    } = filters;
+    let filtered = [...mattresses];
+
+    console.log(filtered);
     console.log(filters);
-    let filteredMattresses = [...mattresses];
 
-    if (search) {
-      filteredMattresses = filteredMattresses.filter((m) =>
-        m.name.toLowerCase().includes(search.toLowerCase()),
+    if (filters.search) {
+      filtered = filtered.filter((m) =>
+        m.name.toLowerCase().includes(filters.search.toLowerCase()),
       );
     }
 
-    if (selectedShapes) {
-      filteredMattresses = filteredMattresses.filter(
-        (m) => m.shape === selectedShapes,
+    if (filters.selectedShapes.length > 0) {
+      filtered = filtered.filter((m) =>
+        filters.selectedShapes.includes(m.shape),
       );
     }
 
-    if (priceFrom) {
-      filteredMattresses = filteredMattresses.filter(
-        (m) => m.price >= parseInt(priceFrom, 10),
+    if (filters.maxWeightFrom) {
+      filtered = filtered.filter(
+        (m) => Number(m.max_weight) >= Number(filters.maxWeightFrom),
+      );
+    }
+    if (filters.maxWeightTo) {
+      filtered = filtered.filter(
+        (m) => Number(m.max_weight) <= Number(filters.maxWeightTo),
+      );
+    }
+    if (filters.priceFrom) {
+      filtered = filtered.filter(
+        (m) => Number(m.price) >= Number(filters.priceFrom),
       );
     }
 
-    if (priceTo) {
-      filteredMattresses = filteredMattresses.filter(
-        (m) => m.price <= parseInt(priceTo, 10),
+    if (filters.priceTo) {
+      filtered = filtered.filter(
+        (m) => Number(m.price) <= Number(filters.priceTo),
       );
     }
 
-    if (rigidity.length > 0) {
-      filteredMattresses = filteredMattresses.filter((m) =>
-        rigidity.includes(m.specifications.rigidity),
-      );
+    if (filters.rigidity.length > 0) {
+      filtered = filtered.filter((m) => filters.rigidity.includes(m.rigidity));
     }
 
-    setMattresses(filteredMattresses);
+    setFilteredMattresses(filtered);
   };
-
   const openImageModal = (image) => {
     setSelectedImage(image);
   };
@@ -236,247 +234,33 @@ export default function Mattresses() {
       </div>
       {mattresses.length !== 0 ? (
         <div className={styles.page__container}>
-          <ul className={styles.fillters__container}>
-            <li className={styles.search__item}>
-              <input
-                type="text"
-                placeholder="Поиск"
-                value={filters.search}
-                onChange={(e) => handleFilterChange("search", e.target.value)}
-              />
-            </li>
-            <li className={styles.form__item}>
-              <div className={styles.form__title}>Форма матраса</div>
-              <div className={styles.form_picker__container}>
-                {shapes.length != 0
-                  ? shapes.map((shape) => (
-                      <label key={shape.id} className={styles.shapeBlock}>
-                        <input
-                          type="checkbox"
-                          className={styles.shapeCheckbox}
-                          checked={filters.selectedShapes.includes(
-                            shape.shape_name,
-                          )}
-                          onChange={(e) => {
-                            const checked = e.target.checked;
-                            handleFilterChange(
-                              "selectedShapes",
-                              checked
-                                ? [...filters.selectedShapes, shape.shape_name]
-                                : filters.selectedShapes.filter(
-                                    (x) => x !== shape.shape_name,
-                                  ),
-                            );
-                          }}
-                        />
-
-                        <img
-                          src={shape.image}
-                          alt={shape.shape_name}
-                          className={styles.shapeImage}
-                        />
-                        {/* <span className={styles.shapeLabel}>{shape.shape_name}</span> */}
-                      </label>
-                    ))
-                  : null}
-              </div>
-            </li>
-            <li className={styles.rigidity__item}>
-              <div className={styles.rigidity__title}>Жесткость матраса</div>
-              <div className={styles.rigidity_picker__container}>
-                {["Мягкий", "Средний", "Жесткий"].map((r) => (
-                  <label key={r} className={styles.rigidity__block}>
-                    <input
-                      type="checkbox"
-                      className={styles.rigidity__checkbox}
-                      checked={filters.rigidity.includes(r)}
-                      onChange={(e) => {
-                        const checked = e.target.checked;
-                        handleFilterChange(
-                          "rigidity",
-                          checked
-                            ? [...filters.rigidity, r]
-                            : filters.rigidity.filter((x) => x !== r),
-                        );
-                      }}
-                    />
-                    <span className={styles.rigidity__label}>{r}</span>
-                  </label>
-                ))}
-              </div>
-            </li>
-            <li>
-              <div className={styles.rigidity__title}>Тип матраса</div>
-              <div className={styles.rigidity_picker__container}>
-                {mattressTypes?.map((type) => (
-                  <label key={type.id} className={styles.rigidity__block}>
-                    <input
-                      type="checkbox"
-                      className={styles.rigidity__checkbox}
-                      checked={filters.type.includes(type)}
-                      onChange={(e) => {
-                        const checked = e.target.checked;
-                        handleFilterChange(
-                          "type",
-                          checked
-                            ? [...filters.type, type]
-                            : filters.type.filter((x) => x !== type),
-                        );
-                      }}
-                    />
-                    <span className={styles.rigidity__label}>
-                      {type.type_name}
-                    </span>
-                  </label>
-                ))}
-              </div>
-            </li>
-
-            <li className={styles.price__item}>
-              <div className={styles.price__title}>Цена</div>
-              <div className={styles.price_picker__container}>
-                <input
-                  type="number"
-                  placeholder="От руб."
-                  value={filters.priceFrom}
-                  onChange={(e) =>
-                    handleFilterChange("priceFrom", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  placeholder="До руб."
-                  value={filters.priceTo}
-                  onChange={(e) =>
-                    handleFilterChange("priceTo", e.target.value)
-                  }
-                />
-              </div>
-            </li>
-            <li className={styles.price__item}>
-              <div className={styles.price__title}>Максимальная нагрузка</div>
-              <div className={styles.price_picker__container}>
-                <input
-                  type="number"
-                  placeholder="От кг."
-                  value={filters.maxWeightFrom}
-                  onChange={(e) =>
-                    handleFilterChange("maxWeightFrom", e.target.value)
-                  }
-                />
-                <input
-                  type="number"
-                  placeholder="До кг."
-                  value={filters.maxWeightTo}
-                  onChange={(e) =>
-                    handleFilterChange("maxWeightTo", e.target.value)
-                  }
-                />
-              </div>
-            </li>
-            <li>
-              <button
-                className={styles.apply__button}
-                onClick={handleApplyFilters}
-              >
-                Применить
-              </button>
-            </li>
-          </ul>
+          <FiltersCard
+            filters={filters}
+            handleFilterChange={handleFilterChange}
+          />
           <div className={styles.mattresses__container}>
-            {mattresses.map((mattress) => {
-              const currentImage = currentImages.find(
-                (img) => img.id === mattress.id,
-              )?.currentImage;
-              return (
-                <div key={mattress.id} className={styles.card__container}>
-                  <img
-                    src={currentImage || mattress.pictures[0]}
-                    alt={mattress.name}
-                    className={styles.card__image}
-                    onClick={() =>
-                      openImageModal(currentImage || mattress.pictures[0])
-                    }
-                  />
-                  <div className={styles.card__thumbnails}>
-                    {mattress.pictures.map((picture, index) => (
-                      <img
-                        key={index}
-                        src={picture}
-                        alt={`Доп фото ${index + 1}`}
-                        className={`${styles.card__thumbnail} ${
-                          picture === selectedThumbnails[mattress.id]
-                            ? styles.selectedThumbnail
-                            : ""
-                        }`} // Добавляем обводку для выбранной миниатюры
-                        onClick={() =>
-                          handleThumbnailClick(mattress.id, picture)
-                        } // Обновляем текущую картинку и выбранную миниатюру
-                      />
-                    ))}
-                  </div>
-                  <div className={styles.card__details}>
-                    <Link
-                      to={`/catalog/${mattress.company.toLowerCase()}/${mattress.id}`}
-                      className={styles.card__title}
-                    >
-                      {mattress.name}
-                    </Link>
-                    <p className={styles.card__price}>{mattress.price} ₽</p>
-                    <p className={styles.card__specs}>
-                      Размер: {mattress.width} x {mattress.length}
-                    </p>
-                    <p className={styles.card__specs}>
-                      Толщина: {mattress.thickness}
-                    </p>
-                    <p className={styles.card__specs}>
-                      Жесткость: {mattress.rigidity}
-                    </p>
-                    <div className={styles.button__container}>
-                      {/* <button className={styles.card__button}>
-                      Добавить в корзину
-                    </button> */}
-                      {getmattressQuantity(mattress) == 0 ? (
-                        <>
-                          <button
-                            className={styles.basket__button}
-                            onClick={(event) => addToCart(mattress, event)}
-                          >
-                            Добавить в корзину
-                          </button>
-                        </>
-                      ) : (
-                        <div
-                          className={styles.basket__control}
-                          onClick={(event) => {
-                            event.stopPropagation();
-                            event.preventDefault();
-                          }}
-                        >
-                          <div
-                            className={styles.increase__btn}
-                            onClick={(event) =>
-                              decreaseQuantity(event, mattress)
-                            }
-                          >
-                            -
-                          </div>
-                          {getmattressQuantity(mattress)}
-                          <div
-                            className={styles.decrease__btn}
-                            onClick={(event) =>
-                              increaseQuantity(event, mattress)
-                            }
-                          >
-                            +
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+            {isFilterSelected && filteredMattresses.length === 0 && (
+              <div>
+                По вашим фильтрам не найдено подходящих матрасов. Попробуйте
+                изменить параметры поиска.
+              </div>
+            )}
+            {(isFilterSelected ? filteredMattresses : mattresses).map(
+              (mattress) => (
+                <MattressCard
+                  key={mattress.id}
+                  mattress={mattress}
+                  currentImages={currentImages}
+                  selectedThumbnails={selectedThumbnails}
+                  openImageModal={openImageModal}
+                  handleThumbnailClick={handleThumbnailClick}
+                  getmattressQuantity={getmattressQuantity}
+                  addToCart={addToCart}
+                  decreaseQuantity={decreaseQuantity}
+                  increaseQuantity={increaseQuantity}
+                />
+              ),
+            )}
           </div>
         </div>
       ) : (

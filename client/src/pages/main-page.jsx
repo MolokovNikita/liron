@@ -36,22 +36,54 @@ export default function MainPage() {
             </p>
           </div>
           <div className={styles.topic_text__right}>
-            <img src="/daf_big.jpg" alt="" className={styles.company__logo} />
-            <img src="/volvo_big.jpg" alt="" className={styles.company__logo} />
-            <img src="/man_big.jpg" alt="" className={styles.company__logo} />
-            <img src="/mers_big.jpg" alt="" className={styles.company__logo} />
-            <img
-              src="/scania_big.png"
-              alt=""
-              className={styles.company__logo}
-            />
-            <img src="/iveco_big.jpg" alt="" className={styles.company__logo} />
-            <img
-              src="/renault_big.jpg"
-              alt=""
-              className={styles.company__logo}
-            />
-            <img src="/ford_big.jpg" alt="" className={styles.company__logo} />
+            <Link to={"/catalog/daf"}>
+              <img src="/daf_big.jpg" alt="" className={styles.company__logo} />
+            </Link>
+            <Link to={"/catalog/volvo"}>
+              <img
+                src="/volvo_big.jpg"
+                alt=""
+                className={styles.company__logo}
+              />
+            </Link>
+            <Link to={"/catalog/man"}>
+              <img src="/man_big.jpg" alt="" className={styles.company__logo} />
+            </Link>
+            <Link to={"/catalog/mercedes-benz"}>
+              <img
+                src="/mercedes-benz_big.jpg"
+                alt=""
+                className={styles.company__logo}
+              />
+            </Link>
+            <Link to={"/catalog/scania"}>
+              <img
+                src="/scania_big.png"
+                alt=""
+                className={styles.company__logo}
+              />
+            </Link>
+            <Link to={"/catalog/iveco"}>
+              <img
+                src="/iveco_big.jpg"
+                alt=""
+                className={styles.company__logo}
+              />
+            </Link>
+            <Link to={"/catalog/renault"}>
+              <img
+                src="/renault_big.jpg"
+                alt=""
+                className={styles.company__logo}
+              />
+            </Link>
+            <Link to={"/catalog/ford"}>
+              <img
+                src="/ford_big.jpg"
+                alt=""
+                className={styles.company__logo}
+              />
+            </Link>
           </div>
         </div>
       </div>

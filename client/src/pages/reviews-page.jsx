@@ -1,10 +1,10 @@
-import React, { useState } from "react";
 import styles from "../styles/review.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { IoIosArrowForward } from "react-icons/io";
 import { IoIosArrowBack } from "react-icons/io";
 import config from "../config/config";
+import { useState } from "react";
 
 export default function Reviews() {
   const reviews = [

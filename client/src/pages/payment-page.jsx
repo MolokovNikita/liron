@@ -1,9 +1,7 @@
-import React from "react";
 import styles from "../styles/payment.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-// Иконки можно взять из любой библиотеки, например, react-icons или добавить свои изображения.
 import {
   FaCashRegister,
   FaTruck,

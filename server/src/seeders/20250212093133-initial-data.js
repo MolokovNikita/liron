@@ -13,12 +13,16 @@ module.exports = {
       { name: "uaz" },
       { name: "volvo" },
     ]);
-
+// Типы матрасов
     await queryInterface.bulkInsert("mattress_types", [
       { type_name: "Ортопедический" },
       { type_name: "Пружинный" },
     ]);
-
+    //Жесткостти матрасов
+    await queryInterface.bulkInsert("mattress_rigidity", [
+      { rigidity_name: "Средняя" },
+      { rigidity_name: "Жесткая" },
+    ]);
     // Добавляем формы матрасов
     await queryInterface.bulkInsert("mattress_shapes", [
       {
@@ -43,11 +47,12 @@ module.exports = {
         width: "90",
         length: "200",
         thickness: "20",
-        rigidity: "Средняя",
         pictures_count: 3,
         company_id: 1,
-        matress_type_id: 1,
+        mattress_rigidity_id: 1,
+        mattress_type_id: 1,
         mattress_shape_id: 1,
+        max_weight: 150,
       },
       {
         name: "Матрас 2",
@@ -58,11 +63,12 @@ module.exports = {
         width: "90",
         length: "200",
         thickness: "20",
-        rigidity: "Средняя",
         pictures_count: 2,
         company_id: 1,
-        matress_type_id: 1,
+        mattress_rigidity_id: 2,
+        mattress_type_id: 1,
         mattress_shape_id: 1,
+        max_weight: 150,
       },
     ]);
 
@@ -74,13 +80,13 @@ module.exports = {
         customer_email: "petr@example.com",
         order_date: new Date(),
         quantity: 1,
-        matress_id: 1,
+        mattress_id: 1,
       },
     ]);
 
     // Добавляем цвета к заказам
     await queryInterface.bulkInsert("order_colors", [
-      { order_id: 1, matress_id: 1, color: "Белый" },
+      { order_id: 1, mattress_id: 1, color: "Белый" },
     ]);
   },
 

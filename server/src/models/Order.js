@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
   class Order extends Model {
     static associate(models) {
       Order.belongsTo(models.Mattress, {
-        foreignKey: "matress_id",
+        foreignKey: "mattress_id",
         onDelete: "CASCADE",
       });
     }

@@ -27,6 +27,18 @@ module.exports = {
       },
     });
 
+    await queryInterface.createTable("mattress_rigidity", {
+      id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      rigidity_name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+    });
+
     await queryInterface.createTable("mattress_shapes", {
       id: {
         type: Sequelize.INTEGER,
@@ -74,9 +86,6 @@ module.exports = {
       thickness: {
         type: Sequelize.STRING,
       },
-      rigidity: {
-        type: Sequelize.STRING,
-      },
       pictures_count: {
         type: Sequelize.INTEGER,
       },
@@ -89,7 +98,16 @@ module.exports = {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
-      matress_type_id: {
+      mattress_rigidity_id: {
+        type: Sequelize.INTEGER,
+        references: {
+          model: "mattress_rigidity",
+          key: "id",
+        },
+        onDelete: "SET NULL",
+        onUpdate: "CASCADE",
+      },
+      mattress_type_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "mattress_types",
@@ -107,6 +125,9 @@ module.exports = {
         onDelete: "SET NULL",
         onUpdate: "CASCADE",
       },
+      max_weight:{
+        type: Sequelize.INTEGER,
+      }
     });
 
     await queryInterface.createTable("orders", {
@@ -135,7 +156,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         defaultValue: 1,
       },
-      matress_id: {
+      mattress_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "mattresses",
@@ -165,7 +186,7 @@ module.exports = {
         onDelete: "CASCADE",
         onUpdate: "CASCADE",
       },
-      matress_id: {
+      mattress_id: {
         type: Sequelize.INTEGER,
         references: {
           model: "mattresses",

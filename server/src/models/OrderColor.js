@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
         onDelete: "CASCADE",
       });
       OrderColor.belongsTo(models.Mattress, {
-        foreignKey: "matress_id",
+        foreignKey: "mattress_id",
         onDelete: "CASCADE",
       });
     }
