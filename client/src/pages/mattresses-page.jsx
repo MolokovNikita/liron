@@ -126,6 +126,10 @@ export default function Mattresses() {
       filtered = filtered.filter((m) => filters.rigidity.includes(m.rigidity));
     }
 
+    if (filters.type.length > 0) {
+      filtered = filtered.filter((m) => filters.type.includes(m.type));
+    }
+
     setFilteredMattresses(filtered);
   };
   const openImageModal = (image) => {

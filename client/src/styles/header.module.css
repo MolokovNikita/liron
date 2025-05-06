@@ -92,7 +92,7 @@ header {
     flex-direction: column;
 }
 
-.bottom__header > a {
+.bottom__header>a {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -191,7 +191,7 @@ header {
     margin-top: 20px;
 }
 
-.auth__block:hover + .pop_up__bg {
+.auth__block:hover+.pop_up__bg {
     display: flex;
 }
 
@@ -309,7 +309,9 @@ header {
         padding-top: 120px;
     }
 
-    .left_nav__list, .left__container, .right__container {
+    .left_nav__list,
+    .left__container,
+    .right__container {
         display: none;
     }
 
@@ -367,17 +369,16 @@ header {
         right: 0;
         width: 50%;
         height: 100vh;
-        backgroung: white;
         color: black;
         display: flex;
-        justify-content: start;
-        align-items: center;
 
     }
 
     .burger__list li {
-        font-size: 25px;
         margin: 35px;
+    }
+    .burger__list li:first-child{
+        margin-top: 5rem;
     }
 
     .basket__icon {
@@ -386,5 +387,3 @@ header {
 
 
 }
-
-

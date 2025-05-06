@@ -212,8 +212,10 @@
 }
 
 @media (max-width: 540px) {
-    .choose__text, .topic__container {
-        font-size: 14px;
+
+    .choose__text,
+    .topic__container {
+        font-size: 1.5rem;
     }
 
     .topic__container h1 {
@@ -227,11 +229,14 @@
     .company__logo:hover {
         scale: 100%;
     }
+
 }
 
 @media (max-width: 435px) {
-    .choose__text, .often_question__text {
-        font-size: 1.3rem !important;
+
+    .choose__text,
+    .often_question__text {
+        font-size: 1.1rem !important;
         font-weight: 600;
     }
 

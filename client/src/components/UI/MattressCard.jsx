@@ -37,11 +37,10 @@ export default function Mattress(props) {
             key={index}
             src={picture}
             alt={`Доп фото ${index + 1}`}
-            className={`${styles.card__thumbnail} ${
-              picture === selectedThumbnails[mattress.id]
+            className={`${styles.card__thumbnail} ${picture === selectedThumbnails[mattress.id]
                 ? styles.selectedThumbnail
                 : ""
-            }`}
+              }`}
             onClick={() => handleThumbnailClick(mattress.id, picture)}
           />
         ))}
@@ -59,6 +58,7 @@ export default function Mattress(props) {
         </p>
         <p className={styles.card__specs}>Толщина: {mattress.thickness}</p>
         <p className={styles.card__specs}>Жесткость: {mattress.rigidity}</p>
+        <p className={styles.card__specs}>Тип: {mattress.type}</p>
         <div className={styles.button__container}>
           {getmattressQuantity(mattress) === 0 ? (
             <button
@@ -108,6 +108,7 @@ Mattress.propTypes = {
     length: PropTypes.string,
     thickness: PropTypes.string,
     rigidity: PropTypes.string,
+    type: PropTypes.string,
   }),
   currentImages: PropTypes.arrayOf(
     PropTypes.shape({

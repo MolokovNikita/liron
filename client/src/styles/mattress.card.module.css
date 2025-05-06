@@ -2,9 +2,10 @@
     background-color: #fff;
     border: 1px solid #ccc;
     border-radius: 8px;
-    width: 200px;
-    max-height: 400px;
-    padding: 16px;
+    min-width: 200px;
+    max-height: 460px;
+    box-sizing: border-box;
+    padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s, box-shadow 0.2s;
 }
@@ -14,7 +15,8 @@
 }
 
 .card__image {
-    width: 100%;
+    /* width: 100%; */
+    width: 200px;
     height: 150px;
     object-fit: contain;
     border-radius: 4px;
@@ -25,6 +27,7 @@
     margin-top: 20px;
     font-family: Arial, sans-serif;
     color: #333;
+    box-sizing: border-box;
 }
 
 .card__title {
@@ -51,6 +54,8 @@
     display: flex;
     justify-content: center;
     margin-top: 15px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .card__button {
@@ -60,6 +65,7 @@
     padding: 5px 10px;
     border: none;
     border-radius: 10px;
+    box-sizing: border-box;
 }
 
 .card__button:hover {
@@ -128,4 +134,3 @@
 .card__thumbnail:hover {
     border-color: #4e5df9;
 }
-

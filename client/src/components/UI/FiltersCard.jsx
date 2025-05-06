@@ -8,14 +8,15 @@ export default function FiltersCard(props) {
   const { filters, handleFilterChange } = props;
   const [shapes, setShapes] = useState([]);
   const [mattressTypes, setMattressTypes] = useState([]);
-  // const [rigidity, setRigidity] = useState([]);
+  const [rigidities, setRigidities] = useState([]);
 
   useEffect(() => {
     const fetchFilters = async () => {
       try {
-        const [shapesRes, mattressTypesRes] = await Promise.all([
+        const [shapesRes, mattressTypesRes, rigiditiesRes] = await Promise.all([
           axios.get(`${config.API_URL}/shapes`),
           axios.get(`${config.API_URL}/mattress-type`),
+          axios.get(`${config.API_URL}/mattress-rigidity`),
         ]);
 
         const shapes = shapesRes.data.map((item) => ({
@@ -23,6 +24,7 @@ export default function FiltersCard(props) {
         }));
         setShapes(shapes);
         setMattressTypes(mattressTypesRes.data);
+        setRigidities(rigiditiesRes.data);
       } catch (error) {
         console.error("Ошибка при загрузке фильтров:", error);
       }
@@ -46,58 +48,58 @@ export default function FiltersCard(props) {
         <div className={styles.form_picker__container}>
           {shapes.length !== 0
             ? shapes.map((shape) => (
-                <label key={shape.id} className={styles.shapeBlock}>
-                  <input
-                    type="checkbox"
-                    className={styles.shapeCheckbox}
-                    checked={filters.selectedShapes.includes(shape.shape_name)}
-                    onChange={(e) => {
-                      const checked = e.target.checked;
-                      handleFilterChange(
-                        "selectedShapes",
-                        checked
-                          ? [...filters.selectedShapes, shape.shape_name]
-                          : filters.selectedShapes.filter(
-                              (x) => x !== shape.shape_name,
-                            ),
-                      );
-                    }}
-                  />
-                  <img
-                    src={shape.image}
-                    alt={shape.shape_name}
-                    className={styles.shapeImage}
-                  />
-                </label>
-              ))
+              <label key={shape.id} className={styles.shapeBlock}>
+                <input
+                  type="checkbox"
+                  className={styles.shapeCheckbox}
+                  checked={filters.selectedShapes.includes(shape.shape_name)}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    handleFilterChange(
+                      "selectedShapes",
+                      checked
+                        ? [...filters.selectedShapes, shape.shape_name]
+                        : filters.selectedShapes.filter(
+                          (x) => x !== shape.shape_name,
+                        ),
+                    );
+                  }}
+                />
+                <img
+                  src={shape.image}
+                  alt={shape.shape_name}
+                  className={styles.shapeImage}
+                />
+              </label>
+            ))
             : null}
         </div>
       </li>
       <li className={styles.rigidity__item}>
         <div className={styles.rigidity__title}>Жесткость матраса</div>
         <div className={styles.rigidity_picker__container}>
-          {["Мягкая", "Средняя", "Жесткая"].map((r) => (
-            <label key={r} className={styles.rigidity__block}>
+          {rigidities.map((rigidity) => (
+            <label key={rigidity.id} className={styles.rigidity__block}>
               <input
                 type="checkbox"
                 className={styles.rigidity__checkbox}
-                checked={filters.rigidity.includes(r)}
+                checked={filters.rigidity.includes(rigidity.rigidity_name)}
                 onChange={(e) => {
                   const checked = e.target.checked;
                   handleFilterChange(
                     "rigidity",
                     checked
-                      ? [...filters.rigidity, r]
-                      : filters.rigidity.filter((x) => x !== r),
+                      ? [...filters.rigidity, rigidity.rigidity_name]
+                      : filters.rigidity.filter((x) => x !== rigidity.rigidity_name),
                   );
                 }}
               />
-              <span className={styles.rigidity__label}>{r}</span>
+              <span className={styles.rigidity__label}>{rigidity.rigidity_name}</span>
             </label>
           ))}
         </div>
       </li>
-      <li>
+      <li className={styles.type__item}>
         <div className={styles.rigidity__title}>Тип матраса</div>
         <div className={styles.rigidity_picker__container}>
           {mattressTypes?.map((type) => (
@@ -105,7 +107,7 @@ export default function FiltersCard(props) {
               <input
                 type="checkbox"
                 className={styles.rigidity__checkbox}
-                checked={filters.type.includes(type.type_name)} // Убедитесь, что вы используете правильное поле для типа
+                checked={filters.type.includes(type.type_name)}
                 onChange={(e) => {
                   const checked = e.target.checked;
                   handleFilterChange(
