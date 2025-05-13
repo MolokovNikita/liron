@@ -1,0 +1,44 @@
+.wholesale {
+    padding: 20px;
+  }
+  
+  .wholesale__title {
+    font-size: 2.5rem;
+    color: #000000db;
+    margin-bottom: 30px;
+    text-align: center;
+  }
+  
+  .wholesale__section {
+    margin-bottom: 30px;
+    background-color: #f8f8f8;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.06);
+  }
+  
+  .wholesale__subtitle {
+    font-size: 1.75rem;
+    margin-bottom: 15px;
+    color: #333;
+  }
+  
+  .wholesale__text {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 15px;
+    line-height: 1.6;
+  }
+  
+  .wholesale__list {
+    padding-left: 20px;
+    list-style: disc;
+    margin-bottom: 15px;
+  }
+  
+  .wholesale__item {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 10px;
+  }
+  

@@ -8,8 +8,8 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useContext } from "react";
 import { CardContext } from "../context/cartContext";
-import MattressCard from "../components/UI/MattressCard.jsx"; // Карточка матраса
-import FiltersCard from "../components/UI/FiltersCard"; // Карточка с фильтрами и поиском
+import MattressCard from "../components/UI/MattressCard.jsx"; 
+import FiltersCard from "../components/UI/FiltersCard"; 
 
 export default function Mattresses() {
   const { basket, setBasket } = useContext(CardContext);
@@ -32,6 +32,23 @@ export default function Mattresses() {
   });
 
   useEffect(() => {
+    console.log(company);
+    setMattresses([]);
+    setFilteredMattresses([]);
+    setCurrentImages([]);
+    setSelectedImage(null);
+    setSelectedThumbnails({});
+    setIsFilterSelected(false);
+    setFilters({
+      search: "",
+      selectedShapes: [],
+      priceFrom: "",
+      priceTo: "",
+      maxWeightFrom: "",
+      maxWeightTo: "",
+      rigidity: [],
+      type: [],
+    });
     axios
       .get(`${config.API_URL}/mattress`, {
         params: {
@@ -63,7 +80,7 @@ export default function Mattresses() {
         }, {});
         setSelectedThumbnails(initialSelectedThumbnails);
       });
-  }, []);
+  }, [company]);
 
   useEffect(() => {
     handleApplyFilters();

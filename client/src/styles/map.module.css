@@ -1,0 +1,20 @@
+.contacts__map {
+    margin-top: 40px;
+    width: 100%;
+}
+
+.contacts__iframe {
+    width: 80%;
+    height: 500px;
+    border: 0;
+    border-radius: 15px;
+    margin: 0 auto;
+    display: block;
+}
+
+@media (max-width: 750px) {
+    .contacts__iframe {
+        width: 90%;
+
+    }
+}

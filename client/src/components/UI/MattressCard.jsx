@@ -54,7 +54,7 @@ export default function Mattress(props) {
         </Link>
         <p className={styles.card__price}>{mattress.price} ₽</p>
         <p className={styles.card__specs}>
-          Размер: {mattress.width} x {mattress.length}
+          Внешний габарит: {mattress.width} x {mattress.length}
         </p>
         <p className={styles.card__specs}>Толщина: {mattress.thickness}</p>
         <p className={styles.card__specs}>Жесткость: {mattress.rigidity}</p>

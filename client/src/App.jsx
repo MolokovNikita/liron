@@ -1,17 +1,18 @@
 import "./App.css";
-import MainPage from "./pages/main-page";
-import NotFoundPage from "./pages/not-found-page";
-import CatalogPage from "./pages/catalog-page";
-import CalculatorPage from "./pages/calculator-page";
-import ContactsPage from "./pages/contacts-page";
-import AboutUsPage from "./pages/aboutus-page";
-import WarrantyPage from "./pages/warranty-page";
-import PaymentPage from "./pages/payment-page";
-import ReviewsPage from "./pages/reviews-page";
-import MattressesPage from "./pages/mattresses-page";
-import MattressPage from "./pages/mattress-page";
-import BasketPage from "./pages/cart-page";
+import MainPage from "./pages/MainPage";
+import NotFoundPage from "./pages/NotFound";
+import CatalogPage from "./pages/CatalogPage";
+import DeliveryPage from "./pages/DeliveryPage";
+import ContactsPage from "./pages/ContactsPage";
+import AboutUsPage from "./pages/AboutPage";
+import PaymentPage from "./pages/PaymentPage";
+import ReviewsPage from "./pages/ReviewsPage";
+import MattressesPage from "./pages/MattressesPage";
+import MattressPage from "./pages/MattressPage";
+import BasketPage from "./pages/CardPage";
+import WholesalePage from "./pages/WholesalePage";
 import { Routes, Route } from "react-router-dom";
+import RefundPage from "./pages/RefundPage";
 function App() {
   return (
     <>
@@ -20,13 +21,14 @@ function App() {
         <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/catalog/:company" element={<MattressesPage />} />
         <Route path="/catalog/:company/:productID" element={<MattressPage />} />
-        <Route path="/calculator" element={<CalculatorPage />} />
+        <Route path="/delivery" element={<DeliveryPage />} />
         <Route path="/contacts" element={<ContactsPage />} />
         <Route path="/aboutus" element={<AboutUsPage />} />
-        <Route path="/warranty" element={<WarrantyPage />} />
         <Route path="/payment" element={<PaymentPage />} />
         <Route path="/reviews" element={<ReviewsPage />} />
         <Route path="/cart" element={<BasketPage />} />
+        <Route path="/refund" element={<RefundPage />} />
+        <Route path="/wholesale" element={<WholesalePage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>

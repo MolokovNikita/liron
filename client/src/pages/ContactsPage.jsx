@@ -1,7 +1,7 @@
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/contacts.module.css";
-
+import Map from "../components/UI/Map";
 export default function Contacts() {
   return (
     <>
@@ -62,17 +62,9 @@ export default function Contacts() {
               </form>
             </div>
           </div>
-          <div className={styles.contacts__map}>
-            <iframe
-              src="https://yandex.ru/map-widget/v1/?um=constructor%3A9777c7322b74eb19b5e33c851e135402254b56719371c0f32fba5e9748a1cd7f&amp;source=constructor"
-              className={styles.contacts__iframe}
-              title="Yandex Map"
-              allowFullScreen
-            ></iframe>
-          </div>
+          <Map />
         </div>
       </div>
-
       <Footer />
     </>
   );

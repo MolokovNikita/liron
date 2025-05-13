@@ -1,0 +1,35 @@
+.deliveryContainer {
+  /* max-width: 800px; */
+  margin-top: 10px;
+  padding: 30px;
+  border-radius: 12px;
+}
+
+.title {
+  font-size: 36px;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 8px;
+  align-items: center;
+  text-align: center;
+}
+
+.text {
+  font-size: 16px;
+  margin-bottom: 16px;
+  line-height: 1.6;
+
+}
+
+.regionList,
+.pickupList {
+  list-style: disc inside;
+  margin-bottom: 24px;
+  padding-left: 0;
+  color: #444;
+}
+
+.regionList li,
+.pickupList li {
+  margin-bottom: 6px;
+}

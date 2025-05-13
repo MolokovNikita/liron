@@ -2,7 +2,7 @@ import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/about.module.css";
-
+import Map from "../components/UI/Map";
 export default function About() {
   return (
     <>

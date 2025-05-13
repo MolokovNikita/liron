@@ -141,9 +141,8 @@ export default function MattressPage() {
                     key={index}
                     src={img}
                     alt={`Миниатюра ${index + 1}`}
-                    className={`${styles.thumbnail} ${
-                      currentImage === img ? styles.activeThumbnail : ""
-                    }`}
+                    className={`${styles.thumbnail} ${currentImage === img ? styles.activeThumbnail : ""
+                      }`}
                     onClick={() => setCurrentImage(img)}
                   />
                 ))}
@@ -157,9 +156,8 @@ export default function MattressPage() {
                   {mattress.colors?.map((color, index) => (
                     <button
                       key={index}
-                      className={`${styles.colorOption} ${
-                        selectedColor === color ? styles.activeColor : ""
-                      }`}
+                      className={`${styles.colorOption} ${selectedColor === color ? styles.activeColor : ""
+                        }`}
                       onClick={() => setSelectedColor(color)}
                     >
                       {color}
@@ -173,7 +171,7 @@ export default function MattressPage() {
                 <ul className={styles.specifications}>
                   <li></li>
                   <li>
-                    <p>Размер: </p>
+                    <p>Внешний габарит: </p>
                   </li>
                   <li>
                     <p>Толщина: </p>

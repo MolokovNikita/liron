@@ -1,15 +1,43 @@
+import { useParams } from "react-router-dom"; // импорт хука для получения параметров URL
+import { useEffect, useState, useContext } from "react";
+import axios from "axios";
+import { CardContext } from "../context/cartContext";
 import styles from "../styles/header.module.css";
 import { Link } from "react-router-dom";
-import { useContext, useState, useEffect } from "react";
-import { CardContext } from "../context/cartContext";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
+import config from "../config/config";
 
 export default function Header() {
   const { basket } = useContext(CardContext);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const [companies, setCompanies] = useState([]);
+  const [_, setCompanyProducts] = useState([]);
+  const { companyName } = useParams(); // получаем имя компании из URL
+
+  // Получаем список компаний
+  useEffect(() => {
+    axios.get(`${config.API_URL}/company`).then((res) => {
+      setCompanies(
+        res.data.map((item) => ({
+          ...item,
+          name: item.name,
+          url: `/catalog/${item.name.toLowerCase()}`
+        }))
+      );
+    });
+  }, []);
+
+  // Получаем продукты для выбранной компании
+  useEffect(() => {
+    if (companyName) {
+      axios.get(`${config.API_URL}/products?company=${companyName}`).then((res) => {
+        setCompanyProducts(res.data);
+      });
+    }
+  }, [companyName]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,10 +113,10 @@ export default function Header() {
                 </Link>
               </li>
               <li>
-                <Link to="/catalog">Каталог</Link>
+                <Link to="/delivery">Каталог</Link>
               </li>
               <li>
-                <Link to="/calculator">Калькулятор</Link>
+                <Link to="/calculator">Доставка</Link>
               </li>
               <li>
                 <Link to="/contacts">Контакты</Link>
@@ -101,11 +129,21 @@ export default function Header() {
         </div>
         <div className={styles.left__container}>
           <ul className={styles.left_nav__list}>
-            <li className={styles.catalor__item}>
-              <Link to="/catalog">Каталог</Link>
+            <li className={styles.catalog__item}>
+              <div className={styles.catalog__hover}>
+                <Link to="/catalog">Каталог</Link>
+                <ul className={styles.dropdown}>
+                  {companies.map((company) => (
+                    <li key={company.name}>
+                      <Link to={company.url}>{company.name.toUpperCase()}</Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </li>
+
             <li className={styles.sales__item}>
-              <Link to="/calculator">Калькулятор</Link>
+              <Link to="/delivery">Доставка</Link>
             </li>
             <li>
               <Link to="/contacts">Контакты</Link>

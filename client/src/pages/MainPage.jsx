@@ -3,6 +3,7 @@ import Footer from "../components/Footer.jsx";
 import styles from "../styles/main-content.module.css";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import Map from "../components/UI/Map.jsx";
 export default function MainPage() {
   const [faqOpen, setFaqOpen] = useState([
     false,
@@ -151,6 +152,7 @@ export default function MainPage() {
           Перейти в каталог
         </Link>
       </div>
+      <Map />
       <div className={styles.often_question__text}>
         Часто задаваемые вопросы
       </div>
