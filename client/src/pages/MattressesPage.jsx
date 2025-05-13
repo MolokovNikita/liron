@@ -1,246 +1,119 @@
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import config from "../config/config";
 import styles from "../styles/mattresses.module.css";
-import { Link } from "react-router-dom";
 import axios from "axios";
-import { useContext } from "react";
 import { CardContext } from "../context/cartContext";
-import MattressCard from "../components/UI/MattressCard.jsx"; 
-import FiltersCard from "../components/UI/FiltersCard"; 
+import MattressCard from "../components/UI/MattressCard.jsx";
+
 
 export default function Mattresses() {
-  const { basket, setBasket } = useContext(CardContext);
   const { company } = useParams();
+  const navigate = useNavigate();
+  const [companies, setCompanies] = useState([]);
+  const { basket, setBasket } = useContext(CardContext);
   const [mattresses, setMattresses] = useState([]);
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [currentImages, setCurrentImages] = useState([]);
-  const [selectedThumbnails, setSelectedThumbnails] = useState({});
-  const [filteredMattresses, setFilteredMattresses] = useState([]);
-  const [isFilterSelected, setIsFilterSelected] = useState(false);
-  const [filters, setFilters] = useState({
-    search: "",
-    selectedShapes: [],
-    priceFrom: "",
-    priceTo: "",
-    maxWeightFrom: "",
-    maxWeightTo: "",
-    rigidity: [],
-    type: [],
-  });
 
   useEffect(() => {
-    console.log(company);
     setMattresses([]);
-    setFilteredMattresses([]);
-    setCurrentImages([]);
-    setSelectedImage(null);
-    setSelectedThumbnails({});
-    setIsFilterSelected(false);
-    setFilters({
-      search: "",
-      selectedShapes: [],
-      priceFrom: "",
-      priceTo: "",
-      maxWeightFrom: "",
-      maxWeightTo: "",
-      rigidity: [],
-      type: [],
+
+    const mattressRequest = axios.get(`${config.API_URL}/mattress`, {
+      params: {
+        tovar_type: company.toLowerCase(),
+      },
     });
-    axios
-      .get(`${config.API_URL}/mattress`, {
-        params: {
-          tovar_type: company.toLowerCase(),
-        },
-      })
-      .then((res) => {
-        const matresses = res.data.map((item) => ({
-          ...item,
-          company: company,
-          pictures: Array.from(
-            { length: item.pictures_count },
-            (_, index) =>
-              `${config.API_URL}/uploads/mattresses/${item.id}/${index + 1}.jpg`,
-          ),
-        }));
 
-        setMattresses(matresses);
+    const companyRequest = axios.get(`${config.API_URL}/company`);
 
-        const initialCurrentImages = matresses.map((mattress) => ({
-          id: mattress.id,
-          currentImage: mattress.pictures[0],
-        }));
-        setCurrentImages(initialCurrentImages);
+    Promise.allSettled([mattressRequest, companyRequest])
+      .then(([mattressResult, companyResult]) => {
+        if (mattressResult.status === "fulfilled") {
+          const matresses = mattressResult.value.data.map((item) => ({
+            ...item,
+            company: company,
+            pictures: Array.from(
+              { length: item.pictures_count },
+              (_, index) =>
+                `${config.API_URL}/uploads/mattresses/${item.id}/${index + 1}.jpg`
+            ),
+          }));
+          setMattresses(matresses);
+        } else {
+          console.error("Ошибка при загрузке матрасов:", mattressResult.reason);
+        }
 
-        const initialSelectedThumbnails = matresses.reduce((acc, mattress) => {
-          acc[mattress.id] = mattress.pictures[0]; // Первая картинка из списка миниатюр
-          return acc;
-        }, {});
-        setSelectedThumbnails(initialSelectedThumbnails);
+        if (companyResult.status === "fulfilled") {
+          setCompanies(
+            companyResult.value.data.map((item) => ({
+              ...item,
+              name: item.name,
+              url: `/catalog/${item.name.toLowerCase()}`,
+            }))
+          );
+        } else {
+          console.error("Ошибка при загрузке компаний:", companyResult.reason);
+        }
       });
   }, [company]);
 
-  useEffect(() => {
-    handleApplyFilters();
-  }, [filters, mattresses]);
 
-  const handleFilterChange = (key, value) => {
-    setFilters((prev) => {
-      const updatedFilters = { ...prev, [key]: value };
-      setIsFilterSelected(checkIfFiltersSelected(updatedFilters));
-      return updatedFilters;
-    });
-  };
-  const checkIfFiltersSelected = (filters) => {
-    return Object.values(filters).some((value) =>
-      Array.isArray(value) ? value.length > 0 : value !== "",
-    );
-  };
-
-  const handleApplyFilters = () => {
-    let filtered = [...mattresses];
-
-    console.log(filtered);
-    console.log(filters);
-
-    if (filters.search) {
-      filtered = filtered.filter((m) =>
-        m.name.toLowerCase().includes(filters.search.toLowerCase()),
-      );
-    }
-
-    if (filters.selectedShapes.length > 0) {
-      filtered = filtered.filter((m) =>
-        filters.selectedShapes.includes(m.shape),
-      );
-    }
-
-    if (filters.maxWeightFrom) {
-      filtered = filtered.filter(
-        (m) => Number(m.max_weight) >= Number(filters.maxWeightFrom),
-      );
-    }
-    if (filters.maxWeightTo) {
-      filtered = filtered.filter(
-        (m) => Number(m.max_weight) <= Number(filters.maxWeightTo),
-      );
-    }
-    if (filters.priceFrom) {
-      filtered = filtered.filter(
-        (m) => Number(m.price) >= Number(filters.priceFrom),
-      );
-    }
-
-    if (filters.priceTo) {
-      filtered = filtered.filter(
-        (m) => Number(m.price) <= Number(filters.priceTo),
-      );
-    }
-
-    if (filters.rigidity.length > 0) {
-      filtered = filtered.filter((m) => filters.rigidity.includes(m.rigidity));
-    }
-
-    if (filters.type.length > 0) {
-      filtered = filtered.filter((m) => filters.type.includes(m.type));
-    }
-
-    setFilteredMattresses(filtered);
-  };
-  const openImageModal = (image) => {
-    setSelectedImage(image);
-  };
-
-  const closeImageModal = () => {
-    setSelectedImage(null);
-  };
-
-  const handleThumbnailClick = (mattressId, image) => {
-    setCurrentImages((prevImages) =>
-      prevImages.map((img) =>
-        img.id === mattressId ? { ...img, currentImage: image } : img,
-      ),
-    );
-
-    setSelectedThumbnails((prevThumbnails) => ({
-      ...prevThumbnails,
-      [mattressId]: image,
-    }));
-  };
-  const addToCart = (mattress, event) => {
-    event.stopPropagation();
-    event.preventDefault();
+  const addToCart = (mattress, e) => {
+    e.stopPropagation();
+    e.preventDefault();
     setBasket((prevBasket) => {
-      const existingmattressIndex = prevBasket.findIndex(
-        (item) => item.id === mattress.id && item.color === mattress.colors[0],
+      const existingIndex = prevBasket.findIndex(
+        (item) => item.id === mattress.id && item.color === mattress.colors[0]
       );
-      if (existingmattressIndex !== -1) {
-        const updatedBasket = [...prevBasket];
-        updatedBasket[existingmattressIndex] = {
-          ...updatedBasket[existingmattressIndex],
-          quantity: updatedBasket[existingmattressIndex].quantity + 1,
-          color: mattress.colors[0],
-        };
-        return updatedBasket;
-      } else {
-        return [
-          ...prevBasket,
-          {
-            ...mattress,
-            quantity: 1,
-            selected: false,
-            color: mattress.colors[0],
-          },
-        ];
+      if (existingIndex !== -1) {
+        const updated = [...prevBasket];
+        updated[existingIndex].quantity += 1;
+        return updated;
       }
+      return [
+        ...prevBasket,
+        { ...mattress, quantity: 1, selected: false, color: mattress.colors[0] },
+      ];
     });
   };
-  const decreaseQuantity = (event, mattress) => {
-    event.stopPropagation();
-    event.preventDefault();
+
+  const decreaseQuantity = (e, mattress) => {
+    e.stopPropagation();
+    e.preventDefault();
     setBasket((prevBasket) => {
-      const existingmattressIndex = prevBasket.findIndex(
-        (item) => item.id === mattress.id,
-      );
-      if (existingmattressIndex !== -1) {
-        const updatedBasket = [...prevBasket];
-        const newQuantity = updatedBasket[existingmattressIndex].quantity - 1;
-        if (newQuantity > 0) {
-          updatedBasket[existingmattressIndex].quantity = newQuantity;
+      const index = prevBasket.findIndex((item) => item.id === mattress.id);
+      if (index !== -1) {
+        const updated = [...prevBasket];
+        const newQty = updated[index].quantity - 1;
+        if (newQty > 0) {
+          updated[index].quantity = newQty;
         } else {
-          // Если количество становится 0, удаляем товар из корзины
-          updatedBasket.splice(existingmattressIndex, 1);
+          updated.splice(index, 1);
         }
-        return updatedBasket;
+        return updated;
       }
       return prevBasket;
     });
   };
-  const increaseQuantity = (event, mattress) => {
-    event.stopPropagation();
-    event.preventDefault();
+
+  const increaseQuantity = (e, mattress) => {
+    e.stopPropagation();
+    e.preventDefault();
     setBasket((prevBasket) => {
-      const existingmattressIndex = prevBasket.findIndex(
-        (item) => item.id === mattress.id,
-      );
-      if (existingmattressIndex !== -1) {
-        const updatedBasket = [...prevBasket];
-        updatedBasket[existingmattressIndex].quantity += 1;
-        return updatedBasket;
-      } else {
-        return [...prevBasket, { ...mattress, quantity: 1 }];
+      const index = prevBasket.findIndex((item) => item.id === mattress.id);
+      if (index !== -1) {
+        const updated = [...prevBasket];
+        updated[index].quantity += 1;
+        return updated;
       }
+      return [...prevBasket, { ...mattress, quantity: 1 }];
     });
   };
+
   const getmattressQuantity = (mattress) => {
-    const mattressInBasket = basket.find((item) => item.id === mattress.id);
-    if (mattressInBasket) {
-      return mattressInBasket.quantity;
-    } else {
-      return 0;
-    }
+    const item = basket.find((item) => item.id === mattress.id);
+    return item ? item.quantity : 0;
   };
 
   return (
@@ -253,53 +126,46 @@ export default function Mattresses() {
           <span>{company.toUpperCase()}</span>
         </i>
       </div>
-      {mattresses.length !== 0 ? (
-        <div className={styles.page__container}>
-          <FiltersCard
-            filters={filters}
-            handleFilterChange={handleFilterChange}
-          />
-          <div className={styles.mattresses__container}>
-            {isFilterSelected && filteredMattresses.length === 0 && (
-              <div>
-                По вашим фильтрам не найдено подходящих матрасов. Попробуйте
-                изменить параметры поиска.
-              </div>
-            )}
-            {(isFilterSelected ? filteredMattresses : mattresses).map(
-              (mattress) => (
-                <MattressCard
-                  key={mattress.id}
-                  mattress={mattress}
-                  currentImages={currentImages}
-                  selectedThumbnails={selectedThumbnails}
-                  openImageModal={openImageModal}
-                  handleThumbnailClick={handleThumbnailClick}
-                  getmattressQuantity={getmattressQuantity}
-                  addToCart={addToCart}
-                  decreaseQuantity={decreaseQuantity}
-                  increaseQuantity={increaseQuantity}
-                />
-              ),
-            )}
+
+      <div className={styles.page__container}>
+        {/* Левая панель компаний */}
+        <div className={styles.sidebar}>
+          <div className={styles.sidebar__title}>Матрасы для грузовиков
           </div>
+          {companies.map((comp) => (
+            <div
+              key={comp.name}
+              className={`${styles.sidebar__item} ${comp.name.toLowerCase() === company.toLowerCase() ? styles.active : ""
+                }`}
+              onClick={() => navigate(`/catalog/${comp.name.toLowerCase()}`)}
+            >
+              {comp.name.toUpperCase()}
+            </div>
+          ))}
+
         </div>
-      ) : (
-        <div>
-          <p className={styles.empty_mattrasses}>
-            Извините, матрасов данной компании временно нет в наличии
-          </p>
+
+        {/* Контейнер матрасов */}
+        <div className={styles.mattresses__container}>
+          {mattresses.length > 0 ? (
+            mattresses.map((mattress) => (
+              <MattressCard
+                key={mattress.id}
+                mattress={mattress}
+                getmattressQuantity={getmattressQuantity}
+                addToCart={addToCart}
+                decreaseQuantity={decreaseQuantity}
+                increaseQuantity={increaseQuantity}
+              />
+            ))
+          ) : (
+            <p className={styles.empty_mattrasses}>
+              Матрасов данной компании временно нет в наличии
+            </p>
+          )}
         </div>
-      )}
-      {selectedImage && (
-        <div className={styles.modal} onClick={closeImageModal}>
-          <img
-            src={selectedImage}
-            alt="Просмотр"
-            className={styles.modal__image}
-          />
-        </div>
-      )}
+      </div>
+
       <Footer />
     </>
   );

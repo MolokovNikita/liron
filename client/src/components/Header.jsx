@@ -30,7 +30,6 @@ export default function Header() {
     });
   }, []);
 
-  // Получаем продукты для выбранной компании
   useEffect(() => {
     if (companyName) {
       axios.get(`${config.API_URL}/products?company=${companyName}`).then((res) => {
