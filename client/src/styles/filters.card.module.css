@@ -3,6 +3,8 @@
     justify-content: center;
     font-size: 25px;
     font-weight: 500;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ddd;
 }
 
 .path__container {

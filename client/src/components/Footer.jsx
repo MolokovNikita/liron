@@ -26,7 +26,7 @@ export default function Footer() {
           </ul>
         </div>
       </div>
-      <div>@Copyright © {now} Liron-matras. Все права защищены.</div>
+      <div className={styles.footer__text}>@Copyright © {now} Liron-matras. Все права защищены.</div>
     </footer>
   );
 }

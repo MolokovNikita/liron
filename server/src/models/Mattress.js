@@ -14,16 +14,16 @@ module.exports = (sequelize, DataTypes) => {
       Mattress.belongsTo(models.MattressShape, {
         foreignKey: "mattress_shape_id",
       });
-        Mattress.belongsTo(models.MattressRigidity, {
-            foreignKey: "mattress_rigidity_id",
-        });
+      Mattress.belongsTo(models.MattressRigidity, {
+        foreignKey: "mattress_rigidity_id",
+      });
     }
   }
 
   Mattress.init(
     {
       name: { type: DataTypes.STRING, allowNull: false },
-      colors: { type: DataTypes.ARRAY(DataTypes.STRING) },
+      clothing_types: { type: DataTypes.ARRAY(DataTypes.STRING) },
       material: { type: DataTypes.STRING },
       description: { type: DataTypes.TEXT },
       price: { type: DataTypes.STRING },
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       length: { type: DataTypes.STRING },
       thickness: { type: DataTypes.STRING },
       pictures_count: { type: DataTypes.INTEGER },
-        max_weight: {type: DataTypes.INTEGER},
+      max_weight: { type: DataTypes.INTEGER },
     },
     {
       sequelize,

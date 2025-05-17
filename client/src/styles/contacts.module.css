@@ -17,6 +17,8 @@
     text-align: center;
     margin-bottom: 60px;
     color: #000000;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #ddd;
 }
 
 .contacts__infoContainer {
@@ -97,5 +99,13 @@
     .contacts__form {
         flex: 1;
         min-width: 200px;
+    }
+}
+
+
+@media (max-width: 750px) {
+    .contacts {
+        width: 100%;
+      
     }
 }

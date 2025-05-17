@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/mattress.module.css";
 import axios from "axios";
 import config from "../config/config";
-import { useContext } from "react";
-import { CardContext } from "../context/cartContext";
-import { Link } from "react-router-dom";
+import { AiOutlineInfoCircle } from "react-icons/ai";
+
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItem,
+  changeQuantity,
+  removeItem,
+} from "../store/cartSlice";
 
 export default function MattressPage() {
-  const { basket, setBasket } = useContext(CardContext);
+  const { company, productID } = useParams();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const basket = useSelector((state) => state.cart.basket);
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [mattress, setMattress] = useState({});
   const [currentImage, setCurrentImage] = useState(0);
-  const [selectedColor, setSelectedColor] = useState(0);
-  const [selectedColorBlur, setSelectedColorBlur] = useState("");
+  const [selectedClothe, setSelectedClothe] = useState(0);
+  const [isClotheInfoVisible, setClotheInfoVisible] = useState(false);
+  const [clotheInfo, setClotheInfo] = useState('');
 
-  const { company, productID } = useParams();
 
   useEffect(() => {
     axios
@@ -27,21 +37,33 @@ export default function MattressPage() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         const matress = {
           ...res.data,
           company: company,
           pictures: Array.from(
             { length: res.data.pictures_count },
             (_, index) =>
-              `${config.API_URL}/uploads/mattresses/${res.data.id}/${index + 1}.jpg`,
+              `${config.API_URL}/uploads/mattresses/${res.data.id}/${index + 1}.jpg`
           ),
         };
         setMattress(matress);
         setCurrentImage(matress.pictures[0]);
-        setSelectedColor(matress.colors[0]);
+        setSelectedClothe(matress.clothing_types[0]);
       });
-  }, []);
+  }, [company, productID]);
+
+  function formatNumberWithSpaces(number) {
+    number = +number;
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  }
+
+  const handleClotheIconHover = () => {
+    setClotheInfoVisible(true);
+  };
+
+  const handleClotheIconLeave = () => {
+    setClotheInfoVisible(false);
+  };
 
   const openImageModal = (image) => {
     setSelectedImage(image);
@@ -54,67 +76,47 @@ export default function MattressPage() {
   const addToCart = (product, event) => {
     event.stopPropagation();
     event.preventDefault();
-    setBasket((prevBasket) => {
-      const existingProductIndex = prevBasket.findIndex(
-        (item) => item.id === product.id && item.color === selectedColor,
-      );
-      if (existingProductIndex !== -1) {
-        const updatedBasket = [...prevBasket];
-        updatedBasket[existingProductIndex].quantity += 1;
-        return updatedBasket;
-      } else {
-        return [
-          ...prevBasket,
-          { ...product, quantity: 1, color: selectedColor, selected: false },
-        ];
-      }
-    });
+    dispatch(
+      addItem({
+        ...product,
+        quantity: 1,
+        clothe: selectedClothe,
+        selected: false,
+      })
+    );
   };
+
   const decreaseQuantity = (event, mattress) => {
     event.stopPropagation();
     event.preventDefault();
-    setBasket((prevBasket) => {
-      const existingProductIndex = prevBasket.findIndex(
-        (item) => item.id === mattress.id && item.color === selectedColor,
-      );
-      if (existingProductIndex !== -1) {
-        const updatedBasket = [...prevBasket];
-        const newQuantity = updatedBasket[existingProductIndex].quantity - 1;
-        if (newQuantity > 0) {
-          updatedBasket[existingProductIndex].quantity = newQuantity;
-        } else {
-          updatedBasket.splice(existingProductIndex, 1);
-        }
-        return updatedBasket;
-      }
-      return prevBasket;
-    });
+    dispatch(
+      changeQuantity({
+        id: mattress.id,
+        amount: -1,
+        clothe: selectedClothe,
+      })
+    );
   };
+
   const increaseQuantity = (event, mattress) => {
     event.stopPropagation();
     event.preventDefault();
-    setBasket((prevBasket) => {
-      const existingProductIndex = prevBasket.findIndex(
-        (item) => item.id === mattress.id && item.color === selectedColor,
-      );
-      if (existingProductIndex !== -1) {
-        const updatedBasket = [...prevBasket];
-        updatedBasket[existingProductIndex].quantity += 1;
-        return updatedBasket;
-      } else {
-        return [
-          ...prevBasket,
-          { ...mattress, quantity: 1, color: selectedColor },
-        ];
-      }
-    });
+    dispatch(
+      changeQuantity({
+        id: mattress.id,
+        amount: 1,
+        clothe: selectedClothe,
+      })
+    );
   };
+
   const getMattressQuantity = (mattress) => {
     const productInBasket = basket.find(
-      (item) => item.id === mattress.id && item.color === selectedColor,
+      (item) => item.id === mattress.id && item.clothe === selectedClothe
     );
     return productInBasket ? productInBasket.quantity : 0;
   };
+
   return (
     <>
       <Header />
@@ -141,31 +143,39 @@ export default function MattressPage() {
                     key={index}
                     src={img}
                     alt={`Миниатюра ${index + 1}`}
-                    className={`${styles.thumbnail} ${currentImage === img ? styles.activeThumbnail : ""
-                      }`}
+                    className={`${styles.thumbnail} ${currentImage === img ? styles.activeThumbnail : ""}`}
                     onClick={() => setCurrentImage(img)}
                   />
                 ))}
               </div>
             </div>
             <div className={styles.details}>
-              <h2 className={styles.price}>{mattress.price}</h2>
-              <div className={styles.colorSelector}>
-                <p>Цвет:</p>
-                <div className={styles.colors}>
-                  {mattress.colors?.map((color, index) => (
+              <h2 className={styles.price}>{formatNumberWithSpaces(mattress.price)} ₽</h2>
+              <div className={styles.clotheSelector}>
+                <p className={styles.clotheSelector__title}>Тип ткани:
+                  <span className={styles.clotheInfo__hover}>
+                    <span
+                      className={styles.clotheSelector__icon}><AiOutlineInfoCircle /></span>
+                    <div className={styles.clotheInfoMenu}>
+                      <h3>Жаккард</h3>
+                      <p>Прочная ткань с выразительным рисунком. Износостойкая, легко чистится, выглядит стильно.</p>
+                      <h3>Велюр</h3>
+                      <p>Мягкая, бархатистая ткань. Дарит комфорт, приятна на ощупь, хорошо пропускает воздух.</p>
+                    </div>
+                  </span>
+                </p>
+                <div className={styles.clothe}>
+                  {mattress.clothing_types?.map((clothe, index) => (
                     <button
                       key={index}
-                      className={`${styles.colorOption} ${selectedColor === color ? styles.activeColor : ""
-                        }`}
-                      onClick={() => setSelectedColor(color)}
+                      className={`${styles.clotheOption} ${selectedClothe === clothe ? styles.activeClothe : ""}`}
+                      onClick={() => setSelectedClothe(clothe)}
                     >
-                      {color}
+                      {clothe}
                     </button>
                   ))}
                 </div>
               </div>
-              <div className={styles.color_select__container}></div>
               <h3 className={styles.spec__title}>Характеристики</h3>
               <div className={styles.specifications__container}>
                 <ul className={styles.specifications}>
@@ -174,7 +184,7 @@ export default function MattressPage() {
                     <p>Внешний габарит: </p>
                   </li>
                   <li>
-                    <p>Толщина: </p>
+                    <p>Высота: </p>
                   </li>
                   <li>
                     <p>Жесткость: </p>
@@ -192,7 +202,7 @@ export default function MattressPage() {
                   <li>{mattress.material}</li>
                 </ul>
               </div>
-              {getMattressQuantity(mattress) == 0 ? (
+              {getMattressQuantity(mattress) === 0 ? (
                 <div className={styles.basket__control}>
                   <button
                     className={styles.basket__button}
@@ -231,7 +241,7 @@ export default function MattressPage() {
               )}
             </div>
           </div>
-        </div>
+        </div >
         <div className={styles.tabContent__container}>
           <div className={styles.descriptionContainer}>
             <h2 className={styles.title}>Описание</h2>
@@ -274,7 +284,7 @@ export default function MattressPage() {
             </div>
           </div>
         </div>
-      </div>
+      </div >
       {selectedImage && (
         <div className={styles.modal} onClick={closeImageModal}>
           <img
@@ -283,7 +293,8 @@ export default function MattressPage() {
             className={styles.modal__image}
           />
         </div>
-      )}
+      )
+      }
       <Footer />
     </>
   );

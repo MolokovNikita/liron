@@ -1,19 +1,30 @@
 import { useParams, Link, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import config from "../config/config";
 import styles from "../styles/mattresses.module.css";
 import axios from "axios";
-import { CardContext } from "../context/cartContext";
 import MattressCard from "../components/UI/MattressCard.jsx";
 
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addItem,
+  changeQuantity,
+  toggleSelectItem,
+  selectAll,
+  removeSelected,
+  setBasket,
+} from "../store/cartSlice";
 
 export default function Mattresses() {
   const { company } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const basket = useSelector((state) => state.cart.basket);
+
   const [companies, setCompanies] = useState([]);
-  const { basket, setBasket } = useContext(CardContext);
   const [mattresses, setMattresses] = useState([]);
 
   useEffect(() => {
@@ -58,61 +69,47 @@ export default function Mattresses() {
       });
   }, [company]);
 
-
-  const addToCart = (mattress, e) => {
+  const handleAddToCart = (mattress, e) => {
     e.stopPropagation();
     e.preventDefault();
-    setBasket((prevBasket) => {
-      const existingIndex = prevBasket.findIndex(
-        (item) => item.id === mattress.id && item.color === mattress.colors[0]
-      );
-      if (existingIndex !== -1) {
-        const updated = [...prevBasket];
-        updated[existingIndex].quantity += 1;
-        return updated;
-      }
-      return [
-        ...prevBasket,
-        { ...mattress, quantity: 1, selected: false, color: mattress.colors[0] },
-      ];
-    });
+    dispatch(
+      addItem({
+        ...mattress,
+        quantity: 1,
+        selected: false,
+        clothe: mattress.colors?.[0] || "default",
+      })
+    );
   };
 
-  const decreaseQuantity = (e, mattress) => {
+  const handleDecrease = (e, mattress) => {
     e.stopPropagation();
     e.preventDefault();
-    setBasket((prevBasket) => {
-      const index = prevBasket.findIndex((item) => item.id === mattress.id);
-      if (index !== -1) {
-        const updated = [...prevBasket];
-        const newQty = updated[index].quantity - 1;
-        if (newQty > 0) {
-          updated[index].quantity = newQty;
-        } else {
-          updated.splice(index, 1);
-        }
-        return updated;
-      }
-      return prevBasket;
-    });
+    dispatch(changeQuantity({ id: mattress.id, amount: -1, clothe: mattress.colors?.[0] || "default" }));
   };
 
-  const increaseQuantity = (e, mattress) => {
+  const handleIncrease = (e, mattress) => {
     e.stopPropagation();
     e.preventDefault();
-    setBasket((prevBasket) => {
-      const index = prevBasket.findIndex((item) => item.id === mattress.id);
-      if (index !== -1) {
-        const updated = [...prevBasket];
-        updated[index].quantity += 1;
-        return updated;
-      }
-      return [...prevBasket, { ...mattress, quantity: 1 }];
-    });
+    dispatch(changeQuantity({ id: mattress.id, amount: 1, clothe: mattress.colors?.[0] || "default" }));
+  };
+
+  const handleSelectItem = (mattress) => {
+    dispatch(toggleSelectItem({ id: mattress.id, clothe: mattress.colors?.[0] || "default" }));
+  };
+
+  const handleSelectAll = (e) => {
+    dispatch(selectAll(e.target.checked));
+  };
+
+  const handleRemoveSelected = () => {
+    dispatch(removeSelected());
   };
 
   const getmattressQuantity = (mattress) => {
-    const item = basket.find((item) => item.id === mattress.id);
+    const item = basket.find(
+      (item) => item.id === mattress.id && item.clothe === (mattress.colors?.[0] || "default")
+    );
     return item ? item.quantity : 0;
   };
 
@@ -130,19 +127,19 @@ export default function Mattresses() {
       <div className={styles.page__container}>
         {/* Левая панель компаний */}
         <div className={styles.sidebar}>
-          <div className={styles.sidebar__title}>Матрасы для грузовиков
-          </div>
+          <div className={styles.sidebar__title}>Матрасы для грузовиков</div>
           {companies.map((comp) => (
             <div
               key={comp.name}
-              className={`${styles.sidebar__item} ${comp.name.toLowerCase() === company.toLowerCase() ? styles.active : ""
+              className={`${styles.sidebar__item} ${comp.name.toLowerCase() === company.toLowerCase()
+                  ? styles.active
+                  : ""
                 }`}
               onClick={() => navigate(`/catalog/${comp.name.toLowerCase()}`)}
             >
               {comp.name.toUpperCase()}
             </div>
           ))}
-
         </div>
 
         {/* Контейнер матрасов */}
@@ -153,9 +150,10 @@ export default function Mattresses() {
                 key={mattress.id}
                 mattress={mattress}
                 getmattressQuantity={getmattressQuantity}
-                addToCart={addToCart}
-                decreaseQuantity={decreaseQuantity}
-                increaseQuantity={increaseQuantity}
+                addToCart={handleAddToCart}
+                decreaseQuantity={handleDecrease}
+                increaseQuantity={handleIncrease}
+                handleSelectItem={handleSelectItem}
               />
             ))
           ) : (

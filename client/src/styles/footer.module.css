@@ -14,22 +14,36 @@ footer {
   margin-top: auto;
   color: white;
 }
+
 .top_right__list {
   display: flex;
   list-style: none;
+  flex-wrap: wrap;
 }
+
 .top_right__list li {
   margin: 5px 10px;
 }
+
 .info_footer__container {
   color: white;
 }
+
 .top_right__list li a {
   color: white;
 }
 
+.footer__text {
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+
 @media (max-width: 460px) {
-  footer{
-    font-size: 12px;
+
+  footer,
+  .footer__text {
+    font-size: 11px;
+    text-align: start;
   }
 }

@@ -2,25 +2,30 @@
   margin: 0;
   padding: 20px;
 }
+
 .product__main_spec {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
+
 .title {
   font-size: 24px;
   margin: 0 auto;
   margin-bottom: 20px;
 }
+
 .productContent {
   display: flex;
   gap: 20px;
 }
+
 .imageGallery {
   flex: 1;
   width: 600px;
 }
+
 .imageWrapper {
   position: relative;
   width: 100%;
@@ -48,6 +53,7 @@
   gap: 10px;
   margin-top: 10px;
 }
+
 .thumbnail {
   width: 80px;
   height: 80px;
@@ -60,39 +66,118 @@
 .activeThumbnail {
   border-color: #4e5df9;
 }
+
 .details {
   flex: 1;
 }
+
 .price {
   font-size: 30px;
   font-weight: 600;
   color: #4e5df9;
   margin-bottom: 10px;
 }
-.colorSelector {
+
+.clotheSelector {
   margin-bottom: 10px;
+  margin-top: 10px;
 }
-.colors {
+
+.clotheSelector__title {
+  position: relative;
+}
+
+.clotheInfo__hover {
+  position: relative;
+  display: inline-block;
+}
+
+.clotheSelector__icon {
+  color: #4e5df9;
+  font-size: 22px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  margin-left: 8px;
+  vertical-align: middle;
+  display: inline-flex;
+  align-items: center;
+}
+
+.clotheSelector__icon:hover,
+.clotheSelector__icon:focus {
+  transform: scale(1.2);
+}
+
+.clotheInfoMenu {
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(78, 93, 249, 0.13);
+  padding: 20px 24px;
+  min-width: 270px;
+  max-width: 340px;
+  color: #222;
+  z-index: 1000;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(-10px);
+  transition: opacity 0.3s cubic-bezier(.4, 0, .2, 1), transform 0.3s cubic-bezier(.4, 0, .2, 1);
+}
+
+.clotheInfo__hover:hover .clotheInfoMenu,
+.clotheInfo__hover:focus-within .clotheInfoMenu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.clotheInfoMenu h3 {
+  margin: 0 0 4px 0;
+  font-size: 16px;
+  color: #4e5df9;
+  font-weight: 600;
+}
+
+.clotheInfoMenu p {
+  margin: 0 0 12px 0;
+  font-size: 15px;
+  color: #444;
+}
+
+
+
+.clothe {
   display: flex;
   gap: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
-.colorOption {
+
+.clotheOption {
   padding: 5px 10px;
   border: 1px solid #ccc;
   cursor: pointer;
   background: #fff;
   border-radius: 4px;
 }
-.colorOption:hover {
+
+.clotheOption:hover {
   background: #f0f0f0;
 }
-.activeColor:hover {
+
+.activeClothe:hover {
   background: #4e5df9;
 }
-.activeColor {
+
+.activeClothe {
   background: #4e5df9;
   color: #fff;
 }
+
 .basket__button {
   width: 200px;
   background: none;
@@ -108,6 +193,7 @@
   transition: all 0.3s;
   color: white;
 }
+
 .basket__control {
   display: flex;
   flex-direction: row;
@@ -116,6 +202,7 @@
   border-radius: 15px;
   align-items: center;
 }
+
 .gotobasket__btn {
   width: 160px;
   background: none;
@@ -131,6 +218,7 @@
   transition: all 0.3s;
   color: white;
 }
+
 .control__container {
   display: flex;
   width: 200px;
@@ -140,9 +228,11 @@
   padding: 5px 10px;
   border-radius: 15px;
 }
+
 .gotobasket__btn a {
   color: white;
 }
+
 .increase__btn,
 .decrease__btn {
   display: flex;
@@ -151,37 +241,46 @@
   font-size: 20px;
   cursor: pointer;
 }
+
 .increase__btn {
   padding: 0 9px;
 }
+
 .increase__btn:hover,
 .decrease__btn:hover {
   background-color: #4e5df9;
   color: white;
 }
+
 .specifications p {
   color: grey;
 }
+
 .specifications {
   width: 50%;
   list-style: none;
 }
+
 .specifications__container {
   margin: 15px 0;
   display: flex;
   flex-direction: row;
 }
+
 .specifications__values {
   list-style: none;
   width: 50%;
 }
+
 .specifications__values li,
 .specifications li {
   margin-bottom: 5px;
 }
+
 .tabContent__container {
   margin-top: 25px;
 }
+
 .deliveryContainer {
   padding: 20px;
   background-color: #f9f9f9;
@@ -222,6 +321,7 @@
   margin: 5px 0;
   color: #444;
 }
+
 .descriptionContainer {
   padding: 20px;
   background-color: #f9f9f9;

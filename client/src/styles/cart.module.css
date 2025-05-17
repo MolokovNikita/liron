@@ -7,14 +7,17 @@
   gap: 20px;
   align-items: flex-start;
 }
+
 .cartListContainer {
   flex: 3;
   height: 100%;
 }
+
 .mattress__name {
   font-size: 20px;
   font-weight: 500;
 }
+
 .mattress__price {
   display: flex;
   color: #4e5df9;
@@ -23,15 +26,18 @@
   padding: 5px;
   border-radius: 15px;
 }
+
 .mattress__details {
   color: grey;
 }
+
 .cartList {
   list-style: none;
   padding: 0;
   background-color: white;
   border-radius: 10px;
 }
+
 .quantityControl {
   display: flex;
   flex-direction: row;
@@ -41,12 +47,14 @@
   align-items: center;
   background-color: #f1f0ed;
 }
+
 .item__control {
   display: flex;
   justify-content: center;
   align-items: end;
   flex-direction: column;
 }
+
 .delete_item__btn {
   display: inline-flex;
   align-items: center;
@@ -59,6 +67,7 @@
   background: none;
   cursor: pointer;
 }
+
 .quantityButton {
   width: 30%;
   display: flex;
@@ -72,12 +81,14 @@
   margin: 0 10px;
   border-radius: 15px;
 }
+
 .item__quantity {
   width: 40%;
   align-items: center;
   display: flex;
   justify-content: center;
 }
+
 .cartItem {
   display: flex;
   align-items: center;
@@ -95,6 +106,7 @@
   height: 120px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  object-fit: cover;
 }
 
 .itemDetails {
@@ -105,6 +117,7 @@
   font-size: 18px;
   margin-bottom: 5px;
 }
+
 .cartSummary {
   position: sticky;
   top: 20px;
@@ -115,9 +128,11 @@
   background-color: #f9f9f9;
   align-self: flex-start;
 }
+
 .cartSummary h2 {
   font-size: 20px;
 }
+
 .basket__button {
   background: none;
   border: none;
@@ -132,6 +147,7 @@
   font-size: 15px;
   transition: all 0.3s;
 }
+
 .basket__control {
   display: flex;
   flex-direction: row;
@@ -143,6 +159,7 @@
   padding: 5px 20px;
   align-items: center;
 }
+
 .increase__btn,
 .decrease__btn {
   display: flex;
@@ -150,13 +167,16 @@
   border-radius: 20px;
   font-size: 20px;
 }
+
 .increase__btn {
   padding: 0 9px;
 }
+
 .increase__btn:hover,
 .decrease__btn:hover {
   background-color: #ffc314;
 }
+
 .checkoutButton {
   background-color: #4e5df9;
   color: white;
@@ -172,15 +192,18 @@
 .select__container {
   display: flex;
 }
+
 .selectAllContainer {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
 }
+
 .cancel__span {
   margin-right: 10px;
 }
+
 .selectAllButton,
 .deleteSelectedButton {
   display: flex;
@@ -192,14 +215,17 @@
   border-radius: 5px;
   cursor: pointer;
 }
+
 .selectAllButton {
   padding: 0;
   margin-left: 5px;
 }
+
 .item__articul {
   color: grey;
   font-size: 13px;
 }
+
 .label {
   display: flex;
   align-items: center;

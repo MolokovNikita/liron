@@ -40,8 +40,8 @@
 }
 
 .card__price {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: 800;
     color: #555;
     margin: 0 0 8px;
     margin-top: 10px;
@@ -124,4 +124,3 @@
     background-color: #4e5df9;
     color: white;
 }
-

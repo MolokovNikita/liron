@@ -4,6 +4,8 @@
   text-align: center;
   margin: 30px 0;
   color: #222;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ddd;
 }
 
 /* Контейнер для всех карточек */
@@ -16,6 +18,7 @@
   align-items: start;
   max-width: 80%;
   margin: 0 auto;
+
 }
 
 /* Карточка компании */
@@ -43,6 +46,8 @@
   object-fit: contain;
   margin-bottom: 10px;
   background-color: transparent; 
+  border-radius: 10px;
+
 }
 
 /* Название компании */
@@ -52,3 +57,5 @@
   font-weight: 500;
   text-transform: uppercase;
 }
+
+

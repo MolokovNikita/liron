@@ -30,7 +30,7 @@ export default function Mattress({ mattress }) {
         <p className={styles.card__specs}>
           Внешний габарит: {mattress.width} x {mattress.length}
         </p>
-        <p className={styles.card__specs}>Толщина: {mattress.thickness}</p>
+        <p className={styles.card__specs}>Высота: {mattress.thickness}</p>
         <p className={styles.card__specs}>Жесткость: {mattress.rigidity}</p>
         <p className={styles.card__specs}>Тип: {mattress.type}</p>
         <div className={styles.button__container}>

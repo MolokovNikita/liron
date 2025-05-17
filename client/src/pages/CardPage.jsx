@@ -1,24 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/cart.module.css";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
-import { useContext } from "react";
-import { CardContext } from "../context/cartContext";
-export default function Cart() {
-  const { basket, setBasket } = useContext(CardContext);
-  //   useEffect(()=>{
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeQuantity,
+  toggleSelectItem,
+  selectAll,
+  removeSelected,
+  removeItem,
+} from "../store/cartSlice";
 
-  //   },[])
-  const handleQuantityChange = (id, amount, color) => {
-    setBasket((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id && item.color === color
-          ? { ...item, quantity: Math.max(1, item.quantity + amount) }
-          : item,
-      ),
-    );
+export default function Cart() {
+  const dispatch = useDispatch();
+  const basket = useSelector((state) => state.cart.basket);
+
+  const handleQuantityChange = (id, amount, clothe) => {
+    dispatch(changeQuantity({ id, amount, clothe }));
+  };
+
+  const handleSelectAll = (checked) => {
+    dispatch(selectAll(checked));
+  };
+
+  const handleRemoveSelected = () => {
+    dispatch(removeSelected());
+  };
+
+  const handleRemoveItem = (id, clothe) => {
+    dispatch(removeItem({ id, clothe }));
+  };
+
+  const handleSelectItem = (id, clothe) => {
+    dispatch(toggleSelectItem({ id, clothe }));
   };
 
   const getPrice = (price, quantity) => {
@@ -30,38 +46,15 @@ export default function Cart() {
 
     return formattedPrice;
   };
-  const handleSelectAll = (checked) => {
-    setBasket((prevItems) =>
-      prevItems.map((item) => ({ ...item, selected: checked })),
-    );
-  };
-
-  const handleRemoveSelected = () => {
-    setBasket((prevItems) => prevItems.filter((item) => !item.selected));
-  };
-  const handleRemoveItem = (id, color) => {
-    setBasket((prevItems) =>
-      prevItems.filter((item) => item.id !== id || item.color !== color),
-    );
-  };
-  const handleSelectItem = (id, color) => {
-    setBasket((prevItems) =>
-      prevItems.map((item) =>
-        item.id === id && item.color === color
-          ? { ...item, selected: !item.selected }
-          : item,
-      ),
-    );
-  };
 
   const totalCost = basket
     .filter((item) => item.selected)
     .reduce((total, item) => {
-      const price = item.price.split(" ").join("");
+      const price = parseInt(item.price.split(" ").join(""), 10);
       return total + price * item.quantity;
     }, 0);
 
-  const allSelected = basket.every((item) => item.selected);
+  const allSelected = basket.length > 0 && basket.every((item) => item.selected);
 
   return (
     <>
@@ -93,11 +86,11 @@ export default function Cart() {
               </div>
               <ul className={styles.cartList}>
                 {basket.map((item) => (
-                  <li key={item.id + item.color} className={styles.cartItem}>
+                  <li key={item.id + item.clothe} className={styles.cartItem}>
                     <input
                       type="checkbox"
                       checked={item.selected}
-                      onChange={() => handleSelectItem(item.id, item.color)}
+                      onChange={() => handleSelectItem(item.id, item.clothe)}
                       className={styles.checkbox}
                     />
                     <Link
@@ -114,7 +107,7 @@ export default function Cart() {
                         Артикул - #{item.id}
                       </p>
                       <p className={styles.item__articul}>
-                        Цвет - {item.color}
+                        Тип ткани - {item.clothe}
                       </p>
                       <Link
                         to={`/catalog/${item.company.toLowerCase()}/${item.id}`}
@@ -122,17 +115,18 @@ export default function Cart() {
                       >
                         {item.name}
                       </Link>
-                      <p className={styles.mattress__details}>{item.details}</p>
+                      <p className={styles.mattress__details}>
+                        {item.details}
+                      </p>
                     </div>
                     <p className={styles.mattress__price}>
-                      {" "}
                       {getPrice(item.price, item.quantity)} ₽
                     </p>
                     <div className={styles.item__control}>
                       <div className={styles.quantityControl}>
                         <button
                           onClick={() =>
-                            handleQuantityChange(item.id, -1, item.color)
+                            handleQuantityChange(item.id, -1, item.clothe)
                           }
                           className={styles.quantityButton}
                         >
@@ -143,19 +137,16 @@ export default function Cart() {
                         </span>
                         <button
                           onClick={() =>
-                            handleQuantityChange(item.id, 1, item.color)
+                            handleQuantityChange(item.id, 1, item.clothe)
                           }
                           className={styles.quantityButton}
                         >
                           +
                         </button>
                       </div>
-
                       <button
                         className={styles.delete_item__btn}
-                        onClick={() => {
-                          handleRemoveItem(item.id, item.color);
-                        }}
+                        onClick={() => handleRemoveItem(item.id, item.clothe)}
                       >
                         <RxCross1 size={25} />
                       </button>
@@ -165,7 +156,7 @@ export default function Cart() {
               </ul>
             </div>
             <div className={styles.cartSummary}>
-              <h2>Итого: {totalCost} ₽</h2>
+              <h2>Итого: {totalCost.toLocaleString("ru-RU")} ₽</h2>
               <button className={styles.checkoutButton}>
                 Перейти к оформлению
               </button>

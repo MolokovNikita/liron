@@ -4,31 +4,31 @@ const Order = require("./Order");
 const Mattress = require("./Mattress");
 
 module.exports = (sequelize, DataTypes) => {
-  class OrderColor extends Model {
+  class OrderClothingType extends Model {
     static associate(models) {
-      OrderColor.belongsTo(models.Order, {
+      OrderClothingType.belongsTo(models.Order, {
         foreignKey: "order_id",
         onDelete: "CASCADE",
       });
-      OrderColor.belongsTo(models.Mattress, {
+      OrderClothingType.belongsTo(models.Mattress, {
         foreignKey: "mattress_id",
         onDelete: "CASCADE",
       });
     }
   }
 
-  OrderColor.init(
+  OrderClothingType.init(
     {
-      color: { type: DataTypes.STRING, allowNull: false },
+      clothing_type: { type: DataTypes.STRING, allowNull: false },
     },
     {
       sequelize,
-      modelName: "OrderColor",
-      tableName: "order_colors",
+      modelName: "OrderClothingType",
+      tableName: "order_clothe",
       freezeTableName: true,
       timestamps: false,
     },
   );
 
-  return OrderColor;
+  return OrderClothingType;
 };

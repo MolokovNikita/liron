@@ -11,6 +11,9 @@
   font-size: 36px;
   text-align: center;
   margin-bottom: 30px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #ddd;
+
 }
 
 .about__content {
