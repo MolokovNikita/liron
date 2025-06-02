@@ -41,6 +41,7 @@ export default function Mattresses() {
     Promise.allSettled([mattressRequest, companyRequest])
       .then(([mattressResult, companyResult]) => {
         if (mattressResult.status === "fulfilled") {
+          console.log(mattressResult.value.data);
           const matresses = mattressResult.value.data.map((item) => ({
             ...item,
             company: company,
@@ -49,7 +50,12 @@ export default function Mattresses() {
               (_, index) =>
                 `${config.API_URL}/uploads/mattresses/${item.id}/${index + 1}.jpg`
             ),
+            clothing_types: item.clothing_types?.[0] || "Не указано",
+            material: item.material?.[0]?.replace(/\n/g, ", ") || "Не указано",
+            price: item.price?.[0] ? `${item.price[0]}` : "Цена не указана",
+            rigidity: item.rigidity?.[0] || "Не указана"
           }));
+
           setMattresses(matresses);
         } else {
           console.error("Ошибка при загрузке матрасов:", mattressResult.reason);
@@ -132,8 +138,8 @@ export default function Mattresses() {
             <div
               key={comp.name}
               className={`${styles.sidebar__item} ${comp.name.toLowerCase() === company.toLowerCase()
-                  ? styles.active
-                  : ""
+                ? styles.active
+                : ""
                 }`}
               onClick={() => navigate(`/catalog/${comp.name.toLowerCase()}`)}
             >

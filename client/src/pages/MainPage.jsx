@@ -2,23 +2,44 @@ import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import styles from "../styles/main-content.module.css";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Map from "../components/UI/Map.jsx";
+import config from "../config/config.js";
+import axios from "axios";
+import "react-image-gallery/styles/css/image-gallery.css";
+import GalleryBlock from "../components/UI/Gallery/GalleryBlock.jsx";
 export default function MainPage() {
-  const [faqOpen, setFaqOpen] = useState([
-    false,
-    false,
-    false,
-    false,
-    false,
-    false,
-  ]);
+  const [faqOpen, setFaqOpen] = useState([false, false, false, false, false, false]);
+  const [companies, setCompanies] = useState([]);
+  const gallery_images = Array.from({ length: 44 }, (_, i) => {
+    const filename = `${i + 1}.jpg`;
+    return {
+      original: `${config.API_URL}/uploads/gallery_images/${filename}`,
+      thumbnail: `${config.API_URL}/uploads/gallery_images/${filename}`,
+    };
+  });
+  useEffect(() => {
+    axios
+      .get(`${config.API_URL}/company`)
+      .then((res) => {
+        const companiesWithPic = res.data.slice(0, 10).map((item) => ({
+          ...item,
+          pic: `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
+        }));
+        setCompanies(companiesWithPic);
+      })
+      .catch((err) => {
+        console.error("Ошибка при получении компаний:", err);
+      });
+  }, []);
+
 
   const toggleFaq = (index) => {
     const newFaqOpen = [...faqOpen];
     newFaqOpen[index] = !newFaqOpen[index];
     setFaqOpen(newFaqOpen);
   };
+
   return (
     <>
       <Header />
@@ -37,54 +58,15 @@ export default function MainPage() {
             </p>
           </div>
           <div className={styles.topic_text__right}>
-            <Link to={"/catalog/daf"}>
-              <img src="/daf_big.jpg" alt="" className={styles.company__logo} />
-            </Link>
-            <Link to={"/catalog/volvo"}>
-              <img
-                src="/volvo_big.jpg"
-                alt=""
-                className={styles.company__logo}
-              />
-            </Link>
-            <Link to={"/catalog/man"}>
-              <img src="/man_big.jpg" alt="" className={styles.company__logo} />
-            </Link>
-            <Link to={"/catalog/mercedes-benz"}>
-              <img
-                src="/mercedes-benz_big.jpg"
-                alt=""
-                className={styles.company__logo}
-              />
-            </Link>
-            <Link to={"/catalog/scania"}>
-              <img
-                src="/scania_big.png"
-                alt=""
-                className={styles.company__logo}
-              />
-            </Link>
-            <Link to={"/catalog/iveco"}>
-              <img
-                src="/iveco_big.jpg"
-                alt=""
-                className={styles.company__logo}
-              />
-            </Link>
-            <Link to={"/catalog/renault"}>
-              <img
-                src="/renault_big.jpg"
-                alt=""
-                className={styles.company__logo}
-              />
-            </Link>
-            <Link to={"/catalog/ford"}>
-              <img
-                src="/ford_big.jpg"
-                alt=""
-                className={styles.company__logo}
-              />
-            </Link>
+            {companies.map((company) => (
+              <Link key={company.id} to={`/catalog/${company.name}`}>
+                <img
+                  src={company.pic}
+                  alt={company.name}
+                  className={styles.company__logo}
+                />
+              </Link>
+            ))}
           </div>
         </div>
       </div>
@@ -151,6 +133,12 @@ export default function MainPage() {
         <Link to="/catalog" className={styles.catalog__btn}>
           Перейти в каталог
         </Link>
+      </div>
+      <div style={{ margin: "40px 0", padding: "0 30px" }}>
+        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Галерея</h2>
+        <div className={styles.gallery_container}>
+          <GalleryBlock images={gallery_images} />
+        </div>
       </div>
       <Map />
       <div className={styles.often_question__text}>

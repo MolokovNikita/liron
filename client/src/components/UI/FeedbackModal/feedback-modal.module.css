@@ -1,0 +1,82 @@
+.modal__overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal__content {
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+}
+
+.modal__title {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+}
+
+.modal__form label {
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+.modal__form input,
+.modal__form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-top: 0.3rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    resize: none;
+}
+
+.modal__submit {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.modal__close {
+    background: none;
+    border: none;
+    color: #888;
+    font-size: 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.modal__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: none;
+    color: #666;
+    font-size: 24px;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.modal__close:hover {
+    color: #000;
+}
+
+.modal__form input[type="tel"] {
+    padding: 8px;
+    font-size: 16px;
+}

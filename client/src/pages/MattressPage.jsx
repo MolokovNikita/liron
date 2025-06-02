@@ -6,13 +6,8 @@ import styles from "../styles/mattress.module.css";
 import axios from "axios";
 import config from "../config/config";
 import { AiOutlineInfoCircle } from "react-icons/ai";
-
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addItem,
-  changeQuantity,
-  removeItem,
-} from "../store/cartSlice";
+import { addItem, changeQuantity, removeItem } from "../store/cartSlice";
 
 export default function MattressPage() {
   const { company, productID } = useParams();
@@ -25,9 +20,9 @@ export default function MattressPage() {
   const [mattress, setMattress] = useState({});
   const [currentImage, setCurrentImage] = useState(0);
   const [selectedClothe, setSelectedClothe] = useState(0);
+  const [selectedMaterial, setSelectedMaterial] = useState(0); // <-- добавили
   const [isClotheInfoVisible, setClotheInfoVisible] = useState(false);
   const [clotheInfo, setClotheInfo] = useState('');
-
 
   useEffect(() => {
     axios
@@ -41,21 +36,32 @@ export default function MattressPage() {
           ...res.data,
           company: company,
           pictures: Array.from(
-            { length: res.data.pictures_count },
+            { length: res.data.pictures_count - 1 },
             (_, index) =>
-              `${config.API_URL}/uploads/mattresses/${res.data.id}/${index + 1}.jpg`
+              `${config.API_URL}/uploads/mattresses/${res.data.id}/${index + 2}.jpg`
           ),
         };
         setMattress(matress);
         setCurrentImage(matress.pictures[0]);
-        setSelectedClothe(matress.clothing_types[0]);
+        setSelectedClothe(0);
       });
   }, [company, productID]);
-
+  const materialOptions = mattress.material?.[selectedClothe]
+    ?.split('\n')
+    .filter(Boolean) || [];
   function formatNumberWithSpaces(number) {
     number = +number;
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
+
+  const getValueByIndex = (arr) => {
+    if (!arr || !Array.isArray(arr)) return '';
+    return arr[selectedClothe] || arr[0] || '';
+  };
+
+  const getFormattedMaterial = (material) => {
+    return (material || '').replace(/\n/g, ', ');
+  };
 
   const handleClotheIconHover = () => {
     setClotheInfoVisible(true);
@@ -150,9 +156,11 @@ export default function MattressPage() {
               </div>
             </div>
             <div className={styles.details}>
-              <h2 className={styles.price}>{formatNumberWithSpaces(mattress.price)} ₽</h2>
+              <h2 className={styles.price}>
+                {formatNumberWithSpaces(getValueByIndex(mattress.price))} ₽
+              </h2>
               <div className={styles.clotheSelector}>
-                <p className={styles.clotheSelector__title}>Тип ткани:
+                <div className={styles.clotheSelector__title}>Тип ткани:
                   <span className={styles.clotheInfo__hover}>
                     <span
                       className={styles.clotheSelector__icon}><AiOutlineInfoCircle /></span>
@@ -163,19 +171,33 @@ export default function MattressPage() {
                       <p>Мягкая, бархатистая ткань. Дарит комфорт, приятна на ощупь, хорошо пропускает воздух.</p>
                     </div>
                   </span>
-                </p>
+                </div>
                 <div className={styles.clothe}>
                   {mattress.clothing_types?.map((clothe, index) => (
                     <button
                       key={index}
-                      className={`${styles.clotheOption} ${selectedClothe === clothe ? styles.activeClothe : ""}`}
-                      onClick={() => setSelectedClothe(clothe)}
+                      className={`${styles.clotheOption} ${selectedClothe === index ? styles.activeClothe : ""}`}
+                      onClick={() => setSelectedClothe(index)}
                     >
                       {clothe}
                     </button>
                   ))}
                 </div>
+              </div> <div className={styles.clotheSelector}>
+                <div className={styles.clotheSelector__title}>Состав:</div>
+                <select
+                  className={styles.clotheSelect}
+                  value={selectedMaterial}
+                  onChange={(e) => setSelectedMaterial(e.target.value)}
+                >
+                  {materialOptions.map((mat, index) => (
+                    <option key={index} value={index}>
+                      {mat}
+                    </option>
+                  ))}
+                </select>
               </div>
+
               <h3 className={styles.spec__title}>Характеристики</h3>
               <div className={styles.specifications__container}>
                 <ul className={styles.specifications}>
@@ -189,17 +211,14 @@ export default function MattressPage() {
                   <li>
                     <p>Жесткость: </p>
                   </li>
-                  <li>
-                    <p>Материал: </p>
-                  </li>
+
                 </ul>
                 <ul className={styles.specifications__values}>
                   <li>
                     {mattress.width} x {mattress.length}
                   </li>
                   <li>{mattress.thickness}</li>
-                  <li>{mattress.rigidity}</li>
-                  <li>{mattress.material}</li>
+                  <li>{getValueByIndex(mattress.rigidity)}</li>
                 </ul>
               </div>
               {getMattressQuantity(mattress) === 0 ? (
@@ -241,13 +260,12 @@ export default function MattressPage() {
               )}
             </div>
           </div>
-        </div >
+        </div>
         <div className={styles.tabContent__container}>
           <div className={styles.descriptionContainer}>
             <h2 className={styles.title}>Описание</h2>
             <p className={styles.text}>{mattress.description}</p>
           </div>
-
           <div className={styles.deliveryContainer}>
             <h2 className={styles.title}>Доставка и оплата</h2>
             <div className={styles.textContainer}>
@@ -284,7 +302,7 @@ export default function MattressPage() {
             </div>
           </div>
         </div>
-      </div >
+      </div>
       {selectedImage && (
         <div className={styles.modal} onClick={closeImageModal}>
           <img
@@ -293,8 +311,7 @@ export default function MattressPage() {
             className={styles.modal__image}
           />
         </div>
-      )
-      }
+      )}
       <Footer />
     </>
   );

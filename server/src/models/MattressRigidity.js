@@ -4,6 +4,12 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
     class MattressRigidity extends Model {
         static associate(models) {
+            MattressRigidity.belongsToMany(models.Mattress, {
+                through: models.MattressMattressRigidity,
+                foreignKey: "rigidity_id",
+                otherKey: "mattress_id",
+                as: "mattresses",
+            });
         }
     }
 
@@ -17,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
             tableName: "mattress_rigidity",
             freezeTableName: true,
             timestamps: false,
-        },
+        }
     );
 
     return MattressRigidity;

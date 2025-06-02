@@ -8,14 +8,21 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "company_id",
         onDelete: "CASCADE",
       });
+
       Mattress.belongsTo(models.MattressType, {
         foreignKey: "mattress_type_id",
       });
+
       Mattress.belongsTo(models.MattressShape, {
         foreignKey: "mattress_shape_id",
       });
-      Mattress.belongsTo(models.MattressRigidity, {
-        foreignKey: "mattress_rigidity_id",
+
+      // Многие-ко-многим с MattressRigidity
+      Mattress.belongsToMany(models.MattressRigidity, {
+        through: models.MattressMattressRigidity,
+        foreignKey: "mattress_id",
+        otherKey: "rigidity_id",
+        as: "MattressRigidities",
       });
     }
   }
@@ -24,9 +31,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       name: { type: DataTypes.STRING, allowNull: false },
       clothing_types: { type: DataTypes.ARRAY(DataTypes.STRING) },
-      material: { type: DataTypes.STRING },
+      material: { type: DataTypes.ARRAY(DataTypes.STRING) },
+      price: { type: DataTypes.ARRAY(DataTypes.STRING) },
       description: { type: DataTypes.TEXT },
-      price: { type: DataTypes.STRING },
       width: { type: DataTypes.STRING },
       length: { type: DataTypes.STRING },
       thickness: { type: DataTypes.STRING },
@@ -39,7 +46,7 @@ module.exports = (sequelize, DataTypes) => {
       tableName: "mattresses",
       freezeTableName: true,
       timestamps: false,
-    },
+    }
   );
 
   return Mattress;

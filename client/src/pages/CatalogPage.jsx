@@ -5,8 +5,10 @@ import config from "../config/config";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import FeedbackModal from "../components/UI/FeedbackModal/FeedbackModal";
 export default function Catalog() {
   const [companies, setCompanies] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     axios.get(`${config.API_URL}/company`).then((res) => {
@@ -38,8 +40,18 @@ export default function Catalog() {
             </div>
           ))}
         </div>
+        <div className={styles.feedback__section}>
+          <p className={styles.feedback__text}>
+            Не нашли марку для своего матраса? <br />
+            Обращайтесь к нам — мы вам поможем!
+          </p>
+          <button onClick={() => setIsModalOpen(true)} className={styles.feedback__button}>
+            Связаться с нами
+          </button>
+        </div>
       </div>
       <Footer />
+      <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </>
   );
 }
