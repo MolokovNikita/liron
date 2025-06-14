@@ -4,7 +4,7 @@
     display: flex;
     border-radius: 8px;
     /* min-width: 500px; */
-    max-height: 460px;
+    /* max-height: 460px; */
     max-width: 1200px;
     box-sizing: border-box;
     padding: 20px;
