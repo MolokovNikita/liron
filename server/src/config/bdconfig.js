@@ -1,10 +1,11 @@
 const { Pool } = require("pg");
 require("dotenv").config({ path: "../src/config/ormpath.env" });
+
 const pool = new Pool({
-  user: "postgres",
-  host: "localhost",
-  database: "liron",
-  password: 1234,
-  port: 5433,
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false, // часто нужно для подключения к хостинг-базам (Render и др.)
+  },
 });
+
 module.exports = pool;
