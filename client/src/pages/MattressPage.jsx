@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useParams, Link, useNavigate } from "react-router-dom";
+import { useEffect, useState, useRef } from "react";
+import { useParams, Link } from "react-router-dom";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/mattress.module.css";
@@ -7,22 +7,21 @@ import axios from "axios";
 import config from "../config/config";
 import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
-import { addItem, changeQuantity, removeItem } from "../store/cartSlice";
+import { addItem, changeQuantity } from "../store/cartSlice";
+import GalleryBlock from "../components/UI/Gallery/GalleryBlock";
 
 export default function MattressPage() {
   const { company, productID } = useParams();
-  const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const basket = useSelector((state) => state.cart.basket);
 
-  const [selectedImage, setSelectedImage] = useState(null);
   const [mattress, setMattress] = useState({});
-  const [currentImage, setCurrentImage] = useState(0);
   const [selectedClothe, setSelectedClothe] = useState(0);
-  const [selectedMaterial, setSelectedMaterial] = useState(0); // <-- добавили
-  const [isClotheInfoVisible, setClotheInfoVisible] = useState(false);
-  const [clotheInfo, setClotheInfo] = useState('');
+  const [selectedClassIndex, setSelectedClassIndex] = useState(0);
+
+  const mattressClasses = ["Комфорт", "Премиум"];
+  const [classMaterials, setClassMaterials] = useState([]);
 
   useEffect(() => {
     axios
@@ -37,47 +36,64 @@ export default function MattressPage() {
           company: company,
           pictures: Array.from(
             { length: res.data.pictures_count - 1 },
-            (_, index) =>
-              `${config.API_URL}/uploads/mattresses/${res.data.id}/${index + 2}.jpg`
+            (_, index) => {
+              return {
+                original: `${config.API_URL}/uploads/mattresses/${res.data.id}/${index + 2}.jpg`,
+                thumbnail: `${config.API_URL}/uploads/mattresses/${res.data.id}/${index + 2}.jpg`
+              }
+            }
           ),
         };
+        if (Array.isArray(matress.price) && matress.price.length === 2) {
+          setSelectedClassIndex(0);
+        }
+        const premuimSeries = {
+          original: `${config.API_URL}/uploads/mattresses/premium_series.jpg`,
+          thumbnail: `${config.API_URL}/uploads/mattresses/premium_series.jpg`
+        }
+        const comfortmSeries = {
+          original: `${config.API_URL}/uploads/mattresses/comfort_series.jpg`,
+          thumbnail: `${config.API_URL}/uploads/mattresses/comfort_series.jpg`
+        }
+        matress.pictures = [...matress.pictures, premuimSeries, comfortmSeries]
+
+        const rawMaterials = res.data.material;
+        const classMaterials = rawMaterials.map(materialString =>
+          materialString
+            .split('\n')
+            .map(item => item.trim())
+        );
+        const priceArray = res.data.price;
+
+        if (Array.isArray(priceArray)) {
+          if (priceArray.length === 4) {
+            matress.price = [
+              [priceArray[0], priceArray[1]],
+              [priceArray[2], priceArray[3]],
+            ];
+          } else if (priceArray.length === 3) {
+            matress.price = [
+              [priceArray[0], priceArray[1]],
+              [null, priceArray[2]],
+            ];
+          } else if (priceArray.length === 2) {
+            matress.price = [
+              [priceArray[0], priceArray[1]],
+            ];
+          }
+        }
+        setClassMaterials(classMaterials)
         setMattress(matress);
-        setCurrentImage(matress.pictures[0]);
         setSelectedClothe(0);
+        setSelectedClassIndex(0);
+
       });
   }, [company, productID]);
-  const materialOptions = mattress.material?.[selectedClothe]
-    ?.split('\n')
-    .filter(Boolean) || [];
+
   function formatNumberWithSpaces(number) {
     number = +number;
     return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
   }
-
-  const getValueByIndex = (arr) => {
-    if (!arr || !Array.isArray(arr)) return '';
-    return arr[selectedClothe] || arr[0] || '';
-  };
-
-  const getFormattedMaterial = (material) => {
-    return (material || '').replace(/\n/g, ', ');
-  };
-
-  const handleClotheIconHover = () => {
-    setClotheInfoVisible(true);
-  };
-
-  const handleClotheIconLeave = () => {
-    setClotheInfoVisible(false);
-  };
-
-  const openImageModal = (image) => {
-    setSelectedImage(image);
-  };
-
-  const closeImageModal = () => {
-    setSelectedImage(null);
-  };
 
   const addToCart = (product, event) => {
     event.stopPropagation();
@@ -87,10 +103,12 @@ export default function MattressPage() {
         ...product,
         quantity: 1,
         clothe: selectedClothe,
+        classIndex: selectedClassIndex,
         selected: false,
       })
     );
   };
+
 
   const decreaseQuantity = (event, mattress) => {
     event.stopPropagation();
@@ -100,6 +118,7 @@ export default function MattressPage() {
         id: mattress.id,
         amount: -1,
         clothe: selectedClothe,
+        classIndex: selectedClassIndex,
       })
     );
   };
@@ -112,16 +131,22 @@ export default function MattressPage() {
         id: mattress.id,
         amount: 1,
         clothe: selectedClothe,
+        classIndex: selectedClassIndex,
       })
     );
   };
 
+
   const getMattressQuantity = (mattress) => {
     const productInBasket = basket.find(
-      (item) => item.id === mattress.id && item.clothe === selectedClothe
+      (item) =>
+        item.id === mattress.id &&
+        item.clothe === selectedClothe &&
+        item.classIndex === selectedClassIndex
     );
     return productInBasket ? productInBasket.quantity : 0;
   };
+
 
   return (
     <>
@@ -131,40 +156,20 @@ export default function MattressPage() {
           <h1 className={styles.title}>Матрас для фуры {mattress.name}</h1>
           <div className={styles.productContent}>
             <div className={styles.imageGallery}>
-              <div className={styles.imageWrapper}>
-                <img
-                  src={currentImage}
-                  alt="Основное изображение"
-                  className={styles.mainImage}
-                  onClick={() =>
-                    openImageModal(currentImage || mattress.pictures[0])
-                  }
-                  loading="lazy"
-                />
-              </div>
-
-              <div className={styles.thumbnails}>
-                {mattress.pictures?.map((img, index) => (
-                  <img
-                    key={index}
-                    src={img}
-                    alt={`Миниатюра ${index + 1}`}
-                    className={`${styles.thumbnail} ${currentImage === img ? styles.activeThumbnail : ""}`}
-                    onClick={() => setCurrentImage(img)}
-                  />
-                ))}
-              </div>
+              <GalleryBlock images={mattress.pictures} />
             </div>
             <div className={styles.details}>
               <h2 className={styles.price}>
-                {formatNumberWithSpaces(getValueByIndex(mattress.price))} ₽
+                {formatNumberWithSpaces(mattress.price?.[selectedClassIndex]?.[selectedClothe] || 0)} ₽
               </h2>
+
               <div className={styles.clotheSelector}>
+
                 <div className={styles.clotheSelector__title}>Тип ткани:
                   <span className={styles.clotheInfo__hover}>
-                    <span
-                      className={styles.clotheSelector__icon}><AiOutlineInfoCircle /></span>
-                    <div className={styles.clotheInfoMenu}>
+                    <span className={styles.clotheSelector__icon}><AiOutlineInfoCircle /></span>
+                    <div
+                      className={styles.clotheInfoMenu}>
                       <h3>Жаккард</h3>
                       <p>Прочная ткань с выразительным рисунком. Износостойкая, легко чистится, выглядит стильно.</p>
                       <h3>Велюр</h3>
@@ -173,31 +178,90 @@ export default function MattressPage() {
                   </span>
                 </div>
                 <div className={styles.clothe}>
-                  {mattress.clothing_types?.map((clothe, index) => (
-                    <button
-                      key={index}
-                      className={`${styles.clotheOption} ${selectedClothe === index ? styles.activeClothe : ""}`}
-                      onClick={() => setSelectedClothe(index)}
-                    >
-                      {clothe}
-                    </button>
-                  ))}
+                  {mattress.clothing_types?.map((clothe, index) => {
+                    const isDisabled =
+                      selectedClassIndex === 1 && !mattress.price?.[1]?.[index];
+                    return (
+                      <button
+                        key={index}
+                        className={`${styles.clotheOption} 
+                  ${selectedClothe === index ? styles.activeClothe : ""} 
+                  ${isDisabled ? styles.disabledClothe : ""}`}
+                        onClick={() => {
+                          if (!isDisabled) {
+                            setSelectedClothe(index);
+                          }
+                        }}
+                        disabled={isDisabled}
+                      >
+                        {clothe}
+                      </button>
+                    );
+                  })}
                 </div>
-              </div> <div className={styles.clotheSelector}>
-                <div className={styles.clotheSelector__title}>Состав:</div>
-                <select
-                  className={styles.clotheSelect}
-                  value={selectedMaterial}
-                  onChange={(e) => setSelectedMaterial(e.target.value)}
-                >
-                  {materialOptions.map((mat, index) => (
-                    <option key={index} value={index}>
-                      {mat}
-                    </option>
-                  ))}
-                </select>
-              </div>
 
+              </div>
+              {/* Переключатель класса матраса */}
+              <div className={styles.clotheSelector}>
+                <div className={styles.clotheSelector__title}>Класс матраса:
+                  <span className={styles.clotheInfo__hover}>
+                    <span className={styles.clotheSelector__icon}><AiOutlineInfoCircle /></span>
+                    <div
+                      className={styles.clotheInfoMenu}>
+                      <h3>Комфорт</h3>
+                      <p>Базовый класс матраса. Оптимален по цене, подходит для стандартных условий эксплуатации и умеренной нагрузки.</p>
+                      <h3>Премиум</h3>
+                      <p>Улучшенный состав для максимального комфорта и поддержки. Подходит для повышенных нагрузок и длительного использования.</p>
+                    </div>
+                  </span>
+                </div>
+                <div className={styles.clothe}>
+                  {mattressClasses.map((cls, index) => {
+                    const isDisabled = !mattress.price?.[index]; // если нет цен для этого класса
+                    return (
+                      <button
+                        key={index}
+                        className={`${styles.clotheOption} 
+        ${selectedClassIndex === index ? styles.activeClothe : ""} 
+        ${isDisabled ? styles.disabledClothe : ""}`}
+                        onClick={() => {
+                          if (!isDisabled) {
+                            setSelectedClassIndex(index);
+                            if (
+                              index === 1 && // Премиум
+                              mattress.clothing_types?.[selectedClothe] !== "Велюр"
+                            ) {
+                              const velourIndex = mattress.clothing_types?.findIndex(
+                                (type) => type === "Велюр"
+                              );
+                              if (velourIndex !== -1) {
+                                setSelectedClothe(velourIndex);
+                              }
+                            }
+                          }
+                        }}
+                        disabled={isDisabled}
+                      >
+                        {cls}
+                      </button>
+                    );
+                  })}
+
+                </div>
+
+
+              </div>
+              {/* Состав по классу матраса */}
+              <div className={styles.clotheSelector}>
+                <div className={styles.clotheSelector__title}>Состав:</div>
+                <ul className={styles.materialList}>
+                  {classMaterials.length > 0 ? classMaterials[selectedClassIndex].map((item, idx) => (
+                    <li key={idx} className={styles.materialItem}>
+                      {item}
+                    </li>
+                  )) : null}
+                </ul>
+              </div>
               <h3 className={styles.spec__title}>Характеристики</h3>
               <div className={styles.specifications__container}>
                 <ul className={styles.specifications}>
@@ -211,16 +275,42 @@ export default function MattressPage() {
                   <li>
                     <p>Жесткость: </p>
                   </li>
-
                 </ul>
                 <ul className={styles.specifications__values}>
                   <li>
                     {mattress.width} x {mattress.length}
                   </li>
-                  <li>{mattress.thickness}</li>
-                  <li>{getValueByIndex(mattress.rigidity)}</li>
+                  <li>
+                    {Array.isArray(mattress.thickness)
+                      ? mattress.thickness.length === 1
+                        ? mattress.thickness[0]
+                        : mattress.thickness[selectedClassIndex] ?? mattress.thickness[0]
+                      : mattress.thickness}
+                  </li>
+                  <li>{Array.isArray(mattress.rigidity) ? mattress.rigidity[selectedClassIndex] : mattress.rigidity}</li>
                 </ul>
               </div>
+              <ul className={styles.specList}>
+                <li>
+                  <p>Внешний габарит:</p>
+                  <span>{mattress.width} x {mattress.length}</span>
+                </li>
+                <li>
+                  <p>Высота:</p>
+                  <span>
+                    {Array.isArray(mattress.thickness)
+                      ? mattress.thickness.length === 1
+                        ? mattress.thickness[0]
+                        : mattress.thickness[selectedClassIndex] ?? mattress.thickness[0]
+                      : mattress.thickness}
+                  </span>
+                </li>
+                <li>
+                  <p>Жесткость:</p>
+                  <span>{Array.isArray(mattress.rigidity) ? mattress.rigidity[selectedClassIndex] : mattress.rigidity}</span>
+                </li>
+              </ul>
+
               {getMattressQuantity(mattress) === 0 ? (
                 <div className={styles.basket__control}>
                   <button
@@ -303,16 +393,6 @@ export default function MattressPage() {
           </div>
         </div>
       </div>
-      {selectedImage && (
-        <div className={styles.modal} onClick={closeImageModal}>
-          <img
-            src={selectedImage}
-            alt="Просмотр"
-            className={styles.modal__image}
-          />
-        </div>
-      )}
       <Footer />
-    </>
-  );
+    </>)
 }

@@ -12,7 +12,10 @@ const history = createBrowserHistory();
 createRoot(document.getElementById("root")).render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <Router history={history} future={{ v7_startTransition: true }}>
+      <Router history={history} future={{
+        v7_relativeSplatPath: true,
+        v7_startTransition: true,
+      }}>
         <App />
       </Router>
     </PersistGate>

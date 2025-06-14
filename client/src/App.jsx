@@ -9,7 +9,7 @@ import PaymentPage from "./pages/PaymentPage";
 import ReviewsPage from "./pages/ReviewsPage";
 import MattressesPage from "./pages/MattressesPage";
 import MattressPage from "./pages/MattressPage";
-import BasketPage from "./pages/CardPage";
+import BasketPage from "./pages/CartPage";
 import WholesalePage from "./pages/WholesalePage";
 import { Routes, Route } from "react-router-dom";
 import RefundPage from "./pages/RefundPage";

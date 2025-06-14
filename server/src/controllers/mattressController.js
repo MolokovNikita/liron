@@ -27,6 +27,7 @@ class MattressController {
             attributes: ['type_name'],
           },
         ],
+        order: [['id', 'ASC']],
       });
 
       if (!mattresses.length) {

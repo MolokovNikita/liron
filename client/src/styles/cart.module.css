@@ -106,7 +106,7 @@
   height: 120px;
   border: 1px solid #ddd;
   border-radius: 5px;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .itemDetails {
@@ -245,3 +245,207 @@
   color: #000;
   cursor: pointer;
 }
+
+/* Адаптивные стили */
+
+@media (max-width: 1200px) {
+  .container {
+    margin: 10px;
+    padding-bottom: 80px;
+  }
+
+  .cartContent {
+    flex-direction: column;
+  }
+
+  .cartListContainer {
+    width: 100%;
+  }
+
+  .cartItem {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 15px;
+    position: relative;
+  }
+
+  .cartSummary {
+    position: relative;
+    top: 0;
+    width: 100%;
+    margin-top: 20px;
+  }
+
+  .itemHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .mobilePrice {
+    font-size: 18px;
+    font-weight: bold;
+    color: #4e5df9;
+    display: block;
+  }
+
+  .itemContent {
+    display: flex;
+    width: 100%;
+    gap: 15px;
+  }
+
+  .imageLink {
+    min-width: 80px;
+    display: block;
+  }
+
+  .cartImage {
+    width: 80px;
+    height: 80px;
+  }
+
+  .itemDetails {
+    flex: 1;
+  }
+
+  .mattress__name {
+    font-size: 16px;
+  }
+
+  .item__articul {
+    font-size: 12px;
+    margin: 3px 0;
+  }
+
+  .itemFooter {
+    display: none;
+  }
+
+  .mobileControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .desktopControls {
+    display: none;
+  }
+
+  .quantityControl {
+    width: 100px;
+    height: 30px;
+  }
+
+  .delete_item__btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 0;
+  }
+
+  .deleteText {
+    display: inline;
+    font-size: 14px;
+  }
+
+  .selectAllContainer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .deleteSelectedButton {
+    padding: 5px 10px;
+    font-size: 14px;
+  }
+
+  .stickySummary {
+    position: sticky;
+  }
+
+  .summaryContent {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .summaryContent h2 {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .checkoutButton {
+    margin-top: 0;
+    padding: 8px 15px;
+    font-size: 14px;
+    width: auto;
+  }
+
+  .deleteText {
+    display: inline;
+  }
+
+  .itemHeader {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .mobileControls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .mobilePrice {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #4e5df9;
+  }
+
+  .desktopControls {
+    display: none;
+  }
+
+  .itemFooter {
+    display: none;
+  }
+
+  .deleteText {
+    display: inline;
+    font-size: 14px;
+  }
+
+  .delete_item__btn,
+  .mobileControls,
+  .mobilePrice {
+    display: flex !important;
+  }
+
+}
+
+.mobileControls,
+.mobilePrice {
+  display: none;
+}
+
+.itemContent {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+}
+
+.itemDetails {
+  flex: 1;
+  margin-left: 30px;
+}
+
+/* */

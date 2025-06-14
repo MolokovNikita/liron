@@ -15,7 +15,9 @@ const cartSlice = createSlice({
             const newItem = action.payload;
             const existingItem = state.basket.find(
                 (item) =>
-                    item.id === newItem.id && item.clothe === newItem.clothe
+                    item.id === newItem.id &&
+                    item.clothe === newItem.clothe &&
+                    item.classIndex === newItem.classIndex
             );
             if (existingItem) {
                 existingItem.quantity += newItem.quantity || 1;
@@ -23,31 +25,52 @@ const cartSlice = createSlice({
                 state.basket.push({ ...newItem, quantity: newItem.quantity || 1, selected: false });
             }
         },
+
         changeQuantity: (state, action) => {
-            const { id, amount, clothe } = action.payload;
+            const { id, amount, clothe, classIndex } = action.payload;
             const item = state.basket.find(
-                (item) => item.id === id && item.clothe === clothe
+                (item) =>
+                    item.id === id &&
+                    item.clothe === clothe &&
+                    item.classIndex === classIndex
             );
             if (item) {
                 if (item.quantity === 1 && amount === -1) {
-                    // Если количество товара 1 и нажата кнопка "-" — удаляем товар
                     state.basket = state.basket.filter(
-                        (item) => item.id !== id || item.clothe !== clothe
+                        (item) =>
+                            item.id !== id ||
+                            item.clothe !== clothe ||
+                            item.classIndex !== classIndex  // 
                     );
                 } else {
                     item.quantity = Math.max(1, item.quantity + amount);
                 }
             }
         },
+
         toggleSelectItem: (state, action) => {
-            const { id, clothe } = action.payload;
+            const { id, clothe, classIndex } = action.payload;
             const item = state.basket.find(
-                (item) => item.id === id && item.clothe === clothe
+                (item) =>
+                    item.id === id &&
+                    item.clothe === clothe &&
+                    item.classIndex === classIndex
             );
             if (item) {
                 item.selected = !item.selected;
             }
         },
+
+        removeItem: (state, action) => {
+            const { id, clothe, classIndex } = action.payload;
+            state.basket = state.basket.filter(
+                (item) =>
+                    item.id !== id ||
+                    item.clothe !== clothe ||
+                    item.classIndex !== classIndex
+            );
+        },
+
         selectAll: (state, action) => {
             const checked = action.payload;
             state.basket = state.basket.map((item) => ({
@@ -57,12 +80,6 @@ const cartSlice = createSlice({
         },
         removeSelected: (state) => {
             state.basket = state.basket.filter((item) => !item.selected);
-        },
-        removeItem: (state, action) => {
-            const { id, clothe } = action.payload;
-            state.basket = state.basket.filter(
-                (item) => item.id !== id || item.clothe !== clothe
-            );
         },
         clearCart: (state) => {
             state.basket = [];

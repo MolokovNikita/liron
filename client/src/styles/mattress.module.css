@@ -3,6 +3,55 @@
   padding: 20px;
 }
 
+.materialList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.specList {
+  display: none;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 20px;
+
+  li {
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #ccc;
+    width: 100%;
+    padding: 0.5rem 0;
+
+    p {
+      font-weight: 600;
+      margin: 0;
+    }
+
+    span {
+      display: block;
+      margin-top: 0.25rem;
+    }
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+}
+
+.disabledClothe {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.materialItem {
+  padding: 4px 0;
+  border-bottom: 1px solid #ccc;
+}
+
 .product__main_spec {
   display: flex;
   flex-direction: column;
@@ -110,7 +159,7 @@
 
 .clotheInfoMenu {
   position: absolute;
-  left: 0px;
+  left: 0;
   top: 100%;
   background: #fff;
   border-radius: 12px;
@@ -119,7 +168,7 @@
   min-width: 270px;
   max-width: 340px;
   color: #222;
-  z-index: 1000;
+  z-index: 4;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -128,7 +177,8 @@
 }
 
 .clotheInfo__hover:hover .clotheInfoMenu,
-.clotheInfo__hover:focus-within .clotheInfoMenu {
+.clotheInfo__hover:focus-within .clotheInfoMenu,
+.clotheInfoMenu.open {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -204,7 +254,6 @@
 }
 
 .gotobasket__btn {
-  width: 160px;
   background: none;
   border: none;
   cursor: pointer;
@@ -366,4 +415,208 @@
   max-height: 90%;
   border-radius: 8px;
   cursor: pointer;
+}
+
+/* Адаптивные стили */
+@media (max-width: 1200px) {
+  .productContent {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .imageGallery {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .specList {
+    display: flex;
+
+  }
+
+  .specifications__container {
+    display: none;
+  }
+
+  .title {
+    font-size: 18px;
+  }
+
+  .price {
+    font-size: 24px;
+  }
+
+  .productContent {
+    width: 100%;
+  }
+
+  /* 
+  .thumbnail {
+    width: 50px;
+    height: 50px;
+  } */
+
+  .clotheOption {
+    /* min-width: 80px; */
+    font-size: 14px;
+    padding: 4px 8px;
+  }
+
+  .basket__button,
+  .gotobasket__btn {
+    font-size: 14px;
+    padding: 8px 15px;
+    text-align: center;
+  }
+
+  /* 
+  .control__container {
+    max-width: 180px;
+    font-size: 16px;
+  } */
+
+  .spec__title {
+    font-size: 18px;
+    text-align: center;
+  }
+
+  .descriptionContainer,
+  .deliveryContainer {
+    padding: 15px;
+  }
+
+  .tabContent__container .title {
+    font-size: 20px;
+  }
+
+  .text {
+    font-size: 14px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .title {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .imageWrapper {
+    padding-top: 100%;
+    /* Квадратное соотношение */
+  }
+
+  .thumbnails {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* 
+  .thumbnail {
+    width: 60px;
+    height: 60px;
+  } */
+
+  .clotheSelector__title {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .clothe {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .clotheOption {
+    margin-bottom: 8px;
+    flex: 1;
+    min-width: 150px;
+    text-align: center;
+  }
+
+  .specifications__container {
+    flex-direction: column;
+  }
+
+  .specifications,
+  .specifications__values {
+    width: 100%;
+  }
+
+  .specifications__values li,
+  .specifications li {
+    padding: 5px 0;
+    border-bottom: 1px solid #eee;
+  }
+
+  .price {
+    font-size: 26px;
+    text-align: center;
+  }
+
+  .basketContainer {
+    width: 100%;
+  }
+
+  .basket__control {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  .basket__button,
+  .gotobasket__btn {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 15px;
+  }
+
+  .control__container {
+    width: 100%;
+    max-width: 200px;
+    margin-bottom: 15px;
+  }
+
+  .materialItem {
+    font-size: 14px;
+  }
+}
+
+/* Новые стили */
+.basketContainer {
+  margin-top: 20px;
+}
+
+.quantityDisplay {
+  padding: 0 15px;
+  font-weight: bold;
+}
+
+
+/* Информационное меню для мобильных */
+@media (max-width: 500px) {
+  .clotheInfoMenu {
+    /* position: fixed; */
+    left: -500%;
+    /* transform: translate(-50%, -50%); */
+    max-width: none;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 4;
+  }
+
+  /* .clotheInfo__hover:focus .clotheInfoMenu,
+  .clotheInfo__hover:hover .clotheInfoMenu {
+    transform: translate(-50%, -50%);
+  } */
+}
+
+/* Модальное окно для мобильных */
+.modal__image {
+  width: 95%;
+  height: auto;
 }

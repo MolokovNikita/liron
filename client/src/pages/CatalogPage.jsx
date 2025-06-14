@@ -24,7 +24,7 @@ export default function Catalog() {
   return (
     <>
       <Header />
-      <div>
+      <div className={styles.container}>
         <div className={styles.catalog__title}>Каталог</div>
         <div className={styles.company__container}>
           {companies.map((company) => (
@@ -50,8 +50,8 @@ export default function Catalog() {
           </button>
         </div>
       </div>
-      <Footer />
       <FeedbackModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <Footer />
     </>
   );
 }

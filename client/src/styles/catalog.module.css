@@ -86,3 +86,10 @@
 .feedback__button:hover {
   background-color: #0056b3;
 }
+
+@media (max-width: 500px) {
+  .company__container {
+    gap: 0;
+    padding: 0;
+  }
+}

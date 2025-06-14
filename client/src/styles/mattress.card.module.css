@@ -9,7 +9,8 @@
     box-sizing: border-box;
     padding: 20px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: transform 0.3s ease, box-shadow 0.2s;
+
 }
 
 .card__container:hover {
@@ -123,4 +124,91 @@
 .decrease__btn:hover {
     background-color: #4e5df9;
     color: white;
+}
+
+@media (max-width: 1020px) {
+    .card__image {
+        width: 200px;
+    }
+}
+
+/* Адаптивные стили */
+@media (max-width: 768px) {
+    .card__container {
+        flex-direction: column;
+        /* max-height: none; */
+        min-height: 500px;
+        padding: 15px;
+        padding-bottom: 20px;
+
+        max-width: 100%;
+    }
+
+    .card__image {
+        width: 100%;
+        height: auto;
+        max-height: 250px;
+    }
+
+    .card__details {
+        padding: 15px 0 0;
+        text-align: center;
+        padding-bottom: 20px;
+
+    }
+
+    .specs__container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    .button__container {
+        justify-content: center;
+        margin-top: 15px;
+        padding-bottom: 20px;
+    }
+
+    .card__container {
+        padding: 10px;
+        width: 80%;
+        margin: 0 auto;
+    }
+
+    .specs__container {
+        grid-template-columns: 1fr;
+    }
+
+    .card__title {
+        font-size: 14px;
+    }
+
+    .card__price {
+        font-size: 1rem;
+    }
+
+    .detailed__button {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+}
+
+
+.specs__container {
+    margin-top: 10px;
+}
+
+.spec__label {
+    display: inline-block;
+    min-width: 80px;
+    font-weight: bold;
+    color: #555;
+}
+
+
+.card__container:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }

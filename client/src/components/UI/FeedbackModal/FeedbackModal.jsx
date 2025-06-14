@@ -2,7 +2,7 @@ import styles from "./feedback-modal.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 
-export default function FeedbackModal({ isOpen, onClose }) {
+export default function FeedbackModal({ isOpen, onClose, matrasses }) {
     const [form, setForm] = useState({
         name: "",
         email: "",
@@ -47,6 +47,7 @@ export default function FeedbackModal({ isOpen, onClose }) {
         if (phone.length !== 11) return alert("Введите корректный номер телефона");
         if (!message.trim()) return alert("Введите сообщение");
 
+        onClose();
         alert("Форма отправлена");
         // здесь можно отправить { ...form, phoneFormatted: formatPhone(phone) }
     };

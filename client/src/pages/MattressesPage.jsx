@@ -6,7 +6,7 @@ import config from "../config/config";
 import styles from "../styles/mattresses.module.css";
 import axios from "axios";
 import MattressCard from "../components/UI/MattressCard.jsx";
-
+import { FaBars, FaTimes } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addItem,
@@ -26,6 +26,7 @@ export default function Mattresses() {
 
   const [companies, setCompanies] = useState([]);
   const [mattresses, setMattresses] = useState([]);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     setMattresses([]);
@@ -41,7 +42,6 @@ export default function Mattresses() {
     Promise.allSettled([mattressRequest, companyRequest])
       .then(([mattressResult, companyResult]) => {
         if (mattressResult.status === "fulfilled") {
-          console.log(mattressResult.value.data);
           const matresses = mattressResult.value.data.map((item) => ({
             ...item,
             company: company,
@@ -52,7 +52,6 @@ export default function Mattresses() {
             ),
             clothing_types: item.clothing_types?.[0] || "Не указано",
             material: item.material?.[0]?.replace(/\n/g, ", ") || "Не указано",
-            price: item.price?.[0] ? `${item.price[0]}` : "Цена не указана",
             rigidity: item.rigidity?.[0] || "Не указана"
           }));
 
@@ -131,17 +130,28 @@ export default function Mattresses() {
       </div>
 
       <div className={styles.page__container}>
-        {/* Левая панель компаний */}
-        <div className={styles.sidebar}>
+        {/* Кнопка мобильного меню */}
+        <button
+          className={styles.mobileMenuButton}
+          onClick={() => setShowMobileMenu(!showMobileMenu)}
+        >
+          {showMobileMenu ? <FaTimes /> : <FaBars />}
+          {showMobileMenu ? "Закрыть" : "Производители"}
+        </button>
+
+        {/* Левая панель компаний (адаптивная) */}
+        <div className={`${styles.sidebar} ${showMobileMenu ? styles.show : ''}`}>
           <div className={styles.sidebar__title}>Матрасы для грузовиков</div>
           {companies.map((comp) => (
             <div
               key={comp.name}
               className={`${styles.sidebar__item} ${comp.name.toLowerCase() === company.toLowerCase()
                 ? styles.active
-                : ""
-                }`}
-              onClick={() => navigate(`/catalog/${comp.name.toLowerCase()}`)}
+                : ""}`}
+              onClick={() => {
+                navigate(`/catalog/${comp.name.toLowerCase()}`);
+                setShowMobileMenu(false);
+              }}
             >
               {comp.name.toUpperCase()}
             </div>

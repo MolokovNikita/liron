@@ -26,6 +26,7 @@
     max-width: 1500px;
     align-items: flex-start;
     padding-bottom: 10px;
+    /* min-height: 100vh; */
 }
 
 /* Левая панель */
@@ -83,6 +84,7 @@
     flex-direction: column;
     gap: 20px;
     max-width: 800px;
+    justify-content: center;
 }
 
 /* Модальное окно */
@@ -113,4 +115,113 @@
     font-size: 20px;
     text-align: center;
     margin-top: 50px;
+}
+
+/* Адаптивные стили */
+@media (max-width: 1200px) {
+    .page__container {
+        width: 95%;
+    }
+
+    .mattresses__container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .sidebar {
+        width: 250px;
+    }
+
+    .mattresses__container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .page__container {
+        flex-direction: column;
+        position: relative;
+    }
+
+    .sidebar {
+        position: absolute;
+        top: 40px;
+        left: 0;
+        z-index: 100;
+        width: 80%;
+        max-width: 300px;
+        transform: translateX(-120%);
+        transition: transform 0.3s ease;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+        /* height: 100vh; */
+        overflow-y: auto;
+    }
+
+    .sidebar.show {
+        transform: translateX(0);
+    }
+
+    .mattresses__container {
+        grid-template-columns: 1fr;
+        padding: 10px;
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .mobileMenuButton {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #4e5df9;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        margin: 15px 0;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .mattresses__container {
+        margin: 0 auto;
+        min-width: 350px;
+    }
+}
+
+@media (max-width: 480px) {
+    .page__title {
+        font-size: 20px;
+        margin-top: 10px;
+    }
+
+    .path__container i {
+        font-size: 12px;
+    }
+
+    .empty_mattrasses {
+        font-size: 16px;
+    }
+
+}
+
+.mobileMenuButton {
+    display: none;
+}
+
+@media (max-width: 1020px) {
+    .mattresses__container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 20px;
+        width: calc(100% - 320px);
+    }
+
+}
+
+@media (max-width: 768px) {
+    .mobileMenuButton {
+        display: flex;
+    }
+
 }

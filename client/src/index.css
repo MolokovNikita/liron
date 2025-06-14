@@ -4,8 +4,55 @@
   font-family: "Montserrat", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
+  box-sizing: border-box;
 }
 
 .custom-gallery {
   width: 100%;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+}
+
+.image-gallery-content {
+  max-width: 100%;
+}
+
+.image-gallery-thumbnail .image-gallery-thumbnail-image {
+  object-fit: contain;
+  max-height: 51.75px;
+}
+
+.image-gallery-thumbnail .image-gallery-thumbnail-inner {
+  max-height: 51.75px;
+  object-fit: contain;
+}
+
+.image-gallery-slides {
+  height: 500px;
+}
+
+.image-gallery-right-nav,
+.image-gallery-left-nav {
+  top: 30% !important;
+}
+
+
+@media (max-width: 768px) {
+  .image-gallery-slides {
+    height: 300px;
+  }
+
+  .image-gallery-right-nav,
+  .image-gallery-left-nav {
+    top: 50% !important;
+  }
+}
+
+@media (max-width: 500px) {
+
+  .image-gallery-right-nav,
+  .image-gallery-left-nav {
+    top: 40% !important;
+  }
 }

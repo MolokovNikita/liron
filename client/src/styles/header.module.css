@@ -159,7 +159,7 @@ header {
 .basket__counter {
     display: flex;
     border-radius: 20px;
-    padding: 5px;
+    padding: 10px;
     height: 20%;
     font-size: 15px;
     align-items: center;
@@ -241,7 +241,7 @@ header {
     background: white;
     top: 40px;
     right: 0px;
-    padding: 40px;
+    padding: 20px;
     border-radius: 20px;
     transform: translateX(100%);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -251,7 +251,7 @@ header {
     list-style: none;
     padding: 0;
     text-align: center;
-    width: 80%;
+    width: 100%;
 }
 
 .burger__list li {
@@ -347,7 +347,7 @@ header {
     left: 35px;
     display: flex;
     border-radius: 20px;
-    padding: 5px;
+    padding: 10px;
     height: 20%;
     font-size: 15px;
     align-items: center;

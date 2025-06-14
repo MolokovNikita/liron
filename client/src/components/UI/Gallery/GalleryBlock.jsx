@@ -8,6 +8,7 @@ import styles from './gallery-block.module.css';
 
 const GalleryBlock = ({ images }) => {
     const galleryRef = useRef(null);
+    if (!images) return;
 
     const handleImageClick = () => {
         if (galleryRef.current) {
