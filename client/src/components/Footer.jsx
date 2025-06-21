@@ -11,9 +11,7 @@ export default function Footer() {
             <li>
               <Link to="/payment">Оплата</Link>
             </li>
-            <li>
-              <Link to="/reviews">Отзывы</Link>
-            </li>
+
             <li>
               <Link to="/refund">Возврат</Link>
             </li>

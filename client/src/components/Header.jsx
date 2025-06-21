@@ -9,7 +9,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import config from "../config/config";
 
 export default function Header() {
-  const basket = useSelector((state) => state.cart.basket); 
+  const basket = useSelector((state) => state.cart.basket);
   const [isBurgerOpen, setIsBurgerOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -88,15 +88,18 @@ export default function Header() {
                   </div>
                 </Link>
               </li>
+              <li><Link to="/">Главная</Link></li>
               <li><Link to="/catalog">Каталог</Link></li>
               <li><Link to="/delivery">Доставка</Link></li>
               <li><Link to="/contacts">Контакты</Link></li>
               <li><Link to="/aboutus">О нас</Link></li>
+              <li><Link to="/reviews">Отзывы</Link></li>
             </ul>
           </div>
         </div>
         <div className={styles.left__container}>
           <ul className={styles.left_nav__list}>
+            <li><Link to="/">Главная</Link></li>
             <li className={styles.catalog__item}>
               <div className={styles.catalog__hover}>
                 <Link to="/catalog">Каталог</Link>
@@ -112,6 +115,7 @@ export default function Header() {
             <li className={styles.sales__item}><Link to="/delivery">Доставка</Link></li>
             <li><Link to="/contacts">Контакты</Link></li>
             <li className={styles.services__item}><Link to="/aboutus">О нас</Link></li>
+            <li><Link to="/reviews">Отзывы</Link></li>
           </ul>
         </div>
         <div className={styles.right__container}>

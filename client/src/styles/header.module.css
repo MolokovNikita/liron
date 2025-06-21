@@ -241,7 +241,7 @@ header {
     background: white;
     top: 40px;
     right: 0px;
-    padding: 20px;
+    padding: 40px;
     border-radius: 20px;
     transform: translateX(100%);
     transition: opacity 0.3s ease, transform 0.3s ease;
@@ -255,7 +255,7 @@ header {
 }
 
 .burger__list li {
-    margin: 15px 0;
+    margin: 25px 0;
     font-size: 22px;
     font-weight: 600;
     align-items: start;
@@ -339,8 +339,6 @@ header {
     transform: translateY(0);
 }
 
-
-
 .burger_basket__counter {
     position: absolute;
     top: -15px;
@@ -377,7 +375,7 @@ header {
     transform: translateX(0);
 }
 
-@media (max-width: 970px) {
+@media (max-width: 1081px) {
     .burger__menu {
         display: block;
     }
@@ -452,7 +450,7 @@ header {
     }
 
     .burger__list li {
-        margin: 35px;
+        margin: 35px 10px;
     }
 
     .burger__list li:first-child {

@@ -28,15 +28,22 @@ const GalleryBlock = ({ images }) => {
     );
 
     return (
-        <ImageGallery
-            items={images}
-            ref={galleryRef}
-            showFullscreenButton={false}
-            showPlayButton={false}
-            renderItem={renderItem}
-            additionalClass="custom-gallery"
-
-        />
+        <div className={styles.gallery_container}>
+            <ImageGallery
+                items={images}
+                ref={galleryRef}
+                showFullscreenButton={false}
+                showPlayButton={false}
+                renderItem={renderItem}
+                additionalClass="custom-gallery"
+                slideInterval={1000}
+                // slideOnThumbnailOver={true}
+                showIndex={false}
+                // showBullets={true}
+                showThumbnails={true}
+                thumbnailPosition="bottom"
+            />
+        </div>
     );
 };
 

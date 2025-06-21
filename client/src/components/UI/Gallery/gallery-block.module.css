@@ -1,39 +1,203 @@
+.gallery_container {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    /* Убираем auto, оставляем только вертикальные отступы */
+    height: 500px;
+    /* Фиксированная высота */
+    position: relative;
+    /* Для правильного позиционирования */
+    overflow: hidden;
+    /* Предотвращаем выход за границы */
+    box-sizing: border-box;
+    /* Учитываем padding и border в размерах */
+}
+
 gallery-block.module.css .image-gallery {
     justify-content: center;
     align-items: center;
     display: flex;
+    height: 500px;
+    /* Фиксированная высота */
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    /* Предотвращаем выход за границы */
+    box-sizing: border-box;
 }
 
 /* Базовые стили для обычного режима */
+.image_gallery_image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+    /* height: 500px; */
+    /* Фиксированная высота */
+    /* min-height: 500px; */
+    /* Фиксированная минимальная высота */
+    position: relative;
+    /* Для абсолютного позиционирования изображения */
+    box-sizing: border-box;
+    height: 100%;
+    overflow: hidden;
+    /* Предотвращаем выход изображения за границы */
+}
+
+.fullscreen.image_gallery_image img {
+    height: 60%;
+}
+
 .image_gallery_image img {
     /* width: 300px; */
-    width: 100%;
-    max-height: 500px;
+    width: auto;
+    max-width: 100%;
+    max-height: 100%;
+    /* Изменяем с 500px на 100% */
     /* height: 200px; */
     object-fit: contain;
     transition: all 0.3s ease;
-
+    display: block;
+    margin: 0 auto;
+    position: absolute;
+    /* Абсолютное позиционирование для стабильности */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Центрирование */
+    box-sizing: border-box;
 }
 
 /* Стили для полноэкранного режима */
+:global(.fullscreen) .image_gallery_image {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 :global(.fullscreen) .image_gallery_image img {
     /* width: 100%; */
     /* height: auto; */
     /* max-height: 80vh; */
     object-fit: contain;
+    max-height: 90vh;
+    max-width: 90vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 60%;
+    /* Добавляем высоту 60% для полноэкранного режима */
 }
 
 /* Дополнительные стили для кастомизации */
 .custom-gallery :global(.image-gallery-slide) {
     text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    /* Изменяем с фиксированной высоты на 100% */
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    /* Для абсолютного позиционирования */
+    box-sizing: border-box;
+}
+
+.custom-gallery :global(.image-gallery-content) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    /* Изменяем с фиксированной высоты на 100% */
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    box-sizing: border-box;
 }
 
 .custom-gallery :global(.image-gallery-thumbnails-container) {
     margin-top: 20px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-    .image_gallery_image img {
-        max-height: 300px;
-    }
+/* Стили для миниатюр */
+.custom-gallery :global(.image-gallery-thumbnail) {
+    width: 80px;
+    height: 60px;
+    margin: 0 5px;
+    box-sizing: border-box;
 }
+
+.custom-gallery :global(.image-gallery-thumbnail img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    box-sizing: border-box;
+}
+
+/* Предотвращаем выход за границы для всех элементов галереи */
+.custom-gallery :global(.image-gallery) {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    /* Предотвращаем выход за границы */
+    box-sizing: border-box;
+}
+
+.custom-gallery :global(.image-gallery-slides) {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    /* Предотвращаем выход за границы */
+    box-sizing: border-box;
+}
+
+/* Дополнительные стили для навигации */
+.custom-gallery :global(.image-gallery-left-nav),
+.custom-gallery :global(.image-gallery-right-nav) {
+    position: absolute;
+    z-index: 10;
+    box-sizing: border-box;
+}
+
+/* 
+@media (max-width: 768px) {
+    .gallery_container {
+        height: 350px;
+        margin: 15px 0;
+    }
+
+    gallery-block.module.css .image-gallery {
+        height: 350px;
+    }
+
+    .image_gallery_image {
+        height: 100%;
+    }
+
+    .image_gallery_image img {
+        max-height: 100%;
+    }
+
+    .custom-gallery :global(.image-gallery-slide) {
+        height: 100%;
+    }
+
+    .custom-gallery :global(.image-gallery-content) {
+        height: 100%;
+    }
+
+    .custom-gallery :global(.image-gallery-thumbnail) {
+        width: 60px;
+        height: 45px;
+    }
+} */
