@@ -45,6 +45,7 @@
   max-width: 100%;
   overflow: hidden;
   box-sizing: border-box;
+  touch-action: unset !important;
 }
 
 .image-gallery-slide {
@@ -73,8 +74,18 @@
   top: 30% !important;
 } */
 
+/* Убираем transform в полноэкранном режиме */
+.fullscreen .image-gallery-left-nav,
+.fullscreen .image-gallery-right-nav {
+  transform: none !important;
+}
+
 .image-gallery-slide-wrapper {
   height: 80%;
+}
+
+.image-gallery-icon {
+  transition: all 0s !important;
 }
 
 @media (max-width: 768px) {

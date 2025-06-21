@@ -134,7 +134,7 @@ export default function MainPage() {
           Перейти в каталог
         </Link>
       </div>
-      <div style={{ margin: "40px 0", padding: "0 30px" }}>
+      <div className = {styles.gallery__wrapper} >
         <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Галерея</h2>
         <div className={styles.gallery_container}>
           <GalleryBlock images={gallery_images} />

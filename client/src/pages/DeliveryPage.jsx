@@ -6,8 +6,8 @@ const DeliveryPage = () => {
   return (
     <>
       <Header />
+      <h1 className={styles.title}>Доставка</h1>
       <div className={styles.deliveryContainer}>
-        <h1 className={styles.title}>Доставка</h1>
         <p className={styles.text}>
           Доставляем нашими курьерами в следующие регионы:
         </p>

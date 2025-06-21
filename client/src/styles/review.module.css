@@ -1,6 +1,7 @@
 .reviews {
     padding: 20px;
     margin-bottom: 50px;
+    margin-top: 50px;
 }
 
 .reviews__title {
@@ -55,6 +56,10 @@
     font-weight: bold;
 }
 
+.gallery__wrapper {
+    height: 600px;
+}
+
 .reviews__date {
     font-size: 14px;
     color: gray;
@@ -105,12 +110,8 @@
     background: #0056b3;
 }
 
-@media (max-width: 510px) {
-    .reviews__image {
-        object-fit: contain;
-        width: 300px;
-        height: 200px;
-        border-radius: 10px;
+@media (max-width: 768px) {
+    .reviews {
+        padding: 0;
     }
-
 }

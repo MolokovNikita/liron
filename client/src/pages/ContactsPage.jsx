@@ -7,8 +7,8 @@ export default function Contacts() {
     <>
       <Header />
       <div className={styles.contacts__container}>
+        <h1 className={styles.contacts__title}>Контакты</h1>
         <div className={styles.contacts}>
-          <h1 className={styles.contacts__title}>Контакты</h1>
           <div className={styles.contacts__infoContainer}>
             <div className={styles.contacts__info}>
               <p className={styles.contacts__item}>

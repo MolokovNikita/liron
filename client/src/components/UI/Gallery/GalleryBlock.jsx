@@ -42,6 +42,7 @@ const GalleryBlock = ({ images }) => {
                 // showBullets={true}
                 showThumbnails={true}
                 thumbnailPosition="bottom"
+                preventDefaultTouchmoveEvent={false}
             />
         </div>
     );

@@ -7,8 +7,8 @@ export default function About() {
   return (
     <>
       <Header />
+      <h1 className={styles.about__title}>О нас</h1>
       <div className={styles.about}>
-        <h1 className={styles.about__title}>О нас</h1>
         <div className={styles.about__content}>
           <section className={styles.about__section}>
             <p className={styles.about__text}>
@@ -60,7 +60,7 @@ export default function About() {
               </a>
             </p>
           </section>
-          <section>
+          <section className={styles.requisites}>
             <h3>Реквизиты</h3>
             <p>
               Индивидуальный предприниматель Форов Александр Игоревич
