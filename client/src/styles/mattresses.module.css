@@ -27,6 +27,7 @@
     align-items: flex-start;
     padding-bottom: 10px;
     /* min-height: 100vh; */
+    min-height: 80vh;
 }
 
 /* Левая панель */
