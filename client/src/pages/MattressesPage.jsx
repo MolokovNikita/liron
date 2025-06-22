@@ -16,6 +16,20 @@ import {
   removeSelected,
   setBasket,
 } from "../store/cartSlice";
+import cardStyles from "../styles/mattress.card.module.css";
+
+function MattressCardSkeleton() {
+  return (
+    <div className={cardStyles.card__skeleton}>
+      <div className={cardStyles.skeleton__image}></div>
+      <div className={cardStyles.skeleton__line}></div>
+      <div className={cardStyles.skeleton__line}></div>
+      <div className={cardStyles.skeleton__line + ' ' + cardStyles.short}></div>
+      <div className={cardStyles.skeleton__line}></div>
+      <div className={cardStyles.skeleton__button}></div>
+    </div>
+  );
+}
 
 export default function Mattresses() {
   const { company } = useParams();
@@ -173,9 +187,8 @@ export default function Mattresses() {
               />
             ))
           ) : (
-            <p className={styles.empty_mattrasses}>
-              Матрасов данной компании временно нет в наличии
-            </p>
+            // Показываем 3 пульсирующих лоадера, пока нет данных
+            Array.from({ length: 3 }).map((_, idx) => <MattressCardSkeleton key={idx} />)
           )}
         </div>
       </div>
