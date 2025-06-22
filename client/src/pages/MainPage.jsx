@@ -27,6 +27,27 @@ export default function MainPage() {
     { id: 3, name: 'Scania R', price: '14 500 ₽', pic: `${config.API_URL}/uploads/mattresses/5/1.jpg`, company: 'Scania', productID: 5 },
   ];
 
+  const faqQuestions = [
+    "Как выбрать подходящий матрас для моего грузовика?",
+    "Как узнать размеры штатного матраса моего грузовика?",
+    "Из каких материалов изготовлены ваши матрасы?",
+    "Как ухаживать за матрасом, чтобы он служил дольше?",
+    "Могу ли я заказать матрас нестандартного размера?",
+    "Мне нужно сделать матрас нестандартной формы и размера. Как заказать?"
+  ];
+
+  const faqAnswers = [
+    "Мы предлагаем подробные инструкции по выбору, чтобы учесть модель, размеры и ваши пожелания.",
+    "Укажите марку и модель вашего грузовика, и мы подскажем подходящие размеры.",
+    "Мы используем гипоаллергенные материалы, которые обеспечивают комфорт и долговечность.",
+    "Рекомендуем использовать защитный чехол и регулярно чистить изделие.",
+    "Да, мы изготавливаем матрасы по индивидуальным параметрам.",
+    <>
+      <div>Мы делаем не только стандартные матрасы, по точно выверенным размерам спального места, но так же матрасы спроектированные по индивидуальным пожеланиям (различные изменения размера/формы спальника, решения в машины где спальник был не предусмотрен).</div>
+      <div>Для заказа такого матраса нужно правильно снять размеры. Сделайте заявку — мы свяжемся и поможем решить данный вопрос.</div>
+    </>
+  ];
+
   useEffect(() => {
     axios
       .get(`${config.API_URL}/company`)
@@ -186,85 +207,17 @@ export default function MainPage() {
       </div>
 
       <div className={styles.faq_container}>
-        <div className={styles.faq_item}>
-          <div className={styles.faq_question} onClick={() => toggleFaq(0)}>
-            Как выбрать подходящий матрас для моего грузовика?
-            <span>{faqOpen[0] ? "-" : "+"}</span>
-          </div>
-          {faqOpen[0] && (
-            <div className={styles.faq_answer}>
-              Мы предлагаем подробные инструкции по выбору, чтобы учесть модель,
-              размеры и ваши пожелания.
+        {faqOpen.map((isOpen, idx) => (
+          <div className={`${styles.faq_item} ${isOpen ? styles.open : ''}`} key={idx}>
+            <div className={styles.faq_question} onClick={() => toggleFaq(idx)}>
+              {faqQuestions[idx]}
+              <span>{isOpen ? "-" : "+"}</span>
             </div>
-          )}
-        </div>
-        <div className={styles.faq_item}>
-          <div className={styles.faq_question} onClick={() => toggleFaq(1)}>
-            Как узнать размеры штатного матраса моего грузовика?
-            <span>{faqOpen[1] ? "-" : "+"}</span>
-          </div>
-          {faqOpen[1] && (
             <div className={styles.faq_answer}>
-              Укажите марку и модель вашего грузовика, и мы подскажем подходящие
-              размеры.{" "}
+              {faqAnswers[idx]}
             </div>
-          )}
-        </div>
-        <div className={styles.faq_item}>
-          <div className={styles.faq_question} onClick={() => toggleFaq(2)}>
-            Из каких материалов изготовлены ваши матрасы?{" "}
-            <span>{faqOpen[2] ? "-" : "+"}</span>
           </div>
-          {faqOpen[2] && (
-            <div className={styles.faq_answer}>
-              Мы используем гипоаллергенные материалы, которые обеспечивают
-              комфорт и долговечность.
-            </div>
-          )}
-        </div>
-        <div className={styles.faq_item}>
-          <div className={styles.faq_question} onClick={() => toggleFaq(3)}>
-            Как ухаживать за матрасом, чтобы он служил дольше?{" "}
-            <span>{faqOpen[3] ? "-" : "+"}</span>
-          </div>
-          {faqOpen[3] && (
-            <div className={styles.faq_answer}>
-              Рекомендуем использовать защитный чехол и регулярно чистить
-              изделие.
-            </div>
-          )}
-        </div>
-        <div className={styles.faq_item}>
-          <div className={styles.faq_question} onClick={() => toggleFaq(4)}>
-            Могу ли я заказать матрас нестандартного размера?{" "}
-            <span>{faqOpen[4] ? "-" : "+"}</span>
-          </div>
-          {faqOpen[4] && (
-            <div className={styles.faq_answer}>
-              Да, мы изготавливаем матрасы по индивидуальным параметрам.
-            </div>
-          )}
-        </div>
-        <div className={styles.faq_item}>
-          <div className={styles.faq_question} onClick={() => toggleFaq(5)}>
-            Мне нужно сделать матрас нестандартной формы и размера. Как
-            заказать? <span>{faqOpen[5] ? "-" : "+"}</span>
-          </div>
-          {faqOpen[5] && (
-            <>
-              <div className={styles.faq_answer}>
-                Мы делаем не только стандартные матрасы, по точно выверенным
-                размерам спального места, но так же матрасы спроектированные по
-                индивидуальным пожеланиям (различные изменения размера/формы
-                спальника, решения в машины где спальник был не предусмотрен).
-              </div>
-              <div className={styles.faq_answer}>
-                Для заказа такого матраса нужно правильно снять размеры.
-                Сделайте заявку — мы свяжемся и поможем решить данный вопрос.
-              </div>
-            </>
-          )}
-        </div>
+        ))}
       </div>
       <Footer />
     </>
