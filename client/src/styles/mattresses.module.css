@@ -204,6 +204,11 @@
         font-size: 16px;
     }
 
+    .mattresses__container {
+        min-width: unset;
+    }
+
+
 }
 
 .mobileMenuButton {

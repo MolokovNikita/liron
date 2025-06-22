@@ -40,11 +40,12 @@ export default function Mattresses() {
 
   const [companies, setCompanies] = useState([]);
   const [mattresses, setMattresses] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   useEffect(() => {
     setMattresses([]);
-
+    setIsLoading(true);
     const mattressRequest = axios.get(`${config.API_URL}/mattress`, {
       params: {
         tovar_type: company.toLowerCase(),
@@ -70,7 +71,9 @@ export default function Mattresses() {
           }));
 
           setMattresses(matresses);
+          setIsLoading(false);
         } else {
+          setIsLoading(false);
           console.error("Ошибка при загрузке матрасов:", mattressResult.reason);
         }
 
@@ -174,7 +177,9 @@ export default function Mattresses() {
 
         {/* Контейнер матрасов */}
         <div className={styles.mattresses__container}>
-          {mattresses.length > 0 ? (
+          {isLoading ? (
+            Array.from({ length: 3 }).map((_, idx) => <MattressCardSkeleton key={idx} />)
+          ) : mattresses.length > 0 ? (
             mattresses.map((mattress) => (
               <MattressCard
                 key={mattress.id}
@@ -187,8 +192,9 @@ export default function Mattresses() {
               />
             ))
           ) : (
-            // Показываем 3 пульсирующих лоадера, пока нет данных
-            Array.from({ length: 3 }).map((_, idx) => <MattressCardSkeleton key={idx} />)
+            <p className={styles.empty_mattrasses}>
+              Матрасов данной компании временно нет в наличии
+            </p>
           )}
         </div>
       </div>
