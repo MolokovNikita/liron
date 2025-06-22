@@ -44,7 +44,7 @@ header {
     display: flex;
     flex-direction: row;
     padding-bottom: 10px;
-    min-height: 94px;
+    min-height: 104px;
 }
 
 .left_nav__list,
@@ -82,7 +82,8 @@ header {
     text-align: center;
     align-items: center;
     justify-content: center;
-    margin-left: 50px;
+    /* margin-left: 50px; */
+    padding-top: 10px;
     font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
     font-optical-sizing: auto;
     font-weight: 400;
