@@ -17,8 +17,8 @@ export default function Reviews() {
   return (
     <>
       <Header />
+      <h1 className={styles.reviews__title}>Отзывы</h1>
       <div className={styles.reviews}>
-        <h1 className={styles.reviews__title}>Отзывы</h1>
         <div className={styles.gallery__wrapper}>
           <GalleryBlock images={gallery_images} />
         </div>
