@@ -372,10 +372,6 @@ export default function MattressPage() {
               </p>
               <ul className={styles.deliveryList}>
                 <li>
-                  Стоимость доставки от производства до терминала в Москве:{" "}
-                  <strong>1 500 руб.</strong>
-                </li>
-                <li>
                   Стоимость доставки по Москве в пределах МКАД:{" "}
                   <strong>1 500 руб.</strong>
                 </li>
@@ -385,9 +381,9 @@ export default function MattressPage() {
                 </li>
               </ul>
               <p>
-                Самовывоз возможен со склада фабрики в г. Муроме или в магазине:{" "}
+                Самовывоз возможен со склада фабрики по адресу:{" "}
                 <br />
-                <strong>г. Москва, 22 км Калужского шоссе</strong>
+                <strong>г. Муром, ул. Муромская, 2А</strong>
               </p>
             </div>
           </div>

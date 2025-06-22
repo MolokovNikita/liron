@@ -13,23 +13,25 @@ import BasketPage from "./pages/CartPage";
 import WholesalePage from "./pages/WholesalePage";
 import { Routes, Route } from "react-router-dom";
 import RefundPage from "./pages/RefundPage";
+import ScrollToTop from "./components/UI/ScrollToTop";
+
 function App() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/catalog" element={<CatalogPage />} />
-        <Route path="/catalog/:company" element={<MattressesPage />} />
-        <Route path="/catalog/:company/:productID" element={<MattressPage />} />
-        <Route path="/delivery" element={<DeliveryPage />} />
-        <Route path="/contacts" element={<ContactsPage />} />
-        <Route path="/aboutus" element={<AboutUsPage />} />
-        <Route path="/payment" element={<PaymentPage />} />
-        <Route path="/reviews" element={<ReviewsPage />} />
-        <Route path="/cart" element={<BasketPage />} />
-        <Route path="/refund" element={<RefundPage />} />
-        <Route path="/wholesale" element={<WholesalePage />} />
-        <Route path="*" element={<NotFoundPage />} />
+        <Route path="/" element={<><ScrollToTop /><MainPage /></>} />
+        <Route path="/catalog" element={<><ScrollToTop /><CatalogPage /></>} />
+        <Route path="/catalog/:company" element={<><ScrollToTop /><MattressesPage /></>} />
+        <Route path="/catalog/:company/:productID" element={<><ScrollToTop /><MattressPage /></>} />
+        <Route path="/delivery" element={<><ScrollToTop /><DeliveryPage /></>} />
+        <Route path="/contacts" element={<><ScrollToTop /><ContactsPage /></>} />
+        <Route path="/aboutus" element={<><ScrollToTop /><AboutUsPage /></>} />
+        <Route path="/payment" element={<><ScrollToTop /><PaymentPage /></>} />
+        <Route path="/reviews" element={<><ScrollToTop /><ReviewsPage /></>} />
+        <Route path="/cart" element={<><ScrollToTop /><BasketPage /></>} />
+        <Route path="/refund" element={<><ScrollToTop /><RefundPage /></>} />
+        <Route path="/wholesale" element={<><ScrollToTop /><WholesalePage /></>} />
+        <Route path="*" element={<><ScrollToTop /><NotFoundPage /></>} />
       </Routes>
     </>
   );

@@ -8,9 +8,11 @@ import config from "../config/config.js";
 import axios from "axios";
 import "react-image-gallery/styles/css/image-gallery.css";
 import GalleryBlock from "../components/UI/Gallery/GalleryBlock.jsx";
+
 export default function MainPage() {
   const [faqOpen, setFaqOpen] = useState([false, false, false, false, false, false]);
   const [companies, setCompanies] = useState([]);
+
   const gallery_images = Array.from({ length: 44 }, (_, i) => {
     const filename = `${i + 1}.jpg`;
     return {
@@ -18,6 +20,13 @@ export default function MainPage() {
       thumbnail: `${config.API_URL}/uploads/gallery_images/${filename}`,
     };
   });
+
+  const bestsellers_dummy = [
+    { id: 1, name: 'DAF XF 105', price: '14 500 ₽', pic: `${config.API_URL}/uploads/mattresses/11/1.jpg`, company: 'DAF', productID: 11 },
+    { id: 2, name: 'Mercedes-Benz Actros MP1', price: '14 500 ₽', pic: `${config.API_URL}/uploads/mattresses/14/1.jpg`, company: 'Mercedes-Benz', productID: 14 },
+    { id: 3, name: 'Scania R', price: '14 500 ₽', pic: `${config.API_URL}/uploads/mattresses/5/1.jpg`, company: 'Scania', productID: 5 },
+  ];
+
   useEffect(() => {
     axios
       .get(`${config.API_URL}/company`)
@@ -33,7 +42,6 @@ export default function MainPage() {
       });
   }, []);
 
-
   const toggleFaq = (index) => {
     const newFaqOpen = [...faqOpen];
     newFaqOpen[index] = !newFaqOpen[index];
@@ -43,8 +51,14 @@ export default function MainPage() {
   return (
     <>
       <Header />
+
+      <div className={styles.hero__container}>
+        <img src={`${config.API_URL}/uploads/main_image.jpg`} alt="Матрас в фуре" className={styles.hero__image} />
+        <div className={styles.hero__overlay}></div>
+        <h1 className={styles.hero__text}>Матрасы в фуру</h1>
+      </div>
+
       <div className={styles.topic__container}>
-        <h1>Комфорт в дороге – ваш идеальный матрас для грузовика!</h1>
         <div className={styles.topic_text__container}>
           <div className={styles.topic_text__left}>
             <p className={styles.topic_container__text}>
@@ -70,12 +84,13 @@ export default function MainPage() {
           </div>
         </div>
       </div>
+
       <div className={styles.choose__container}>
-        <div className={styles.choose__text}>Почему выбирают именно нас ?</div>
+        <h2 className={styles.choose__text}>Почему выбирают именно нас?</h2>
         <div className={styles.choose__blocks}>
           <ul className={styles.choose__list}>
             <li>
-              <img className={styles.fura__pic} src="/fura.png" alt="" />
+              <img className={styles.fura__pic} src="/fura.png" alt="Доставка по России" />
               <div>
                 <p className={styles.choose__text__item}>Доставка по России</p>
                 <p className={styles.choose__text__label}>
@@ -85,11 +100,10 @@ export default function MainPage() {
               </div>
             </li>
             <li>
-              <img className={styles.badge__pic} src="/badge.png" alt="" />
+              <img className={styles.badge__pic} src="/badge.png" alt="Гарантия качества" />
               <div>
                 <p className={styles.choose__text__item}>
-                  Гарантия <br />
-                  качества
+                  Гарантия качества
                 </p>
                 <p className={styles.choose__text__label}>
                   Мы контролируем каждый этап производства, чтобы вы получили
@@ -98,7 +112,7 @@ export default function MainPage() {
               </div>
             </li>
             <li>
-              <img className={styles.support__pic} src="/support.png" alt="" />
+              <img className={styles.support__pic} src="/support.png" alt="Индивидуальный подход" />
               <div>
                 <p className={styles.choose__text__item}>
                   Индивидуальный подход
@@ -113,12 +127,11 @@ export default function MainPage() {
               <img
                 className={styles.experience__pic}
                 src="/experience.png"
-                alt=""
+                alt="Большой опыт"
               />
               <div>
                 <p className={styles.choose__text__item}>
-                  Большой <br />
-                  опыт
+                  Большой опыт
                 </p>
                 <p className={styles.choose__text__label}>
                   Более 10 лет работаем для того, чтобы ваши поездки были
@@ -129,18 +142,45 @@ export default function MainPage() {
           </ul>
         </div>
       </div>
+
+      <div className={styles.bestsellers__container}>
+        <h2 className={styles.bestsellers__title}>Хиты продаж</h2>
+        <div className={styles.bestsellers__grid}>
+          {bestsellers_dummy.map((product, idx) => (
+            <Link
+              key={product.id + '-' + idx}
+              to={`/catalog/${product.company}/${product.productID}`}
+              className={styles.product__card}
+              onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "instant" })}
+            >
+              <img src={product.pic} alt={product.name} className={styles.product__image} />
+              <div className={styles.product__info}>
+                <h3 className={styles.product__name}>{product.name}</h3>
+                <p className={styles.product__price}>{product.price}</p>
+                <div className={styles.product__button_wrapper}>
+                  <span className={styles.product__button}>Подробнее</span>
+                </div>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
+
       <div className={styles.catalog_btn__container}>
         <Link to="/catalog" className={styles.catalog__btn}>
           Перейти в каталог
         </Link>
       </div>
-      <div className = {styles.gallery__wrapper} >
-        <h2 style={{ textAlign: "center", marginBottom: "20px" }}>Галерея</h2>
+
+      <div className={styles.gallery__wrapper}>
+        <h2 className={styles.gallery__title}>Галерея</h2>
         <div className={styles.gallery_container}>
           <GalleryBlock images={gallery_images} />
         </div>
       </div>
+
       <Map />
+
       <div className={styles.often_question__text}>
         Часто задаваемые вопросы
       </div>
