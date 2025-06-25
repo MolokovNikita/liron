@@ -47,7 +47,7 @@ export default function Mattress({ mattress }) {
           to={`/catalog/${mattress.company?.toLowerCase()}/${mattress.id}`}
           className={styles.card__title}
         >
-          {mattress.name}
+          Матрас для фуры {mattress.name}
         </Link>
         <p className={styles.card__price}>
           от {getMinimalPrice(mattress.price)} ₽

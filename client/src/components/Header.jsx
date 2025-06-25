@@ -16,8 +16,10 @@ export default function Header() {
   const [companies, setCompanies] = useState([]);
   const [_, setCompanyProducts] = useState([]);
   const { companyName } = useParams();
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    setIsLoading(true);
     axios.get(`${config.API_URL}/company`).then((res) => {
       setCompanies(
         res.data.map((item) => ({
@@ -26,6 +28,7 @@ export default function Header() {
           url: `/catalog/${item.name.toLowerCase()}`
         }))
       );
+      setIsLoading(false);
     });
   }, []);
 
@@ -104,11 +107,17 @@ export default function Header() {
               <div className={styles.catalog__hover}>
                 <Link to="/catalog">Каталог</Link>
                 <ul className={styles.dropdown}>
-                  {companies.map((company) => (
-                    <li key={company.name}>
-                      <Link to={company.url}>{company.name.toUpperCase()}</Link>
-                    </li>
-                  ))}
+                  {isLoading
+                    ? Array.from({ length: 10 }).map((_, i) => (
+                      <li key={i}>
+                        <div className={styles.skeletonCompany} />
+                      </li>
+                    ))
+                    : companies.map((company) => (
+                      <li key={company.name}>
+                        <Link to={company.url}>{company.name.toUpperCase()}</Link>
+                      </li>
+                    ))}
                 </ul>
               </div>
             </li>

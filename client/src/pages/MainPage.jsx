@@ -9,6 +9,7 @@ import axios from "axios";
 import "react-image-gallery/styles/css/image-gallery.css";
 import GalleryBlock from "../components/UI/Gallery/GalleryBlock.jsx";
 import { Helmet } from "react-helmet-async";
+import StructuredData from "../components/StructuredData";
 
 export default function MainPage() {
   const [faqOpen, setFaqOpen] = useState([false, false, false, false, false, false]);
@@ -81,6 +82,7 @@ export default function MainPage() {
         <meta property="og:image" content="/og-main.jpg" />
         <meta property="og:type" content="website" />
       </Helmet>
+      <StructuredData companies={companies} faqQuestions={faqQuestions} faqAnswers={faqAnswers} />
       <Header />
 
       <div className={styles.hero__container}>
@@ -107,8 +109,9 @@ export default function MainPage() {
               <Link key={company.id} to={`/catalog/${company.name}`}>
                 <img
                   src={company.pic}
-                  alt={company.name}
+                  alt={`Логотип компании ${company.name}`}
                   className={styles.company__logo}
+                  loading="lazy"
                 />
               </Link>
             ))}
@@ -121,7 +124,7 @@ export default function MainPage() {
         <div className={styles.choose__blocks}>
           <ul className={styles.choose__list}>
             <li>
-              <img className={styles.fura__pic} src="/fura.png" alt="Доставка по России" />
+              <img className={styles.fura__pic} src="/fura.png" alt="Доставка по России" loading="lazy" />
               <div>
                 <p className={styles.choose__text__item}>Доставка по России</p>
                 <p className={styles.choose__text__label}>
@@ -131,7 +134,7 @@ export default function MainPage() {
               </div>
             </li>
             <li>
-              <img className={styles.badge__pic} src="/badge.png" alt="Гарантия качества" />
+              <img className={styles.badge__pic} src="/badge.png" alt="Гарантия качества" loading="lazy" />
               <div>
                 <p className={styles.choose__text__item}>
                   Гарантия качества
@@ -143,7 +146,7 @@ export default function MainPage() {
               </div>
             </li>
             <li>
-              <img className={styles.support__pic} src="/support.png" alt="Индивидуальный подход" />
+              <img className={styles.support__pic} src="/support.png" alt="Индивидуальный подход" loading="lazy" />
               <div>
                 <p className={styles.choose__text__item}>
                   Индивидуальный подход
@@ -159,6 +162,7 @@ export default function MainPage() {
                 className={styles.experience__pic}
                 src="/experience.png"
                 alt="Большой опыт"
+                loading="lazy"
               />
               <div>
                 <p className={styles.choose__text__item}>
@@ -184,9 +188,9 @@ export default function MainPage() {
               className={styles.product__card}
               onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "instant" })}
             >
-              <img src={product.pic} alt={product.name} className={styles.product__image} />
+              <img src={product.pic} alt={`Матрас для фуры ${product.name}`} className={styles.product__image} loading="lazy" />
               <div className={styles.product__info}>
-                <h3 className={styles.product__name}>{product.name}</h3>
+                <h3 className={styles.product__name}>Матрас для фуры {product.name}</h3>
                 <p className={styles.product__price}>{product.price}</p>
                 <div className={styles.product__button_wrapper}>
                   <span className={styles.product__button}>Подробнее</span>

@@ -18,6 +18,7 @@ import {
 } from "../store/cartSlice";
 import cardStyles from "../styles/mattress.card.module.css";
 import { Helmet } from "react-helmet-async";
+import StructuredData from "../components/StructuredData";
 
 function MattressCardSkeleton() {
   return (
@@ -150,6 +151,7 @@ export default function Mattresses() {
         <meta property="og:description" content={`Матрасы для грузовиков ${company}. Индивидуальные размеры, доставка по России.`} />
         <meta property="og:type" content="website" />
       </Helmet>
+      <StructuredData company={company} mattresses={mattresses} />
       <Header />
       <div className={styles.page__title}>{company.toUpperCase()}</div>
       <div className={styles.path__container}>

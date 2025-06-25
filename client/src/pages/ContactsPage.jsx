@@ -3,6 +3,7 @@ import Footer from "../components/Footer";
 import styles from "../styles/contacts.module.css";
 import Map from "../components/UI/Map";
 import { Helmet } from "react-helmet-async";
+import StructuredData from "../components/StructuredData";
 
 export default function Contacts() {
   return (
@@ -15,6 +16,7 @@ export default function Contacts() {
         <meta property="og:description" content="Контакты компании LIRON. Адрес, телефон, email, форма обратной связи." />
         <meta property="og:type" content="website" />
       </Helmet>
+      <StructuredData type="localbusiness" />
       <Header />
       <div className={styles.contacts__container}>
         <h1 className={styles.contacts__title}>Контакты</h1>

@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import config from "../config/config";
 import GalleryBlock from "../components/UI/Gallery/GalleryBlock.jsx";
 import { Helmet } from "react-helmet-async";
+import StructuredData from "../components/StructuredData";
 
 
 export default function Reviews() {
@@ -25,6 +26,7 @@ export default function Reviews() {
         <meta property="og:description" content="Отзывы клиентов о матрасах для грузовиков LIRON. Реальные мнения, опыт использования, рекомендации." />
         <meta property="og:type" content="website" />
       </Helmet>
+      <StructuredData type="faq" />
       <Header />
       <h1 className={styles.reviews__title}>Отзывы</h1>
       <div className={styles.reviews}>

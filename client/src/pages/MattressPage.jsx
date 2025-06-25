@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addItem, changeQuantity } from "../store/cartSlice";
 import GalleryBlock from "../components/UI/Gallery/GalleryBlock";
 import { Helmet } from "react-helmet-async";
+import StructuredData from "../components/StructuredData";
 
 export default function MattressPage() {
   const { company, productID } = useParams();
@@ -159,6 +160,7 @@ export default function MattressPage() {
         <meta property="og:description" content={`Купить матрас ${mattress.name || ''} для грузовика. Индивидуальные размеры, доставка по России.`} />
         <meta property="og:type" content="product" />
       </Helmet>
+      <StructuredData mattress={mattress} />
       <Header />
       <div className={styles.container}>
         <div className={styles.product__main_spec}>

@@ -4,6 +4,7 @@ import Footer from "../components/Footer";
 import styles from "../styles/about.module.css";
 import Map from "../components/UI/Map";
 import { Helmet } from "react-helmet-async";
+import StructuredData from "../components/StructuredData";
 
 export default function About() {
   return (
@@ -16,6 +17,7 @@ export default function About() {
         <meta property="og:description" content="О компании LIRON — производитель матрасов для грузовиков. Качество, опыт, индивидуальный подход." />
         <meta property="og:type" content="website" />
       </Helmet>
+      <StructuredData />
       <Header />
       <h1 className={styles.about__title}>О нас</h1>
       <div className={styles.about}>

@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import FeedbackModal from "../components/UI/FeedbackModal/FeedbackModal";
 import { Helmet } from "react-helmet-async";
+import StructuredData from "../components/StructuredData";
 
 function CompanyCardSkeleton() {
   return (
@@ -43,6 +44,7 @@ export default function Catalog() {
         <meta property="og:description" content="Каталог матрасов для всех марок грузовиков. Индивидуальные размеры, доставка по России." />
         <meta property="og:type" content="website" />
       </Helmet>
+      <StructuredData companies={companies} />
       <Header />
       <div className={styles.container}>
         <div className={styles.catalog__title}>Каталог</div>
@@ -54,8 +56,9 @@ export default function Catalog() {
                 <Link to={`/catalog/${company.name.toLowerCase()}`}>
                   <img
                     src={company.pic}
-                    alt={`${company.name} logo`}
+                    alt={`Логотип компании ${company.name}`}
                     className={styles.company__logo}
+                    loading="lazy"
                   />
                   <div className={styles.company__name}>{company.name}</div>
                 </Link>
