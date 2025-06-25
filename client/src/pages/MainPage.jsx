@@ -8,6 +8,7 @@ import config from "../config/config.js";
 import axios from "axios";
 import "react-image-gallery/styles/css/image-gallery.css";
 import GalleryBlock from "../components/UI/Gallery/GalleryBlock.jsx";
+import { Helmet } from "react-helmet-async";
 
 export default function MainPage() {
   const [faqOpen, setFaqOpen] = useState([false, false, false, false, false, false]);
@@ -71,6 +72,15 @@ export default function MainPage() {
 
   return (
     <>
+      <Helmet>
+        <title>Матрасы для фур и грузовиков — LIRON</title>
+        <meta name="description" content="Изготовление матрасов для всех марок грузовиков. Индивидуальные размеры, доставка по России. Гарантия качества." />
+        <meta name="keywords" content="матрасы для фур, матрасы для грузовиков, матрас daf, матрас volvo, матрас scania, купить матрас для фуры" />
+        <meta property="og:title" content="Матрасы для фур и грузовиков — LIRON" />
+        <meta property="og:description" content="Изготовление матрасов для всех марок грузовиков. Индивидуальные размеры, доставка по России." />
+        <meta property="og:image" content="/og-main.jpg" />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
 
       <div className={styles.hero__container}>

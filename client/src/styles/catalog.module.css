@@ -8,6 +8,13 @@
   border-bottom: 2px solid #ddd;
 }
 
+.container {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  flex: 1;
+}
+
 /* Контейнер для всех карточек */
 .company__container {
   display: grid;
