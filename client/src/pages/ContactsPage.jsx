@@ -2,9 +2,19 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/contacts.module.css";
 import Map from "../components/UI/Map";
+import { Helmet } from "react-helmet-async";
+
 export default function Contacts() {
   return (
     <>
+      <Helmet>
+        <title>Контакты — LIRON</title>
+        <meta name="description" content="Контакты компании LIRON. Адрес, телефон, email, форма обратной связи." />
+        <meta name="keywords" content="контакты, liron, телефон, адрес, email, обратная связь" />
+        <meta property="og:title" content="Контакты — LIRON" />
+        <meta property="og:description" content="Контакты компании LIRON. Адрес, телефон, email, форма обратной связи." />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
       <div className={styles.contacts__container}>
         <h1 className={styles.contacts__title}>Контакты</h1>

@@ -17,6 +17,7 @@ import {
   setBasket,
 } from "../store/cartSlice";
 import cardStyles from "../styles/mattress.card.module.css";
+import { Helmet } from "react-helmet-async";
 
 function MattressCardSkeleton() {
   return (
@@ -29,6 +30,10 @@ function MattressCardSkeleton() {
       <div className={cardStyles.skeleton__button}></div>
     </div>
   );
+}
+
+function SidebarCompanySkeleton() {
+  return <div style={{ height: 32, borderRadius: 8, background: '#e0e0e0', margin: '8px auto', width: '80%', animation: 'pulse 1.2s infinite ease-in-out' }}></div>;
 }
 
 export default function Mattresses() {
@@ -137,6 +142,14 @@ export default function Mattresses() {
 
   return (
     <>
+      <Helmet>
+        <title>Матрасы {company} — LIRON</title>
+        <meta name="description" content={`Матрасы для грузовиков ${company}. Индивидуальные размеры, доставка по России, гарантия качества.`} />
+        <meta name="keywords" content={`матрасы ${company}, матрасы для фур, матрасы для грузовиков, купить матрас для фуры`} />
+        <meta property="og:title" content={`Матрасы ${company} — LIRON`} />
+        <meta property="og:description" content={`Матрасы для грузовиков ${company}. Индивидуальные размеры, доставка по России.`} />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
       <div className={styles.page__title}>{company.toUpperCase()}</div>
       <div className={styles.path__container}>
@@ -146,7 +159,12 @@ export default function Mattresses() {
         </i>
       </div>
 
-      <div className={styles.page__container}>
+      <div
+        className={
+          `${styles.page__container} ` +
+          `${mattresses.length === 0 && !isLoading ? styles.emptyState : ''}`
+        }
+      >
         {/* Кнопка мобильного меню */}
         <button
           className={styles.mobileMenuButton}
@@ -159,20 +177,22 @@ export default function Mattresses() {
         {/* Левая панель компаний (адаптивная) */}
         <div className={`${styles.sidebar} ${showMobileMenu ? styles.show : ''}`}>
           <div className={styles.sidebar__title}>Матрасы для грузовиков</div>
-          {companies.map((comp) => (
-            <div
-              key={comp.name}
-              className={`${styles.sidebar__item} ${comp.name.toLowerCase() === company.toLowerCase()
-                ? styles.active
-                : ""}`}
-              onClick={() => {
-                navigate(`/catalog/${comp.name.toLowerCase()}`);
-                setShowMobileMenu(false);
-              }}
-            >
-              {comp.name.toUpperCase()}
-            </div>
-          ))}
+          {companies.length === 0 && isLoading
+            ? Array.from({ length: 10 }).map((_, idx) => <SidebarCompanySkeleton key={idx} />)
+            : companies.map((comp) => (
+              <div
+                key={comp.name}
+                className={`${styles.sidebar__item} ${comp.name.toLowerCase() === company.toLowerCase()
+                  ? styles.active
+                  : ""}`}
+                onClick={() => {
+                  navigate(`/catalog/${comp.name.toLowerCase()}`);
+                  setShowMobileMenu(false);
+                }}
+              >
+                {comp.name.toUpperCase()}
+              </div>
+            ))}
         </div>
 
         {/* Контейнер матрасов */}

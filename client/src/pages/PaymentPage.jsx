@@ -1,6 +1,7 @@
 import styles from "../styles/payment.module.css";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { Helmet } from "react-helmet-async";
 
 import {
   FaTruck,
@@ -12,6 +13,14 @@ import {
 export default function Payment() {
   return (
     <>
+      <Helmet>
+        <title>Оплата — LIRON</title>
+        <meta name="description" content="Способы оплаты матрасов для грузовиков в компании LIRON. Удобно, быстро, безопасно." />
+        <meta name="keywords" content="оплата, способы оплаты, liron, матрасы для фур, матрасы для грузовиков" />
+        <meta property="og:title" content="Оплата — LIRON" />
+        <meta property="og:description" content="Способы оплаты матрасов для грузовиков в компании LIRON. Удобно, быстро, безопасно." />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
       <main className={styles.payment}>
         <h1 className={styles.payment__title}>Варианты оплаты</h1>

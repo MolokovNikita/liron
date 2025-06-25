@@ -65,7 +65,29 @@
   text-transform: uppercase;
 }
 
+.company__logo_skeleton {
+  width: 100px;
+  height: 100px;
+  background: #e0e0e0;
+  border-radius: 10px;
+  margin: 0 auto 12px auto;
+  animation: pulse 1.2s infinite ease-in-out;
+}
 
+
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.5;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
 
 .feedback__section {
   text-align: center;

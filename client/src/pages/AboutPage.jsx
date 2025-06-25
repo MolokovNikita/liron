@@ -3,9 +3,19 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import styles from "../styles/about.module.css";
 import Map from "../components/UI/Map";
+import { Helmet } from "react-helmet-async";
+
 export default function About() {
   return (
     <>
+      <Helmet>
+        <title>О компании — LIRON</title>
+        <meta name="description" content="О компании LIRON — производитель матрасов для грузовиков. Качество, опыт, индивидуальный подход." />
+        <meta name="keywords" content="о компании, liron, производство матрасов, матрасы для фур, матрасы для грузовиков" />
+        <meta property="og:title" content="О компании — LIRON" />
+        <meta property="og:description" content="О компании LIRON — производитель матрасов для грузовиков. Качество, опыт, индивидуальный подход." />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
       <h1 className={styles.about__title}>О нас</h1>
       <div className={styles.about}>

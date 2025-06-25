@@ -2,9 +2,19 @@ import React from 'react';
 import styles from '../styles/delivery.module.css';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { Helmet } from "react-helmet-async";
+
 const DeliveryPage = () => {
   return (
     <>
+      <Helmet>
+        <title>Доставка матрасов по России — LIRON</title>
+        <meta name="description" content="Доставка матрасов для грузовиков по всей России. Быстро, удобно, надежно." />
+        <meta name="keywords" content="доставка матрасов, доставка по России, матрасы для фур, матрасы для грузовиков" />
+        <meta property="og:title" content="Доставка матрасов по России — LIRON" />
+        <meta property="og:description" content="Доставка матрасов для грузовиков по всей России. Быстро, удобно, надежно." />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
       <h1 className={styles.title}>Доставка</h1>
       <div className={styles.deliveryContainer}>

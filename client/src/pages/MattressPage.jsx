@@ -9,6 +9,7 @@ import { AiOutlineInfoCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { addItem, changeQuantity } from "../store/cartSlice";
 import GalleryBlock from "../components/UI/Gallery/GalleryBlock";
+import { Helmet } from "react-helmet-async";
 
 export default function MattressPage() {
   const { company, productID } = useParams();
@@ -150,6 +151,14 @@ export default function MattressPage() {
 
   return (
     <>
+      <Helmet>
+        <title>{`Матрас ${mattress.name || ''} — LIRON`}</title>
+        <meta name="description" content={`Купить матрас ${mattress.name || ''} для грузовика. Индивидуальные размеры, доставка по России, гарантия качества.`} />
+        <meta name="keywords" content={`матрас ${mattress.name || ''}, матрасы для фур, матрасы для грузовиков, купить матрас для фуры`} />
+        <meta property="og:title" content={`Матрас ${mattress.name || ''} — LIRON`} />
+        <meta property="og:description" content={`Купить матрас ${mattress.name || ''} для грузовика. Индивидуальные размеры, доставка по России.`} />
+        <meta property="og:type" content="product" />
+      </Helmet>
       <Header />
       <div className={styles.container}>
         <div className={styles.product__main_spec}>

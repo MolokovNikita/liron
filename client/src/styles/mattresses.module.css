@@ -31,6 +31,10 @@
     /* min-height: 80vh; */
 }
 
+.emptyState {
+    min-height: 100vh;
+}
+
 /* Левая панель */
 .sidebar {
     display: flex;

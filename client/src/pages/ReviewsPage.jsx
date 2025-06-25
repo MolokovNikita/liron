@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import config from "../config/config";
 import GalleryBlock from "../components/UI/Gallery/GalleryBlock.jsx";
+import { Helmet } from "react-helmet-async";
 
 
 export default function Reviews() {
@@ -16,6 +17,14 @@ export default function Reviews() {
 
   return (
     <>
+      <Helmet>
+        <title>Отзывы — LIRON</title>
+        <meta name="description" content="Отзывы клиентов о матрасах для грузовиков LIRON. Реальные мнения, опыт использования, рекомендации." />
+        <meta name="keywords" content="отзывы, liron, отзывы клиентов, матрасы для фур, матрасы для грузовиков" />
+        <meta property="og:title" content="Отзывы — LIRON" />
+        <meta property="og:description" content="Отзывы клиентов о матрасах для грузовиков LIRON. Реальные мнения, опыт использования, рекомендации." />
+        <meta property="og:type" content="website" />
+      </Helmet>
       <Header />
       <h1 className={styles.reviews__title}>Отзывы</h1>
       <div className={styles.reviews}>
