@@ -50,7 +50,7 @@ export default function Catalog() {
         <div className={styles.catalog__title}>Каталог</div>
         <div className={styles.company__container}>
           {isLoading
-            ? Array.from({ length: 6 }).map((_, idx) => <CompanyCardSkeleton key={idx} />)
+            ? Array.from({ length: 10 }).map((_, idx) => <CompanyCardSkeleton key={idx} />)
             : companies.map((company) => (
               <div key={company.id} className={styles.company__card}>
                 <Link to={`/catalog/${company.name.toLowerCase()}`}>
