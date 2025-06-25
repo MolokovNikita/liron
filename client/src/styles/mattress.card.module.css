@@ -20,6 +20,7 @@
 .card__image {
     /* width: 100%; */
     width: 350px;
+    height: 250px;
     /* height: 400px; */
     object-fit: contain;
     border-radius: 4px;
