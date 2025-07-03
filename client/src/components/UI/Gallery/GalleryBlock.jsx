@@ -6,7 +6,7 @@ import styles from './gallery-block.module.css';
 
 
 
-const GalleryBlock = ({ images }) => {
+const GalleryBlock = ({ images, showThumbnails = true }) => {
     const galleryRef = useRef(null);
     if (!images) return;
 
@@ -40,7 +40,7 @@ const GalleryBlock = ({ images }) => {
                 // slideOnThumbnailOver={true}
                 showIndex={false}
                 // showBullets={true}
-                showThumbnails={true}
+                showThumbnails={showThumbnails}
                 thumbnailPosition="bottom"
                 preventDefaultTouchmoveEvent={false}
             />

@@ -11,6 +11,7 @@ import { addItem, changeQuantity } from "../store/cartSlice";
 import GalleryBlock from "../components/UI/Gallery/GalleryBlock";
 import { Helmet } from "react-helmet-async";
 import StructuredData from "../components/StructuredData";
+import { useState as useLocalState } from "react";
 
 export default function MattressPage() {
   const { company, productID } = useParams();
@@ -21,6 +22,7 @@ export default function MattressPage() {
   const [mattress, setMattress] = useState({});
   const [selectedClothe, setSelectedClothe] = useState(0);
   const [selectedClassIndex, setSelectedClassIndex] = useState(0);
+  const [coverCount, setCoverCount] = useLocalState(0);
 
   const mattressClasses = ["Комфорт", "Премиум"];
   const [classMaterials, setClassMaterials] = useState([]);
@@ -149,6 +151,41 @@ export default function MattressPage() {
     return productInBasket ? productInBasket.quantity : 0;
   };
 
+  // --- COVER LOGIC ---
+  const coverId = `cover-${mattress.id}`;
+  const coverInCart = basket.find(item => item.id === coverId);
+  const coverQty = coverInCart ? coverInCart.quantity : 0;
+  const coverImages = [1, 2, 3, 4, 5].map(i => ({
+    original: `${config.API_URL}/uploads/cover/cover_${i - 1}.jpg`,
+    thumbnail: `${config.API_URL}/uploads/cover/cover_${i - 1}.jpg`
+  }));
+  const handleAddCover = () => {
+    if (!coverInCart) {
+      dispatch(
+        addItem({
+          id: coverId,
+          type: 'cover',
+          name: `Наматрасник аквастоп на "${mattress.name}"`,
+          width: mattress.width,
+          length: mattress.length,
+          price: 1500,
+          image: coverImages[0].original,
+          quantity: 1,
+          selected: false,
+        })
+      );
+    }
+  };
+  const handleChangeCoverQty = (amount) => {
+    if (coverInCart) {
+      dispatch(
+        changeQuantity({
+          id: coverId,
+          amount,
+        })
+      );
+    }
+  };
 
   return (
     <>
@@ -359,6 +396,35 @@ export default function MattressPage() {
                   </div>
                 </div>
               )}
+
+              {/* Блок наматрасника */}
+            </div>
+          </div>
+        </div>
+        <div className={styles.coverBlockWrapper}>
+          <div className={styles.coverBlock}>
+            <div className={styles.coverBlock__imageWrap}>
+              <GalleryBlock images={coverImages} showThumbnails={false} />
+            </div>
+            <div className={styles.coverBlock__content}>
+              <h3 className={styles.coverBlock__title}>Наматрасник аквастоп на "{mattress.name}"</h3>
+              <div className={styles.cover__size}>Размер: {mattress.width} x {mattress.length}</div>
+              <div className={styles.cover__price}>Цена: 1500 ₽</div>
+              <div className={styles.coverBlock__desc}>
+                Выполнен в виде простыни на стягивающей резинке из махровой ткани с непромокаемой мембраной. Хорошо впитывает и защищает матрас от влаги. Эти простыни изготавливаются, точно по размерам оригинального спального места.
+              </div>
+              {coverQty === 0 ? (
+                <button className={styles.coverBlock__add} onClick={handleAddCover}>Добавить в корзину</button>
+              ) : (
+                <div className={styles.coverBlock__controls}>
+                  <div className={styles.control__container}>
+                    <button onClick={() => handleChangeCoverQty(-1)} className={styles.coverBlock__btn}>-</button>
+                    <span className={styles.coverBlock__count}>{coverQty}</span>
+                    <button onClick={() => handleChangeCoverQty(1)} className={styles.coverBlock__btn}>+</button>
+                  </div>
+                  <Link to="/cart" className={styles.coverBlock__add}>Перейти в корзину</Link>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -370,32 +436,24 @@ export default function MattressPage() {
           <div className={styles.deliveryContainer}>
             <h2 className={styles.title}>Доставка и оплата</h2>
             <div className={styles.textContainer}>
-              <p>
-                <strong>Компания LIRON находится в Москве.</strong>
-              </p>
-              <p>
-                Наше производство матрасов находится в г. Муроме. Доставку
-                готовых и заказываемых изделий осуществляем ведущими
-                транспортными компаниями по всей России.
-              </p>
-              <p>
-                <strong>Стоимость доставки:</strong>
-              </p>
+              <p><strong>Доставляем нашими курьерами в следующие регионы:</strong></p>
               <ul className={styles.deliveryList}>
-                <li>
-                  Стоимость доставки по Москве в пределах МКАД:{" "}
-                  <strong>1 500 руб.</strong>
-                </li>
-                <li>
-                  Стоимость доставки за пределами МКАД:{" "}
-                  <strong>по договоренности</strong>.
-                </li>
+                <li>Владимирская область</li>
+                <li>Московская область</li>
+                <li>Нижегородская область</li>
+                <li>Тульская область</li>
+                <li>Рязань</li>
+                <li>Казань</li>
+                <li>Санкт-Петербург</li>
               </ul>
-              <p>
-                Самовывоз возможен со склада фабрики по адресу:{" "}
-                <br />
-                <strong>г. Муром, ул. Муромская, 2А</strong>
-              </p>
+              <p>Услуга доставки от <strong>1000 до 1500 рублей</strong> за 1 матрас (в зависимости от габаритов).</p>
+              <p><strong>Оплата — при получении товара.</strong></p>
+              <p>Если вы находитесь за пределами указанных регионов, вы можете воспользоваться услугами транспортной компании (ТК).</p>
+              <p><strong>Также доступен самовывоз:</strong></p>
+              <ul className={styles.deliveryList}>
+                <li>С трассы М-12 возле Мурома</li>
+                <li>По адресу: Муромская ул., 2, г. Муром</li>
+              </ul>
             </div>
           </div>
         </div>

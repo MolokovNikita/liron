@@ -14,6 +14,8 @@ import WholesalePage from "./pages/WholesalePage";
 import { Routes, Route } from "react-router-dom";
 import RefundPage from "./pages/RefundPage";
 import ScrollToTop from "./components/UI/ScrollToTop";
+import CoversPage from "./pages/CoversPage";
+import CoverCardPage from "./pages/CoverCardPage";
 
 function App() {
   return (
@@ -31,6 +33,8 @@ function App() {
         <Route path="/cart" element={<><ScrollToTop /><BasketPage /></>} />
         <Route path="/refund" element={<><ScrollToTop /><RefundPage /></>} />
         <Route path="/wholesale" element={<><ScrollToTop /><WholesalePage /></>} />
+        <Route path="/covers" element={<><ScrollToTop /><CoversPage /></>} />
+        <Route path="/covers/:id" element={<><ScrollToTop /><CoverCardPage /></>} />
         <Route path="*" element={<><ScrollToTop /><NotFoundPage /></>} />
       </Routes>
     </>

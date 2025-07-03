@@ -54,7 +54,7 @@ export default function MainPage() {
     axios
       .get(`${config.API_URL}/company`)
       .then((res) => {
-        const companiesWithPic = res.data.slice(0, 10).map((item) => ({
+        const companiesWithPic = res.data.slice(0, 13).map((item) => ({
           ...item,
           pic: `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
         }));

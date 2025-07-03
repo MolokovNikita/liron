@@ -55,7 +55,12 @@ export default function Cart() {
     dispatch(toggleSelectItem({ id, clothe, classIndex }));
   };
 
-  const getPrice = (priceArray, quantity, classIndex, clothe) => {
+  const getPrice = (priceArray, quantity, classIndex, clothe, item) => {
+    if (item?.type === 'cover') {
+      const unitPrice = parseInt(item.price, 10) || 0;
+      const totalPrice = unitPrice * (quantity || 1);
+      return new Intl.NumberFormat("ru-RU").format(totalPrice);
+    }
     if (
       !Array.isArray(priceArray) ||
       typeof classIndex !== 'number' ||
@@ -64,14 +69,10 @@ export default function Cart() {
     ) {
       return "0";
     }
-
     const priceString = priceArray[classIndex]?.[clothe];
-
     const unitPrice = parseInt(priceString, 10) || 0;
     const totalPrice = unitPrice * quantity;
-
     if (isNaN(totalPrice)) return "0";
-
     return new Intl.NumberFormat("ru-RU").format(totalPrice);
   };
 
@@ -140,40 +141,58 @@ export default function Cart() {
                         className={styles.checkbox}
                       />
                       <div className={styles.mobilePrice}>
-                        {getPrice(item.price, item.quantity, item.classIndex, item.clothe)} ₽
+                        {getPrice(item.price, item.quantity, item.classIndex, item.clothe, item)} ₽
                       </div>
                     </div>
 
                     <div className={styles.itemContent}>
-                      <Link
-                        to={`/catalog/${item.company.toLowerCase()}/${item.id}`}
-                        className={styles.imageLink}
-                      >
-                        <img
-                          src={item.pictures[0].original}
-                          alt={item.name}
-                          className={styles.cartImage}
-                        />
-                      </Link>
-
-                      <div className={styles.itemDetails}>
+                      {item.company ? (
                         <Link
                           to={`/catalog/${item.company.toLowerCase()}/${item.id}`}
-                          className={styles.mattress__name}
+                          className={styles.imageLink}
                         >
-                          {item.name}
+                          <img
+                            src={item.pictures?.[0]?.original}
+                            alt={item.name}
+                            className={styles.cartImage}
+                          />
                         </Link>
+                      ) : (
+                        <div className={styles.imageLink}>
+                          <img
+                            src={item.image}
+                            alt={item.name}
+                            className={styles.cartImage}
+                          />
+                        </div>
+                      )}
+
+                      <div className={styles.itemDetails}>
+                        {item.company ? (
+                          <Link
+                            to={`/catalog/${item.company.toLowerCase()}/${item.id}`}
+                            className={styles.mattress__name}
+                          >
+                            {item.name}
+                          </Link>
+                        ) : (
+                          <div className={styles.mattress__name}>{item.name}</div>
+                        )}
 
                         <div className={styles.itemAttributes}>
                           <p className={styles.item__articul}>
                             Артикул: #{item.id}
                           </p>
-                          <p className={styles.item__articul}>
-                            Ткань: {clotheNames[item.clothe] || item.clothe}
-                          </p>
-                          <p className={styles.item__articul}>
-                            Класс: {classNames[item.classIndex] || item.classIndex}
-                          </p>
+                          {item.type !== 'cover' && (
+                            <>
+                              <p className={styles.item__articul}>
+                                Ткань: {clotheNames[item.clothe] || item.clothe}
+                              </p>
+                              <p className={styles.item__articul}>
+                                Класс: {classNames[item.classIndex] || item.classIndex}
+                              </p>
+                            </>
+                          )}
                         </div>
 
                         <div className={styles.mobileControls}>
@@ -212,7 +231,7 @@ export default function Cart() {
 
                     <div className={styles.itemFooter}>
                       <p className={styles.mattress__price}>
-                        {getPrice(item.price, item.quantity, item.classIndex, item.clothe)} ₽
+                        {getPrice(item.price, item.quantity, item.classIndex, item.clothe, item)} ₽
                       </p>
 
                       <div className={styles.desktopControls}>
