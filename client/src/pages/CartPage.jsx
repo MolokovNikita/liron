@@ -81,12 +81,13 @@ export default function Cart() {
   const totalCost = basket
     .filter((item) => item.selected)
     .reduce((total, item) => {
-      const { price, classIndex, clothe, quantity } = item;
-
-      const priceString = price?.[classIndex]?.[clothe];
+      if (item.type === 'cover') {
+        const unitPrice = parseInt(item.price, 10) || 0;
+        return total + unitPrice * (item.quantity || 1);
+      }
+      const priceString = item.price?.[item.classIndex]?.[item.clothe];
       const unitPrice = parseInt(priceString, 10) || 0;
-
-      return total + unitPrice * quantity;
+      return total + unitPrice * item.quantity;
     }, 0);
 
 

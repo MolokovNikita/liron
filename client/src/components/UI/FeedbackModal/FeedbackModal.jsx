@@ -1,7 +1,8 @@
 import styles from "./feedback-modal.module.css";
 import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
-
+import axios from "axios";
+import config from "../../../config/config";
 export default function FeedbackModal({ isOpen, onClose, matrasses }) {
     const [form, setForm] = useState({
         name: "",
@@ -37,7 +38,7 @@ export default function FeedbackModal({ isOpen, onClose, matrasses }) {
         }
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const { name, email, phone, message } = form;
@@ -46,10 +47,14 @@ export default function FeedbackModal({ isOpen, onClose, matrasses }) {
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return alert("Некорректный email");
         if (phone.length !== 11) return alert("Введите корректный номер телефона");
         if (!message.trim()) return alert("Введите сообщение");
-
-        onClose();
-        alert("Форма отправлена");
-        // здесь можно отправить { ...form, phoneFormatted: formatPhone(phone) }
+        try {
+            axios.post(`${config.API_URL}/feedback`,
+                { name, email, phone, message, matrasses });
+            onClose();
+            alert("Форма отправлена");
+        } catch (err) {
+            alert("Ошибка отправки. Попробуйте позже.");
+        }
     };
 
     if (!isOpen) return null;
