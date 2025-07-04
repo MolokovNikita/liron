@@ -168,7 +168,7 @@ export default function MattressPage() {
           name: `Наматрасник аквастоп на "${mattress.name}"`,
           width: mattress.width,
           length: mattress.length,
-          price: 1500,
+          price: 2000,
           image: coverImages[0].original,
           quantity: 1,
           selected: false,
@@ -409,7 +409,7 @@ export default function MattressPage() {
             <div className={styles.coverBlock__content}>
               <h3 className={styles.coverBlock__title}>Наматрасник аквастоп на "{mattress.name}"</h3>
               <div className={styles.cover__size}>Размер: {mattress.width} x {mattress.length}</div>
-              <div className={styles.cover__price}>Цена: 1500 ₽</div>
+              <div className={styles.cover__price}>Цена: 2000 ₽</div>
               <div className={styles.coverBlock__desc}>
                 Выполнен в виде простыни на стягивающей резинке из махровой ткани с непромокаемой мембраной. Хорошо впитывает и защищает матрас от влаги. Эти простыни изготавливаются, точно по размерам оригинального спального места.
               </div>

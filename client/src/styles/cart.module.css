@@ -434,6 +434,22 @@
 
 }
 
+@media (max-width: 450px) {
+  .cartSummary {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .summaryContent {
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
 .mobileControls,
 .mobilePrice {
   display: none;
