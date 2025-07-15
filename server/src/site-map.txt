@@ -1,0 +1,11 @@
+# Карта сайта (site-map)
+/
+/catalog
+/catalog/:company
+/catalog/:company/:productID
+/covers
+/covers/:id
+/cart
+/payment
+/contacts
+/about 
