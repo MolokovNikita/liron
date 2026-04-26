@@ -1,0 +1,16 @@
+{
+  "bestsellers": [
+    {
+      "mattressId": "3",
+      "price": "10000"
+    },
+    {
+      "mattressId": "4",
+      "price": "12000"
+    },
+    {
+      "mattressId": "8",
+      "price": "13000"
+    }
+  ]
+}

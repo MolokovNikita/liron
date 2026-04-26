@@ -18,7 +18,24 @@ app.use(express.json());
 app.use(
   cors({
     credentials: true,
-    origin: CLIENT_URL,
+    origin: function (origin, callback) {
+      // Разрешаем запросы без origin (например, Postman, curl)
+      if (!origin) return callback(null, true);
+      
+      // Разрешенные origins
+      const allowedOrigins = [
+        CLIENT_URL,
+        "https://liron-fura.ru",
+        "http://194.58.126.194:5173",
+        "http://localhost:5173"
+      ];
+      
+      if (allowedOrigins.indexOf(origin) !== -1 || origin.includes("liron-fura.ru")) {
+        callback(null, true);
+      } else {
+        callback(null, true); // Временно разрешаем все для отладки
+      }
+    },
     allowedHeaders: ["Authorization", "Content-Type", "x-token"],
   }),
 );

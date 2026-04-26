@@ -2,7 +2,7 @@ import Header from "../components/Header.jsx";
 import Footer from "../components/Footer.jsx";
 import styles from "../styles/main-content.module.css";
 import { Link } from "react-router-dom";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import Map from "../components/UI/Map.jsx";
 import config from "../config/config.js";
 import axios from "axios";
@@ -11,23 +11,17 @@ import GalleryBlock from "../components/UI/Gallery/GalleryBlock.jsx";
 import { Helmet } from "react-helmet-async";
 import StructuredData from "../components/StructuredData";
 
+const DEFAULT_BESTSELLERS = [
+  { id: 1, name: "DAF XF 105", price: "14 500 ₽", picPath: "/uploads/mattresses/11/1.jpg", company: "DAF", productID: 11 },
+  { id: 2, name: "Mercedes-Benz Actros MP1", price: "14 500 ₽", picPath: "/uploads/mattresses/14/1.jpg", company: "Mercedes-Benz", productID: 14 },
+  { id: 3, name: "Scania R", price: "14 500 ₽", picPath: "/uploads/mattresses/5/1.jpg", company: "Scania", productID: 5 },
+];
+
 export default function MainPage() {
   const [faqOpen, setFaqOpen] = useState([false, false, false, false, false, false]);
   const [companies, setCompanies] = useState([]);
-
-  const gallery_images = Array.from({ length: 44 }, (_, i) => {
-    const filename = `${i + 1}.jpg`;
-    return {
-      original: `${config.API_URL}/uploads/gallery_images/${filename}`,
-      thumbnail: `${config.API_URL}/uploads/gallery_images/${filename}`,
-    };
-  });
-
-  const bestsellers_dummy = [
-    { id: 1, name: 'DAF XF 105', price: '14 500 ₽', pic: `${config.API_URL}/uploads/mattresses/11/1.jpg`, company: 'DAF', productID: 11 },
-    { id: 2, name: 'Mercedes-Benz Actros MP1', price: '14 500 ₽', pic: `${config.API_URL}/uploads/mattresses/14/1.jpg`, company: 'Mercedes-Benz', productID: 14 },
-    { id: 3, name: 'Scania R', price: '14 500 ₽', pic: `${config.API_URL}/uploads/mattresses/5/1.jpg`, company: 'Scania', productID: 5 },
-  ];
+  const [galleryImages, setGalleryImages] = useState([]);
+  const [bestsellers, setBestsellers] = useState(DEFAULT_BESTSELLERS);
 
   const faqQuestions = [
     "Как выбрать подходящий матрас для моего грузовика?",
@@ -51,24 +45,67 @@ export default function MainPage() {
   ];
 
   useEffect(() => {
+    // Компании
     axios
       .get(`${config.API_URL}/company`)
       .then((res) => {
         const companiesWithPic = res.data.slice(0, 13).map((item) => ({
           ...item,
-          pic: `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
+          pic: item.logo
+            ? `${config.API_URL}${item.logo}`
+            : `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
         }));
         setCompanies(companiesWithPic);
       })
-      .catch((err) => {
-        console.error("Ошибка при получении компаний:", err);
+      .catch((err) => console.error("Ошибка при получении компаний:", err));
+
+    // Галерея из API
+    axios
+      .get(`${config.API_URL}/gallery`)
+      .then((res) => {
+        if (res.data && res.data.length > 0) {
+          setGalleryImages(
+            res.data.map((path) => ({
+              original: `${config.API_URL}${path}`,
+              thumbnail: `${config.API_URL}${path}`,
+            }))
+          );
+        } else {
+          // Fallback к нумерованным файлам
+          setGalleryImages(
+            Array.from({ length: 44 }, (_, i) => {
+              const filename = `${i + 1}.jpg`;
+              return {
+                original: `${config.API_URL}/uploads/gallery_images/${filename}`,
+                thumbnail: `${config.API_URL}/uploads/gallery_images/${filename}`,
+              };
+            })
+          );
+        }
+      })
+      .catch(() => {
+        // Fallback при ошибке
+        setGalleryImages(
+          Array.from({ length: 44 }, (_, i) => ({
+            original: `${config.API_URL}/uploads/gallery_images/${i + 1}.jpg`,
+            thumbnail: `${config.API_URL}/uploads/gallery_images/${i + 1}.jpg`,
+          }))
+        );
       });
+
+    // Хиты продаж из настроек
+    axios
+      .get(`${config.API_URL}/site-settings`)
+      .then((res) => {
+        if (res.data?.bestsellers && res.data.bestsellers.length > 0) {
+          setBestsellers(res.data.bestsellers);
+        }
+      })
+      .catch(() => {});
   }, []);
 
   const toggleFaq = (index) => {
-    const newFaqOpen = [...faqOpen];
-    newFaqOpen[index] = !newFaqOpen[index];
-    setFaqOpen(newFaqOpen);
+    setFaqOpen((prev) => prev.map((v, i) => (i === index ? !v : v)));
   };
 
   return (
@@ -136,9 +173,7 @@ export default function MainPage() {
             <li>
               <img className={styles.badge__pic} src="/badge.png" alt="Гарантия качества" loading="lazy" />
               <div>
-                <p className={styles.choose__text__item}>
-                  Гарантия качества
-                </p>
+                <p className={styles.choose__text__item}>Гарантия качества</p>
                 <p className={styles.choose__text__label}>
                   Мы контролируем каждый этап производства, чтобы вы получили
                   матрас, который прослужит долгие годы.
@@ -148,9 +183,7 @@ export default function MainPage() {
             <li>
               <img className={styles.support__pic} src="/support.png" alt="Индивидуальный подход" loading="lazy" />
               <div>
-                <p className={styles.choose__text__item}>
-                  Индивидуальный подход
-                </p>
+                <p className={styles.choose__text__item}>Индивидуальный подход</p>
                 <p className={styles.choose__text__label}>
                   Создаем матрасы по вашим размерам и требованиям для
                   максимального удобства.
@@ -158,16 +191,9 @@ export default function MainPage() {
               </div>
             </li>
             <li>
-              <img
-                className={styles.experience__pic}
-                src="/experience.png"
-                alt="Большой опыт"
-                loading="lazy"
-              />
+              <img className={styles.experience__pic} src="/experience.png" alt="Большой опыт" loading="lazy" />
               <div>
-                <p className={styles.choose__text__item}>
-                  Большой опыт
-                </p>
+                <p className={styles.choose__text__item}>Большой опыт</p>
                 <p className={styles.choose__text__label}>
                   Более 10 лет работаем для того, чтобы ваши поездки были
                   комфортными.
@@ -181,14 +207,19 @@ export default function MainPage() {
       <div className={styles.bestsellers__container}>
         <h2 className={styles.bestsellers__title}>Хиты продаж</h2>
         <div className={styles.bestsellers__grid}>
-          {bestsellers_dummy.map((product, idx) => (
+          {bestsellers.map((product, idx) => (
             <Link
-              key={product.id + '-' + idx}
+              key={`${product.productID}-${idx}`}
               to={`/catalog/${product.company}/${product.productID}`}
               className={styles.product__card}
               onClick={() => window.scrollTo({ top: 0, left: 0, behavior: "instant" })}
             >
-              <img src={product.pic} alt={`Матрас для фуры ${product.name}`} className={styles.product__image} loading="lazy" />
+              <img
+                src={`${config.API_URL}${product.picPath}`}
+                alt={`Матрас для фуры ${product.name}`}
+                className={styles.product__image}
+                loading="lazy"
+              />
               <div className={styles.product__info}>
                 <h3 className={styles.product__name}>Матрас для фуры {product.name}</h3>
                 <p className={styles.product__price}>{product.price}</p>
@@ -210,29 +241,26 @@ export default function MainPage() {
       <div className={styles.gallery__wrapper}>
         <h2 className={styles.gallery__title}>Галерея</h2>
         <div className={styles.gallery_container}>
-          <GalleryBlock images={gallery_images} />
+          {galleryImages.length > 0 && <GalleryBlock images={galleryImages} />}
         </div>
       </div>
 
       <Map />
 
-      <div className={styles.often_question__text}>
-        Часто задаваемые вопросы
-      </div>
+      <div className={styles.often_question__text}>Часто задаваемые вопросы</div>
 
       <div className={styles.faq_container}>
         {faqOpen.map((isOpen, idx) => (
-          <div className={`${styles.faq_item} ${isOpen ? styles.open : ''}`} key={idx}>
+          <div className={`${styles.faq_item} ${isOpen ? styles.open : ""}`} key={idx}>
             <div className={styles.faq_question} onClick={() => toggleFaq(idx)}>
               {faqQuestions[idx]}
-              <span>{isOpen ? "-" : "+"}</span>
+              <span>{isOpen ? "−" : "+"}</span>
             </div>
-            <div className={styles.faq_answer}>
-              {faqAnswers[idx]}
-            </div>
+            <div className={styles.faq_answer}>{faqAnswers[idx]}</div>
           </div>
         ))}
       </div>
+
       <Footer />
     </>
   );

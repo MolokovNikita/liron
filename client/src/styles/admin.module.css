@@ -1,0 +1,935 @@
+/* ─── Логин ─────────────────────────────────────────────────────────────────── */
+.loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.loginBox {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.loginBox h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+  color: #333;
+}
+
+.loginBox form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.loginBox input {
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.loginBox button {
+  padding: 0.75rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.loginBox button:hover {
+  background: #5568d3;
+}
+
+/* ─── Контейнер ─────────────────────────────────────────────────────────────── */
+.adminContainer {
+  min-height: 100vh;
+  background: #f0f2f5;
+  padding: 1.5rem;
+}
+
+.adminHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  background: white;
+  padding: 1.25rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.adminHeader h1 {
+  margin: 0;
+  color: #1a1a2e;
+  font-size: 1.4rem;
+}
+
+.logoutBtn {
+  padding: 0.5rem 1.25rem;
+  background: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: background 0.2s;
+}
+
+.logoutBtn:hover {
+  background: #c82333;
+}
+
+/* ─── Вкладки ───────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1.5rem;
+  background: white;
+  padding: 0.4rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  flex-wrap: wrap;
+}
+
+.tabs button {
+  padding: 0.6rem 1.25rem;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-radius: 7px;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+  color: #555;
+  white-space: nowrap;
+}
+
+.tabs button:hover {
+  background: #f0f2f5;
+}
+
+.tabs button.active {
+  background: #667eea;
+  color: white;
+  font-weight: 600;
+}
+
+.loadingBar {
+  text-align: center;
+  padding: 0.75rem;
+  background: #e8f0fe;
+  color: #667eea;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+}
+
+/* ─── Контент ───────────────────────────────────────────────────────────────── */
+.content {
+  background: white;
+  border-radius: 10px;
+  padding: 1.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tabContent {
+  width: 100%;
+}
+
+.tabHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.tabHeader h2 {
+  margin: 0;
+  color: #1a1a2e;
+  font-size: 1.2rem;
+}
+
+/* ─── Кнопки действий ───────────────────────────────────────────────────────── */
+.addBtn {
+  padding: 0.6rem 1.25rem;
+  background: #28a745;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+  display: inline-block;
+  text-decoration: none;
+}
+
+.addBtn:hover:not(.disabled) {
+  background: #218838;
+}
+
+.addBtn.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.saveBtn {
+  padding: 0.7rem 1.5rem;
+  background: #667eea;
+  color: white;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+  margin-top: 1rem;
+}
+
+.saveBtn:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.saveBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.editBtn,
+.deleteBtn {
+  padding: 0.4rem 0.9rem;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.editBtn {
+  background: #007bff;
+  color: white;
+}
+
+.editBtn:hover {
+  background: #0056b3;
+}
+
+.deleteBtn {
+  background: #dc3545;
+  color: white;
+}
+
+.deleteBtn:hover {
+  background: #c82333;
+}
+
+.actionCell {
+  white-space: nowrap;
+}
+
+.actionCellInner {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+/* ─── Таблица ───────────────────────────────────────────────────────────────── */
+.tableContainer {
+  overflow-x: auto;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.table th {
+  background: #f8f9fa;
+  padding: 0.85rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 2px solid #e9ecef;
+  white-space: nowrap;
+}
+
+.table td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e9ecef;
+  vertical-align: middle;
+}
+
+.table tr:hover td {
+  background: #f8f9fa;
+}
+
+.thumbnail {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 5px;
+  display: block;
+}
+
+.noImage {
+  color: #aaa;
+  font-style: italic;
+  font-size: 0.85rem;
+}
+
+/* ─── Модальное окно ────────────────────────────────────────────────────────── */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 1000;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+}
+
+.modalContent {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 560px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  position: relative;
+  margin: auto;
+}
+
+.modalWide {
+  max-width: 860px;
+}
+
+.modalContent h3 {
+  margin: 0 2rem 1.5rem 0;
+  color: #1a1a2e;
+}
+
+.modalClose {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  cursor: pointer;
+  color: #888;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.2s;
+}
+
+.modalClose:hover {
+  color: #333;
+}
+
+/* ─── Формы ─────────────────────────────────────────────────────────────────── */
+.formGroup {
+  margin-bottom: 1.25rem;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 0.4rem;
+  font-weight: 600;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.formGroup input[type="text"],
+.formGroup input[type="number"],
+.formGroup select,
+.formGroup textarea {
+  width: 100%;
+  padding: 0.65rem 0.85rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 7px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.formGroup input:focus,
+.formGroup select:focus,
+.formGroup textarea:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
+}
+
+.formGroup textarea {
+  resize: vertical;
+}
+
+.formGroup small {
+  display: block;
+  margin-top: 0.3rem;
+  color: #777;
+  font-size: 0.82rem;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.formActions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.75rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.formActions button {
+  padding: 0.65rem 1.5rem;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s;
+}
+
+.formActions button[type="submit"] {
+  background: #28a745;
+  color: white;
+}
+
+.formActions button[type="submit"]:hover:not(:disabled) {
+  background: #218838;
+}
+
+.formActions button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.formActions button[type="button"] {
+  background: #6c757d;
+  color: white;
+}
+
+.formActions button[type="button"]:hover {
+  background: #5a6268;
+}
+
+.multiSelect {
+  min-height: 100px;
+}
+
+.preview {
+  max-width: 200px;
+  max-height: 180px;
+  margin-top: 0.75rem;
+  border-radius: 7px;
+  object-fit: cover;
+  display: block;
+  border: 1px solid #e9ecef;
+}
+
+/* ─── Редактор массивов ─────────────────────────────────────────────────────── */
+.arrayEditorList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  min-height: 2rem;
+}
+
+.arrayTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #e8f0fe;
+  color: #3d4db7;
+  padding: 0.3rem 0.7rem;
+  border-radius: 20px;
+  font-size: 0.88rem;
+}
+
+.arrayTagRemove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #3d4db7;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.arrayTagRemove:hover {
+  opacity: 1;
+}
+
+.arrayEditorInput {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.arrayEditorInput input {
+  flex: 1;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #d0d5dd;
+  border-radius: 7px;
+  font-size: 0.9rem;
+}
+
+.arrayEditorInput input:focus {
+  outline: none;
+  border-color: #667eea;
+}
+
+.arrayAddBtn {
+  padding: 0.55rem 1rem;
+  background: #e8f0fe;
+  color: #3d4db7;
+  border: 1px solid #c2d0f8;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.arrayAddBtn:hover {
+  background: #c2d0f8;
+}
+
+/* ─── Фото матраса ──────────────────────────────────────────────────────────── */
+.imageGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.imageItem {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 7px;
+  overflow: hidden;
+  border: 1px solid #e9ecef;
+}
+
+.imageItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.imageDeleteBtn {
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  background: rgba(220, 53, 69, 0.9);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 0.9rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.imageDeleteBtn:hover {
+  background: #c82333;
+}
+
+.noImagesText {
+  color: #aaa;
+  font-style: italic;
+  font-size: 0.9rem;
+  margin: 0.5rem 0;
+}
+
+/* ─── Отзывы ────────────────────────────────────────────────────────────────── */
+.reviewsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.reviewCard {
+  background: #f8f9fa;
+  border-radius: 9px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.reviewImage {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.reviewActions {
+  padding: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+/* ─── Галерея (admin) ───────────────────────────────────────────────────────── */
+.uploadArea {
+  display: flex;
+  align-items: center;
+}
+
+.galleryAdminGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.galleryAdminItem {
+  position: relative;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  background: #f0f2f5;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.galleryAdminItem img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.2s;
+}
+
+.galleryAdminItem:hover img {
+  transform: scale(1.04);
+}
+
+.galleryAdminOverlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+  padding: 0.5rem 0.6rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.galleryAdminItem:hover .galleryAdminOverlay {
+  opacity: 1;
+}
+
+.galleryAdminFilename {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 0.72rem;
+  text-align: center;
+  word-break: break-all;
+  line-height: 1.2;
+}
+
+.galleryDeleteBtn {
+  padding: 0.3rem 0.8rem;
+  background: rgba(220, 53, 69, 0.9);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  transition: background 0.2s;
+}
+
+.galleryDeleteBtn:hover {
+  background: #c82333;
+}
+
+.emptyText {
+  color: #aaa;
+  text-align: center;
+  padding: 3rem 0;
+  font-size: 1rem;
+}
+
+/* ─── Настройки ─────────────────────────────────────────────────────────────── */
+.settingsSection {
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin-bottom: 1.75rem;
+}
+
+.settingsSectionTitle {
+  margin: 0 0 1rem;
+  color: #1a1a2e;
+  font-size: 1.05rem;
+}
+
+.settingsLabel {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: #555;
+  margin: 0 0 0.4rem;
+}
+
+.settingsHint {
+  color: #777;
+  font-size: 0.88rem;
+  margin: 0 0 1rem;
+}
+
+.heroUploadRow {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.heroCurrentWrap,
+.heroUploadControls {
+  flex: 1;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.heroThumb {
+  width: 100%;
+  max-width: 280px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+  display: block;
+}
+
+.bestsellerRow {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+}
+
+.bestsellerNum {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 1.1rem;
+  min-width: 1.5rem;
+}
+
+.bestsellerThumb {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 1px solid #e9ecef;
+  flex-shrink: 0;
+}
+
+/* ─── ClothingTypeSelector (форма матраса) ──────────────────────────────────── */
+.ctSelector {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ctSelectedList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.ctSelectedItem {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  padding: 0.4rem 0.7rem;
+}
+
+.ctOrder {
+  font-weight: 700;
+  color: #667eea;
+  font-size: 0.9rem;
+  min-width: 1.2rem;
+}
+
+.ctThumb {
+  width: 36px;
+  height: 36px;
+  object-fit: cover;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.ctName {
+  flex: 1;
+  font-size: 0.92rem;
+  color: #333;
+}
+
+.ctActions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.ctMoveBtn {
+  background: #e8f0fe;
+  border: none;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #3d4db7;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.ctMoveBtn:hover {
+  background: #c2d0f8;
+}
+
+.ctRemoveBtn {
+  background: #fee2e2;
+  border: none;
+  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  cursor: pointer;
+  font-size: 1rem;
+  color: #dc3545;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.ctRemoveBtn:hover {
+  background: #fecaca;
+}
+
+.ctAddRow {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.ctAddSelect {
+  flex: 1;
+  padding: 0.55rem 0.8rem;
+  border: 1px dashed #667eea;
+  border-radius: 7px;
+  font-size: 0.9rem;
+  color: #3d4db7;
+  background: #f0f4ff;
+  cursor: pointer;
+}
+
+.ctAddSelect:focus {
+  outline: none;
+  border-color: #3d4db7;
+}
+
+/* ─── ClothingTypesTab (вкладка) ────────────────────────────────────────────── */
+.ctGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.25rem;
+  margin-top: 1rem;
+}
+
+.ctCard {
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.07);
+  transition: box-shadow 0.2s;
+}
+
+.ctCard:hover {
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+}
+
+.ctCardImage {
+  width: 100%;
+  aspect-ratio: 1;
+  background: #f0f2f5;
+  overflow: hidden;
+}
+
+.ctCardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.ctNoImage {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #bbb;
+  font-size: 0.85rem;
+}
+
+.ctCardBody {
+  padding: 0.75rem;
+}
+
+.ctCardName {
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 0.3rem;
+  font-size: 0.95rem;
+}
+
+.ctCardDesc {
+  color: #666;
+  font-size: 0.82rem;
+  margin: 0 0 0.5rem;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

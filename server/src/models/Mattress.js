@@ -24,6 +24,14 @@ module.exports = (sequelize, DataTypes) => {
         otherKey: "rigidity_id",
         as: "MattressRigidities",
       });
+
+      // Многие-ко-многим с ClothingType
+      Mattress.belongsToMany(models.ClothingType, {
+        through: models.MattressClothingType,
+        foreignKey: "mattress_id",
+        otherKey: "clothing_type_id",
+        as: "ClothingTypes",
+      });
     }
   }
 

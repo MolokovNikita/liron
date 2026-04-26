@@ -16,6 +16,7 @@ import RefundPage from "./pages/RefundPage";
 import ScrollToTop from "./components/UI/ScrollToTop";
 import CoversPage from "./pages/CoversPage";
 import CoverCardPage from "./pages/CoverCardPage";
+import AdminPage from "./pages/AdminPage";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
         <Route path="/wholesale" element={<><ScrollToTop /><WholesalePage /></>} />
         <Route path="/covers" element={<><ScrollToTop /><CoversPage /></>} />
         <Route path="/covers/:id" element={<><ScrollToTop /><CoverCardPage /></>} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route path="*" element={<><ScrollToTop /><NotFoundPage /></>} />
       </Routes>
     </>

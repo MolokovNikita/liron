@@ -212,42 +212,45 @@ export default function MattressPage() {
               </h2>
 
               <div className={styles.clotheSelector}>
+                <div className={styles.clotheSelector__title}>Тип ткани:</div>
+                <div className={styles.fabricCircles}>
+                  {(() => {
+                    // Используем новые ClothingTypes с картинками, fallback на старый массив строк
+                    const fabricTypes = mattress.ClothingTypes?.length > 0
+                      ? mattress.ClothingTypes
+                      : (mattress.clothing_types || []).map((name) => ({ name, image: null, description: null }));
 
-                <div className={styles.clotheSelector__title}>Тип ткани:
-                  <span className={styles.clotheInfo__hover}>
-                    <span className={styles.clotheSelector__icon}><AiOutlineInfoCircle /></span>
-                    <div
-                      className={styles.clotheInfoMenu}>
-                      <h3>Жаккард</h3>
-                      <p>Прочная ткань с выразительным рисунком. Износостойкая, легко чистится, выглядит стильно.</p>
-                      <h3>Велюр</h3>
-                      <p>Мягкая, бархатистая ткань. Дарит комфорт, приятна на ощупь, хорошо пропускает воздух.</p>
-                    </div>
-                  </span>
+                    return fabricTypes.map((ct, index) => {
+                      const isDisabled = selectedClassIndex === 1 && !mattress.price?.[1]?.[index];
+                      const isActive = selectedClothe === index;
+                      return (
+                        <div key={index} className={styles.fabricCircleWrap}>
+                          <button
+                            className={`${styles.fabricCircle} ${isActive ? styles.fabricCircleActive : ""} ${isDisabled ? styles.fabricCircleDisabled : ""}`}
+                            onClick={() => { if (!isDisabled) setSelectedClothe(index); }}
+                            disabled={isDisabled}
+                            title={ct.name}
+                          >
+                            {ct.image
+                              ? <img src={`${config.API_URL}${ct.image}`} alt={ct.name} />
+                              : <span className={styles.fabricCircleText}>{ct.name.slice(0, 2)}</span>
+                            }
+                          </button>
+                          <span className={styles.fabricCircleLabel}>{ct.name}</span>
+                          {(ct.image || ct.description) && (
+                            <div className={styles.fabricTooltip}>
+                              {ct.image && (
+                                <img src={`${config.API_URL}${ct.image}`} alt={ct.name} className={styles.fabricTooltipImg} />
+                              )}
+                              <p className={styles.fabricTooltipName}>{ct.name}</p>
+                              {ct.description && <p className={styles.fabricTooltipDesc}>{ct.description}</p>}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    });
+                  })()}
                 </div>
-                <div className={styles.clothe}>
-                  {mattress.clothing_types?.map((clothe, index) => {
-                    const isDisabled =
-                      selectedClassIndex === 1 && !mattress.price?.[1]?.[index];
-                    return (
-                      <button
-                        key={index}
-                        className={`${styles.clotheOption} 
-                  ${selectedClothe === index ? styles.activeClothe : ""} 
-                  ${isDisabled ? styles.disabledClothe : ""}`}
-                        onClick={() => {
-                          if (!isDisabled) {
-                            setSelectedClothe(index);
-                          }
-                        }}
-                        disabled={isDisabled}
-                      >
-                        {clothe}
-                      </button>
-                    );
-                  })}
-                </div>
-
               </div>
               {/* Переключатель класса матраса */}
               <div className={styles.clotheSelector}>
@@ -275,15 +278,15 @@ export default function MattressPage() {
                         onClick={() => {
                           if (!isDisabled) {
                             setSelectedClassIndex(index);
-                            if (
-                              index === 1 && // Премиум
-                              mattress.clothing_types?.[selectedClothe] !== "Велюр"
-                            ) {
-                              const velourIndex = mattress.clothing_types?.findIndex(
-                                (type) => type === "Велюр"
-                              );
-                              if (velourIndex !== -1) {
-                                setSelectedClothe(velourIndex);
+                            if (index === 1) {
+                              // При переключении на Премиум автовыбираем Велюр, если текущая ткань не Велюр
+                              const fabricTypes = mattress.ClothingTypes?.length > 0
+                                ? mattress.ClothingTypes
+                                : (mattress.clothing_types || []).map((name) => ({ name }));
+                              const currentName = fabricTypes[selectedClothe]?.name;
+                              if (currentName !== "Велюр") {
+                                const velourIndex = fabricTypes.findIndex((t) => t.name === "Велюр");
+                                if (velourIndex !== -1) setSelectedClothe(velourIndex);
                               }
                             }
                           }

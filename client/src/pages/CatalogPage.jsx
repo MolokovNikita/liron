@@ -27,7 +27,9 @@ export default function Catalog() {
       setCompanies(
         res.data.map((item) => ({
           ...item,
-          pic: `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
+          pic: item.logo 
+            ? `${config.API_URL}${item.logo}` 
+            : `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
         })),
       );
       setIsLoading(false);
@@ -59,6 +61,7 @@ export default function Catalog() {
                     alt={`Логотип компании ${company.name}`}
                     className={styles.company__logo}
                     loading="lazy"
+                    key={`${company.id}-${company.logo || 'default'}`}
                   />
                   <div className={styles.company__name}>{company.name}</div>
                 </Link>

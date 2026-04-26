@@ -72,10 +72,10 @@ export default function Header() {
         </div>
       </div>
       <div className={styles.bottom__header}>
-        <a href="/" className={styles.logo__href}>
+        <Link to="/" className={styles.logo__href}>
           <img className={styles.logo} src="/main_logo.png" />
           <div className={styles.logo__label}><i>Матрасы для фур</i></div>
-        </a>
+        </Link>
         <div className={styles.burger__menu}>
           <button onClick={() => setIsBurgerOpen(!isBurgerOpen)}>
             {isBurgerOpen ? <CloseIcon fontSize="large" /> : <MenuIcon fontSize="large" />}

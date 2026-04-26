@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
   Company.init(
     {
       name: { type: DataTypes.STRING, unique: true, allowNull: false },
+      logo: { type: DataTypes.STRING, allowNull: true },
     },
     {
       sequelize,
