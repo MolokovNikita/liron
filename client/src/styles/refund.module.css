@@ -1,52 +1,87 @@
+/* ─── REFUND PAGE ─── */
 .refund {
-    padding: 20px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 32px 40px;
 }
 
 .refund__title {
-    font-size: 2.5rem;
-    color: #000000db;
-    margin-bottom: 30px;
-    text-align: center;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #ddd;
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 40px;
+  text-align: center;
+  padding-bottom: 0;
+  border-bottom: none;
+}
+
+.refund__title::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 0 auto 16px;
 }
 
 .refund__section {
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 15px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: none;
 }
 
 .refund__subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 15px;
-    color: #333;
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 18px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .refund__iconPositive {
-    color: #28a745;
-    font-size: 1.5rem;
+  color: var(--green);
+  font-size: 1.3rem;
 }
 
 .refund__iconNegative {
-    color: #dc3545;
-    font-size: 1.5rem;
+  color: var(--danger);
+  font-size: 1.3rem;
 }
 
 .refund__list {
-    padding-left: 20px;
-    list-style: disc;
+  list-style: none;
+  padding-left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .refund__item {
-    font-size: 1rem;
-    color: #555;
-    margin-bottom: 10px;
-    line-height: 1.5;
+  font-size: 14px;
+  color: var(--text-sec);
+  line-height: 1.6;
+  padding-left: 18px;
+  position: relative;
+}
+
+.refund__item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-dim);
 }

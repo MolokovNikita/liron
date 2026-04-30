@@ -21,8 +21,9 @@ export default function Header() {
   useEffect(() => {
     setIsLoading(true);
     axios.get(`${config.API_URL}/company`).then((res) => {
+      const data = Array.isArray(res.data) ? res.data : [];
       setCompanies(
-        res.data.map((item) => ({
+        data.map((item) => ({
           ...item,
           name: item.name,
           url: `/catalog/${item.name.toLowerCase()}`
@@ -43,20 +44,29 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
-
-      if (currentScrollY > lastScrollY && currentScrollY > 50) {
+      const isMobile = window.innerWidth <= 768;
+      // На мобилке хедер всегда виден — не скрываем
+      if (isMobile) {
+        setIsVisible(true);
+        setLastScrollY(currentScrollY);
+        return;
+      }
+      // Скрываем только при скролле вниз больше 80px от начала
+      const scrolledDown = currentScrollY > lastScrollY;
+      const scrollDelta = currentScrollY - lastScrollY;
+      if (scrolledDown && currentScrollY > 120 && scrollDelta > 4) {
         setIsVisible(false);
         if (isBurgerOpen) setIsBurgerOpen(false);
-      } else {
+      } else if (!scrolledDown) {
         setIsVisible(true);
       }
 
       setLastScrollY(currentScrollY);
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, [lastScrollY, isBurgerOpen]);
 
   return (
     <header className={`${styles.header} ${isVisible ? styles.visible : styles.hidden}`}>
@@ -73,8 +83,7 @@ export default function Header() {
       </div>
       <div className={styles.bottom__header}>
         <Link to="/" className={styles.logo__href}>
-          <img className={styles.logo} src="/main_logo.png" />
-          <div className={styles.logo__label}><i>Матрасы для фур</i></div>
+          <img src="/main_logo.png" alt="LIRON" className={styles.logo__img} />
         </Link>
         <div className={styles.burger__menu}>
           <button onClick={() => setIsBurgerOpen(!isBurgerOpen)}>
@@ -84,11 +93,16 @@ export default function Header() {
             <ul className={styles.burger__list}>
               <li className={styles.burger_basket__item}>
                 <Link to="/cart">
-                  <img className={styles.basket__icon} src="/basket.png" alt="" />
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{flexShrink:0}}>
+                    <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+                    <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+                  </svg>
                   Корзина
-                  <div className={styles.burger_basket__counter}>
-                    {basket.length}
-                  </div>
+                  {basket.length > 0 && (
+                    <div className={styles.burger_basket__counter}>
+                      {basket.length}
+                    </div>
+                  )}
                 </Link>
               </li>
               <li><Link to="/">Главная</Link></li>

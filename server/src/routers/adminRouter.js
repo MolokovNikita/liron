@@ -49,5 +49,6 @@ router.delete("/clothing-types/:id", AdminController.deleteClothingType);
 router.get("/types", AdminController.getTypes);
 router.get("/shapes", AdminController.getShapes);
 router.get("/rigidities", AdminController.getRigidities);
+router.post("/rigidities", AdminController.createRigidity);
 
 module.exports = router;

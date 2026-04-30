@@ -1,35 +1,71 @@
+/* ─── DELIVERY PAGE ─── */
 .deliveryContainer {
-  /* max-width: 800px; */
-  padding: 30px;
-  border-radius: 12px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 32px 40px;
 }
 
 .title {
-  font-size: 36px;
-  margin-bottom: 1.5rem;
-  border-bottom: 2px solid #ddd;
-  padding-bottom: 8px;
-  align-items: center;
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 40px;
+  border-bottom: none;
+  padding-top: 60px;
+  padding-bottom: 0;
   text-align: center;
-  margin-top: 40px;
+  margin-top: 0;
+  color: var(--text);
+}
+
+.title::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 0 auto 16px;
 }
 
 .text {
-  font-size: 16px;
+  font-size: 15px;
   margin-bottom: 16px;
-  line-height: 1.6;
-
+  line-height: 1.7;
+  color: var(--text-sec);
 }
 
 .regionList,
 .pickupList {
-  list-style: disc inside;
+  list-style: none;
   margin-bottom: 24px;
   padding-left: 0;
-  color: #444;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .regionList li,
 .pickupList li {
-  margin-bottom: 6px;
+  margin-bottom: 0;
+  padding: 8px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 15px;
+  color: var(--text-sec);
+  border-bottom: 1px solid var(--border);
+}
+
+.regionList li::before,
+.pickupList li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
 }

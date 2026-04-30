@@ -569,6 +569,28 @@ class AdminController {
     }
   }
 
+  async createRigidity(req, res) {
+    try {
+      const rigidityName = req.body.rigidity_name?.trim();
+      if (!rigidityName) {
+        return res.status(400).json({ error: "Укажите название жёсткости" });
+      }
+
+      const existingRigidity = await MattressRigidity.findOne({
+        where: { rigidity_name: rigidityName },
+      });
+      if (existingRigidity) {
+        return res.status(409).json({ error: "Такая жёсткость уже существует" });
+      }
+
+      const rigidity = await MattressRigidity.create({ rigidity_name: rigidityName });
+      res.status(201).json(rigidity);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: "Ошибка при создании жёсткости" });
+    }
+  }
+
   // ========== ТИПЫ ТКАНЕЙ ==========
   async getClothingTypes(req, res) {
     try {

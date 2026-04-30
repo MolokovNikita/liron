@@ -23,6 +23,7 @@ export default function MattressPage() {
   const [selectedClothe, setSelectedClothe] = useState(0);
   const [selectedClassIndex, setSelectedClassIndex] = useState(0);
   const [coverCount, setCoverCount] = useLocalState(0);
+  const [activeTab, setActiveTab] = useState(0);
 
   const mattressClasses = ["Комфорт", "Премиум"];
   const [classMaterials, setClassMaterials] = useState([]);
@@ -155,10 +156,9 @@ export default function MattressPage() {
   const coverId = `cover-${mattress.id}`;
   const coverInCart = basket.find(item => item.id === coverId);
   const coverQty = coverInCart ? coverInCart.quantity : 0;
-  const coverImages = [1, 2, 3, 4, 5].map(i => ({
-    original: `${config.API_URL}/uploads/cover/cover_${i - 1}.jpg`,
-    thumbnail: `${config.API_URL}/uploads/cover/cover_${i - 1}.jpg`
-  }));
+  const coverImages = [
+    { original: "/cover_placeholder.jpg", thumbnail: "/cover_placeholder.jpg" },
+  ];
   const handleAddCover = () => {
     if (!coverInCart) {
       dispatch(
@@ -200,6 +200,15 @@ export default function MattressPage() {
       <StructuredData mattress={mattress} />
       <Header />
       <div className={styles.container}>
+        <nav className={styles.breadcrumbs} aria-label="breadcrumb">
+          <Link to="/" className={styles.breadcrumb__link}>Главная</Link>
+          <span className={styles.breadcrumb__sep}>›</span>
+          <Link to="/catalog" className={styles.breadcrumb__link}>Каталог</Link>
+          <span className={styles.breadcrumb__sep}>›</span>
+          <Link to={`/catalog/${company}`} className={styles.breadcrumb__link}>{company?.toUpperCase()}</Link>
+          <span className={styles.breadcrumb__sep}>›</span>
+          <span className={styles.breadcrumb__current}>{mattress.name}</span>
+        </nav>
         <div className={styles.product__main_spec}>
           <h1 className={styles.title}>Матрас для фуры {mattress.name}</h1>
           <div className={styles.productContent}>
@@ -278,16 +287,12 @@ export default function MattressPage() {
                         onClick={() => {
                           if (!isDisabled) {
                             setSelectedClassIndex(index);
-                            if (index === 1) {
-                              // При переключении на Премиум автовыбираем Велюр, если текущая ткань не Велюр
-                              const fabricTypes = mattress.ClothingTypes?.length > 0
-                                ? mattress.ClothingTypes
-                                : (mattress.clothing_types || []).map((name) => ({ name }));
-                              const currentName = fabricTypes[selectedClothe]?.name;
-                              if (currentName !== "Велюр") {
-                                const velourIndex = fabricTypes.findIndex((t) => t.name === "Велюр");
-                                if (velourIndex !== -1) setSelectedClothe(velourIndex);
-                              }
+                            // Если текущая ткань недоступна в новом классе — переключаем на первую доступную
+                            const currentFabricAvailable = !!mattress.price?.[index]?.[selectedClothe];
+                            if (!currentFabricAvailable) {
+                              const firstAvailableIdx = (mattress.price?.[index] || [])
+                                .findIndex((p) => !!p);
+                              if (firstAvailableIdx !== -1) setSelectedClothe(firstAvailableIdx);
                             }
                           }
                         }}
@@ -303,64 +308,40 @@ export default function MattressPage() {
 
               </div>
               {/* Состав по классу матраса */}
-              <div className={styles.clotheSelector}>
-                <div className={styles.clotheSelector__title}>Состав:</div>
-                <ul className={styles.materialList}>
-                  {classMaterials.length > 0 ? classMaterials[selectedClassIndex].map((item, idx) => (
-                    <li key={idx} className={styles.materialItem}>
-                      {item}
-                    </li>
-                  )) : null}
-                </ul>
-              </div>
-              <h3 className={styles.spec__title}>Характеристики</h3>
-              <div className={styles.specifications__container}>
-                <ul className={styles.specifications}>
-                  <li></li>
-                  <li>
-                    <p>Внешний габарит: </p>
-                  </li>
-                  <li>
-                    <p>Высота: </p>
-                  </li>
-                  <li>
-                    <p>Жесткость: </p>
-                  </li>
-                </ul>
-                <ul className={styles.specifications__values}>
-                  <li>
-                    {mattress.width} x {mattress.length}
-                  </li>
-                  <li>
+              {classMaterials.length > 0 && (
+                <div className={styles.composition__card}>
+                  <div className={styles.composition__label}>Состав</div>
+                  <ul className={styles.materialList}>
+                    {classMaterials[selectedClassIndex].map((item, idx) => (
+                      <li key={idx} className={styles.materialItem}>{item}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+
+              {/* Характеристики — 3 карточки */}
+              <div className={styles.spec__cards}>
+                <div className={styles.spec__card}>
+                  <span className={styles.spec__card_label}>Размер</span>
+                  <span className={styles.spec__card_value}>{mattress.width} × {mattress.length} мм</span>
+                </div>
+                <div className={styles.spec__card}>
+                  <span className={styles.spec__card_label}>Высота</span>
+                  <span className={styles.spec__card_value}>
                     {Array.isArray(mattress.thickness)
                       ? mattress.thickness.length === 1
                         ? mattress.thickness[0]
                         : mattress.thickness[selectedClassIndex] ?? mattress.thickness[0]
-                      : mattress.thickness}
-                  </li>
-                  <li>{Array.isArray(mattress.rigidity) ? mattress.rigidity[selectedClassIndex] : mattress.rigidity}</li>
-                </ul>
-              </div>
-              <ul className={styles.specList}>
-                <li>
-                  <p>Внешний габарит:</p>
-                  <span>{mattress.width} x {mattress.length}</span>
-                </li>
-                <li>
-                  <p>Высота:</p>
-                  <span>
-                    {Array.isArray(mattress.thickness)
-                      ? mattress.thickness.length === 1
-                        ? mattress.thickness[0]
-                        : mattress.thickness[selectedClassIndex] ?? mattress.thickness[0]
-                      : mattress.thickness}
+                      : mattress.thickness} мм
                   </span>
-                </li>
-                <li>
-                  <p>Жесткость:</p>
-                  <span>{Array.isArray(mattress.rigidity) ? mattress.rigidity[selectedClassIndex] : mattress.rigidity}</span>
-                </li>
-              </ul>
+                </div>
+                <div className={styles.spec__card}>
+                  <span className={styles.spec__card_label}>Жёсткость</span>
+                  <span className={styles.spec__card_value}>
+                    {Array.isArray(mattress.rigidity) ? mattress.rigidity[selectedClassIndex] : mattress.rigidity}
+                  </span>
+                </div>
+              </div>
 
               {getMattressQuantity(mattress) === 0 ? (
                 <div className={styles.basket__control}>
@@ -400,64 +381,71 @@ export default function MattressPage() {
                 </div>
               )}
 
+              <div className={styles.phone__line}>
+                Или позвоните нам:
+                <a href="tel:+79209219311" className={styles.phone__link}>+7 920 921-93-11</a>
+              </div>
+
               {/* Блок наматрасника */}
             </div>
           </div>
         </div>
-        <div className={styles.coverBlockWrapper}>
-          <div className={styles.coverBlock}>
-            <div className={styles.coverBlock__imageWrap}>
-              <GalleryBlock images={coverImages} showThumbnails={false} />
-            </div>
-            <div className={styles.coverBlock__content}>
-              <h3 className={styles.coverBlock__title}>Наматрасник аквастоп на "{mattress.name}"</h3>
-              <div className={styles.cover__size}>Размер: {mattress.width} x {mattress.length}</div>
-              <div className={styles.cover__price}>Цена: 2000 ₽</div>
-              <div className={styles.coverBlock__desc}>
-                Выполнен в виде простыни на стягивающей резинке из махровой ткани с непромокаемой мембраной. Хорошо впитывает и защищает матрас от влаги. Эти простыни изготавливаются, точно по размерам оригинального спального места.
-              </div>
-              {coverQty === 0 ? (
-                <button className={styles.coverBlock__add} onClick={handleAddCover}>Добавить в корзину</button>
-              ) : (
-                <div className={styles.coverBlock__controls}>
-                  <div className={styles.control__container}>
-                    <button onClick={() => handleChangeCoverQty(-1)} className={styles.coverBlock__btn}>-</button>
-                    <span className={styles.coverBlock__count}>{coverQty}</span>
-                    <button onClick={() => handleChangeCoverQty(1)} className={styles.coverBlock__btn}>+</button>
-                  </div>
-                  <Link to="/cart" className={styles.coverBlock__add}>Перейти в корзину</Link>
+        {/* Наматрасник — компактная карточка */}
+        <div className={styles.coverCard}>
+          <div className={styles.coverCard__img}>
+            <img
+              src={`${config.API_URL}/uploads/cover/cover_0.jpg`}
+              alt="Наматрасник аквастоп"
+            />
+          </div>
+          <div className={styles.coverCard__body}>
+            <h3 className={styles.coverCard__title}>Наматрасник аквастоп на «{mattress.name}»</h3>
+            <p className={styles.coverCard__meta}>
+              Размер: {mattress.width} × {mattress.length} мм · Махровая ткань с непромокаемой мембраной
+            </p>
+            <div className={styles.coverCard__price}>2 000 ₽</div>
+            {coverQty === 0 ? (
+              <button className={styles.coverCard__btn} onClick={handleAddCover}>Добавить в корзину</button>
+            ) : (
+              <div className={styles.coverBlock__controls}>
+                <div className={styles.control__container}>
+                  <button onClick={() => handleChangeCoverQty(-1)} className={styles.coverBlock__btn}>-</button>
+                  <span className={styles.coverBlock__count}>{coverQty}</span>
+                  <button onClick={() => handleChangeCoverQty(1)} className={styles.coverBlock__btn}>+</button>
                 </div>
-              )}
-            </div>
+                <Link to="/cart" className={styles.coverCard__btn}>Перейти в корзину</Link>
+              </div>
+            )}
           </div>
         </div>
-        <div className={styles.tabContent__container}>
-          <div className={styles.descriptionContainer}>
-            <h2 className={styles.title}>Описание</h2>
-            <p className={styles.text}>{mattress.description}</p>
+
+        {/* Табы: Описание / Доставка и оплата */}
+        <div className={styles.tabs__wrapper}>
+          <div className={styles.tabs__nav}>
+            <button
+              className={`${styles.tab__btn} ${activeTab === 0 ? styles.tab__btn_active : ''}`}
+              onClick={() => setActiveTab(0)}
+            >
+              Описание
+            </button>
+            <button
+              className={`${styles.tab__btn} ${activeTab === 1 ? styles.tab__btn_active : ''}`}
+              onClick={() => setActiveTab(1)}
+            >
+              Доставка и оплата
+            </button>
           </div>
-          <div className={styles.deliveryContainer}>
-            <h2 className={styles.title}>Доставка и оплата</h2>
-            <div className={styles.textContainer}>
-              <p><strong>Доставляем нашими курьерами в следующие регионы:</strong></p>
-              <ul className={styles.deliveryList}>
-                <li>Владимирская область</li>
-                <li>Московская область</li>
-                <li>Нижегородская область</li>
-                <li>Тульская область</li>
-                <li>Рязань</li>
-                <li>Казань</li>
-                <li>Санкт-Петербург</li>
-              </ul>
-              <p>Услуга доставки от <strong>1000 до 1500 рублей</strong> за 1 матрас (в зависимости от габаритов).</p>
-              <p><strong>Оплата — при получении товара.</strong></p>
-              <p>Если вы находитесь за пределами указанных регионов, вы можете воспользоваться услугами транспортной компании (ТК).</p>
-              <p><strong>Также доступен самовывоз:</strong></p>
-              <ul className={styles.deliveryList}>
-                <li>С трассы М-12 возле Мурома</li>
-                <li>По адресу: Муромская ул., 2, г. Муром</li>
-              </ul>
-            </div>
+          <div className={styles.tabs__content}>
+            {activeTab === 0 && (
+              <p className={styles.tab__text}>{mattress.description}</p>
+            )}
+            {activeTab === 1 && (
+              <div className={styles.tab__text}>
+                <p><strong>Доставляем курьерами:</strong> Владимирская обл., Московская обл., Нижегородская обл., Тульская обл., Рязань, Казань, Санкт-Петербург.</p>
+                <p>Стоимость доставки: <strong>1 000 – 1 500 ₽</strong> за 1 матрас. Оплата при получении.</p>
+                <p>Для остальных регионов — через транспортную компанию. Самовывоз: трасса М-12, г. Муром.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>

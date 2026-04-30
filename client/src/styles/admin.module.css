@@ -4,22 +4,28 @@
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #1a2a4a 0%, #0f1e36 100%);
 }
 
 .loginBox {
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  background: var(--surface);
+  padding: 48px 40px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.15);
   width: 100%;
-  max-width: 400px;
+  max-width: 380px;
 }
 
 .loginBox h2 {
   margin-bottom: 1.5rem;
-  text-align: center;
-  color: #333;
+  text-align: left;
+  font-family: 'Oswald', sans-serif;
+  font-size: 26px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
 .loginBox form {
@@ -29,59 +35,177 @@
 }
 
 .loginBox input {
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-family: 'Inter', sans-serif;
+  background: var(--surface2);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.loginBox input:focus {
+  border-color: var(--accent);
 }
 
 .loginBox button {
-  padding: 0.75rem;
-  background: #667eea;
+  padding: 14px;
+  background: var(--accent);
   color: white;
   border: none;
-  border-radius: 6px;
-  font-size: 1rem;
+  border-radius: var(--radius);
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .loginBox button:hover {
-  background: #5568d3;
+  background: var(--accent-hover);
 }
 
-/* ─── Контейнер ─────────────────────────────────────────────────────────────── */
-.adminContainer {
+/* ─── Shell layout ──────────────────────────────────────────────────────────── */
+
+.adminShell {
+  display: flex;
   min-height: 100vh;
   background: #f0f2f5;
-  padding: 1.5rem;
 }
 
-.adminHeader {
+/* ─── Sidebar ───────────────────────────────────────────────────────────────── */
+.sidebar {
+  width: 180px;
+  flex-shrink: 0;
+  background: #fff;
+  border-right: 1px solid #e4e7ec;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebarLogo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 18px 16px 16px;
+  border-bottom: 1px solid #e4e7ec;
+}
+
+.sidebarLogoImg {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.sidebarLogoLabel {
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #1a1a2e;
+  text-transform: uppercase;
+}
+
+.sidebarNav {
+  display: flex;
+  flex-direction: column;
+  padding: 12px 8px;
+  gap: 2px;
+}
+
+.sidebarItem {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 9px 14px;
+  border: none;
+  background: none;
+  border-radius: 7px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sidebarItem:hover {
+  background: #f0f2f5;
+  color: #1a1a2e;
+}
+
+.sidebarItemActive {
+  background: #1a3fa6;
+  color: #fff !important;
+}
+
+.sidebarItemActive:hover {
+  background: #1535a0;
+}
+
+/* ─── Main wrapper ──────────────────────────────────────────────────────────── */
+.mainWrapper {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─── Top bar ───────────────────────────────────────────────────────────────── */
+.topBar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 1.5rem;
-  background: white;
-  padding: 1.25rem 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: #fff;
+  border-bottom: 1px solid #e4e7ec;
+  padding: 10px 24px;
+  gap: 1rem;
+  flex-shrink: 0;
 }
 
-.adminHeader h1 {
-  margin: 0;
-  color: #1a1a2e;
-  font-size: 1.4rem;
+.topBarActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.topBarLink {
+  font-size: 13px;
+  color: #555;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.topBarLink:hover {
+  color: #1a3fa6;
 }
 
 .logoutBtn {
-  padding: 0.5rem 1.25rem;
+  padding: 6px 16px;
   background: #dc3545;
   color: white;
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 13px;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   transition: background 0.2s;
 }
 
@@ -89,59 +213,28 @@
   background: #c82333;
 }
 
-/* ─── Вкладки ───────────────────────────────────────────────────────────────── */
-.tabs {
-  display: flex;
-  gap: 0.25rem;
-  margin-bottom: 1.5rem;
-  background: white;
-  padding: 0.4rem;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  flex-wrap: wrap;
-}
-
-.tabs button {
-  padding: 0.6rem 1.25rem;
-  border: none;
-  background: transparent;
-  cursor: pointer;
-  border-radius: 7px;
-  font-size: 0.95rem;
-  transition: all 0.2s;
-  color: #555;
-  white-space: nowrap;
-}
-
-.tabs button:hover {
-  background: #f0f2f5;
-}
-
-.tabs button.active {
-  background: #667eea;
-  color: white;
-  font-weight: 600;
+/* ─── Main content ──────────────────────────────────────────────────────────── */
+.mainContent {
+  flex: 1;
+  padding: 24px 28px;
+  overflow-y: auto;
 }
 
 .loadingBar {
   text-align: center;
-  padding: 0.75rem;
-  background: #e8f0fe;
-  color: #667eea;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  font-size: 0.95rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent-dim);
+  color: var(--accent);
+  font-size: 0.9rem;
+  border-bottom: 1px solid #e4e7ec;
 }
 
-/* ─── Контент ───────────────────────────────────────────────────────────────── */
-.content {
-  background: white;
-  border-radius: 10px;
-  padding: 1.75rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-}
-
+/* ─── Tab content area ──────────────────────────────────────────────────────── */
 .tabContent {
+  background: #fff;
+  border-radius: 10px;
+  padding: 24px 28px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   width: 100%;
 }
 
@@ -155,21 +248,37 @@
 
 .tabHeader h2 {
   margin: 0;
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   color: #1a1a2e;
-  font-size: 1.2rem;
 }
+
+/* legacy – keep for backward compat */
+.adminContainer { display: contents; }
+.adminHeader { display: none; }
+.tabs { display: none; }
+.content { display: contents; }
 
 /* ─── Кнопки действий ───────────────────────────────────────────────────────── */
 .addBtn {
-  padding: 0.6rem 1.25rem;
-  background: #28a745;
+  padding: 8px 18px;
+  background: #1da462;
   color: white;
   border: none;
   border-radius: 7px;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   transition: background 0.2s;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   text-decoration: none;
 }
 
@@ -184,7 +293,7 @@
 
 .saveBtn {
   padding: 0.7rem 1.5rem;
-  background: #667eea;
+  background: var(--accent);
   color: white;
   border: none;
   border-radius: 7px;
@@ -195,7 +304,7 @@
 }
 
 .saveBtn:hover:not(:disabled) {
-  background: #5568d3;
+  background: var(--accent-hover);
 }
 
 .saveBtn:disabled {
@@ -205,30 +314,36 @@
 
 .editBtn,
 .deleteBtn {
-  padding: 0.4rem 0.9rem;
+  padding: 5px 14px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   transition: all 0.2s;
 }
 
 .editBtn {
-  background: #007bff;
-  color: white;
+  background: #dbeafe;
+  color: #1a3fa6;
 }
 
 .editBtn:hover {
-  background: #0056b3;
+  background: #1a3fa6;
+  color: #fff;
 }
 
 .deleteBtn {
-  background: #dc3545;
-  color: white;
+  background: #fee2e2;
+  color: #c82333;
 }
 
 .deleteBtn:hover {
   background: #c82333;
+  color: #fff;
 }
 
 .actionCell {
@@ -371,7 +486,7 @@
 .formGroup select:focus,
 .formGroup textarea:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.12);
 }
 
@@ -384,6 +499,35 @@
   margin-top: 0.3rem;
   color: #777;
   font-size: 0.82rem;
+}
+
+.inlineCreateRow {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+  align-items: center;
+}
+
+.secondaryBtn {
+  padding: 0.65rem 1rem;
+  border: none;
+  border-radius: 7px;
+  background: var(--accent);
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.92rem;
+  white-space: nowrap;
+  transition: background 0.2s, opacity 0.2s;
+}
+
+.secondaryBtn:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.secondaryBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .formRow {
@@ -461,8 +605,8 @@
   display: inline-flex;
   align-items: center;
   gap: 0.3rem;
-  background: #e8f0fe;
-  color: #3d4db7;
+  background: var(--accent-dim);
+  color: var(--accent);
   padding: 0.3rem 0.7rem;
   border-radius: 20px;
   font-size: 0.88rem;
@@ -472,7 +616,7 @@
   background: none;
   border: none;
   cursor: pointer;
-  color: #3d4db7;
+  color: var(--accent);
   font-size: 1.1rem;
   line-height: 1;
   padding: 0;
@@ -499,14 +643,14 @@
 
 .arrayEditorInput input:focus {
   outline: none;
-  border-color: #667eea;
+  border-color: var(--accent);
 }
 
 .arrayAddBtn {
   padding: 0.55rem 1rem;
-  background: #e8f0fe;
-  color: #3d4db7;
-  border: 1px solid #c2d0f8;
+  background: var(--accent-dim);
+  color: var(--accent);
+  border: 1px solid rgba(224,124,30,0.25);
   border-radius: 7px;
   cursor: pointer;
   font-size: 0.88rem;
@@ -515,7 +659,7 @@
 }
 
 .arrayAddBtn:hover {
-  background: #c2d0f8;
+  background: rgba(224,124,30,0.25);
 }
 
 /* ─── Фото матраса ──────────────────────────────────────────────────────────── */
@@ -745,7 +889,7 @@
 
 .bestsellerNum {
   font-weight: 700;
-  color: #667eea;
+  color: var(--accent);
   font-size: 1.1rem;
   min-width: 1.5rem;
 }
@@ -784,7 +928,7 @@
 
 .ctOrder {
   font-weight: 700;
-  color: #667eea;
+  color: var(--accent);
   font-size: 0.9rem;
   min-width: 1.2rem;
 }
@@ -809,14 +953,14 @@
 }
 
 .ctMoveBtn {
-  background: #e8f0fe;
+  background: var(--accent-dim);
   border: none;
   border-radius: 4px;
   width: 26px;
   height: 26px;
   cursor: pointer;
   font-size: 0.85rem;
-  color: #3d4db7;
+  color: var(--accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -824,7 +968,7 @@
 }
 
 .ctMoveBtn:hover {
-  background: #c2d0f8;
+  background: rgba(224,124,30,0.25);
 }
 
 .ctRemoveBtn {
@@ -854,17 +998,17 @@
 .ctAddSelect {
   flex: 1;
   padding: 0.55rem 0.8rem;
-  border: 1px dashed #667eea;
+  border: 1px dashed var(--accent);
   border-radius: 7px;
   font-size: 0.9rem;
-  color: #3d4db7;
+  color: var(--accent);
   background: #f0f4ff;
   cursor: pointer;
 }
 
 .ctAddSelect:focus {
   outline: none;
-  border-color: #3d4db7;
+  border-color: var(--accent);
 }
 
 /* ─── ClothingTypesTab (вкладка) ────────────────────────────────────────────── */

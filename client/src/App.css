@@ -1,10 +1,13 @@
 body {
-  background-color: #f4f4f4;
+  background: var(--bg);
+  overflow-x: hidden;
+  max-width: 100%;
 }
 html {
   scroll-behavior: smooth;
   scrollbar-width: none;
   height: 100%;
+  overflow-x: hidden;
 }
 html,
 body {

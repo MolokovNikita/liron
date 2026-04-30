@@ -23,17 +23,31 @@ export default function Catalog() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${config.API_URL}/company`).then((res) => {
-      setCompanies(
-        res.data.map((item) => ({
-          ...item,
-          pic: item.logo 
-            ? `${config.API_URL}${item.logo}` 
-            : `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
-        })),
-      );
-      setIsLoading(false);
-    });
+    let mounted = true;
+    (async () => {
+      try {
+        const res = await axios.get(`${config.API_URL}/company`);
+        const data = Array.isArray(res.data) ? res.data : [];
+        if (!mounted) return;
+        setCompanies(
+          data.map((item) => ({
+            ...item,
+            pic: item.logo
+              ? `${config.API_URL}${item.logo}`
+              : `${config.API_URL}/uploads/companylogo/${item.name.toLowerCase()}.jpg`,
+          })),
+        );
+      } catch (err) {
+        console.error("Не удалось загрузить компании:", err);
+        if (!mounted) return;
+        setCompanies([]);
+      } finally {
+        if (mounted) setIsLoading(false);
+      }
+    })();
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   return (
@@ -49,7 +63,17 @@ export default function Catalog() {
       <StructuredData companies={companies} />
       <Header />
       <div className={styles.container}>
+        <nav className={styles.breadcrumbs} aria-label="breadcrumb">
+          <Link to="/" className={styles.breadcrumb__link}>Главная</Link>
+          <span className={styles.breadcrumb__sep}>›</span>
+          <span className={styles.breadcrumb__current}>Каталог</span>
+        </nav>
+        <div className={styles.section__label}>
+          <span className={styles.section__bar}></span>
+          <span className={styles.section__tag}>Все марки</span>
+        </div>
         <div className={styles.catalog__title}>Каталог</div>
+        <p className={styles.catalog__subtitle}>Выберите марку вашего грузовика</p>
         <div className={styles.company__container}>
           {isLoading
             ? Array.from({ length: 10 }).map((_, idx) => <CompanyCardSkeleton key={idx} />)
@@ -64,6 +88,7 @@ export default function Catalog() {
                     key={`${company.id}-${company.logo || 'default'}`}
                   />
                   <div className={styles.company__name}>{company.name}</div>
+                  <div className={styles.company__see}>Смотреть →</div>
                 </Link>
               </div>
             ))}

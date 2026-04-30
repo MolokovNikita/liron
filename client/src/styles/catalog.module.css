@@ -1,11 +1,29 @@
-/* Заголовок каталога */
-.catalog__title {
-  font-size: 2.5rem;
-  text-align: center;
-  margin: 40px 0;
-  color: #222;
-  padding-bottom: 8px;
-  border-bottom: 2px solid #ddd;
+/* ─── CATALOG PAGE ─── */
+
+/* Section label (полоска + надпись над заголовком) */
+.section__label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.section__bar {
+  display: inline-block;
+  width: 32px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.section__tag {
+  font-family: 'Oswald', sans-serif;
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: var(--accent);
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
 .container {
@@ -13,19 +31,75 @@
   justify-content: center;
   flex-direction: column;
   flex: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 60px 32px 40px;
+}
+
+/* ─── BREADCRUMBS ─── */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 24px;
+  font-size: 13px;
+}
+
+.breadcrumb__link {
+  color: var(--text-sec);
+  text-decoration: none;
+  transition: color 0.15s;
+  white-space: nowrap;
+}
+
+.breadcrumb__link:hover {
+  color: var(--accent);
+}
+
+.breadcrumb__sep {
+  color: var(--border);
+  font-size: 15px;
+  line-height: 1;
+  user-select: none;
+  padding: 0 2px;
+}
+
+.breadcrumb__current {
+  color: var(--text);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.catalog__title {
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(32px, 5vw, 56px);
+  font-weight: 700;
+  text-transform: uppercase;
+  text-align: left;
+  margin-bottom: 8px;
+  color: var(--text);
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.catalog__subtitle {
+  color: var(--text-sec);
+  font-size: 15px;
+  margin-bottom: 40px;
 }
 
 /* Контейнер для всех карточек */
 .company__container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  justify-items: center;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+  padding: 0;
+  justify-items: stretch;
   align-items: start;
   max-width: 100%;
   margin: 0 auto;
-
 }
 
 /* Карточка компании */
@@ -34,91 +108,131 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background-color: transparent;
-  padding: 10px;
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 20px;
+  gap: 12px;
+  transition: border-color 0.2s, background 0.2s;
   cursor: pointer;
 }
 
 .company__card:hover {
-  transform: scale(105%);
+  transform: none;
+  border-color: var(--accent);
+  background: var(--surface2);
 }
 
 /* Логотип компании */
 .company__logo {
-  width: 100px;
-  height: 100px;
+  width: 80px;
+  height: 80px;
   object-fit: contain;
-  margin-bottom: 10px;
-  background-color: transparent;
-  border-radius: 10px;
-
+  margin-bottom: 0;
+  background-color: #fff;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
 }
 
 /* Название компании */
 .company__name {
-  font-size: 1rem;
-  color: #444;
-  font-weight: 500;
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--text);
   text-transform: uppercase;
+  transition: color 0.2s;
 }
 
+.company__card:hover .company__name {
+  color: var(--accent);
+}
+
+/* "Смотреть →" */
+.company__see {
+  font-size: 12px;
+  color: var(--text-dim);
+  transition: color 0.2s;
+}
+
+.company__card:hover .company__see {
+  color: var(--accent);
+}
+
+/* Skeleton */
 .company__logo_skeleton {
-  width: 100px;
-  height: 100px;
-  background: #e0e0e0;
-  border-radius: 10px;
+  width: 80px;
+  height: 80px;
+  background: var(--surface2);
+  border-radius: 8px;
   margin: 0 auto 12px auto;
   animation: pulse 1.2s infinite ease-in-out;
 }
 
-
 @keyframes pulse {
-  0% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.5;
-  }
-
-  100% {
-    opacity: 1;
-  }
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
 }
 
+/* CTA / feedback section */
 .feedback__section {
-  text-align: center;
-  margin-top: 40px;
-  padding: 20px;
-  border-radius: 12px;
+  margin-top: 60px;
+  padding: 36px 40px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
 }
 
 .feedback__text {
-  font-size: 18px;
-  margin-bottom: 16px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text);
+  margin-bottom: 0;
 }
 
 .feedback__button {
-  background-color: #007bff;
+  background-color: var(--accent);
   color: white;
   border: none;
-  padding: 12px 20px;
-  border-radius: 8px;
-  font-size: 16px;
+  padding: 14px 28px;
+  border-radius: var(--radius);
+  font-family: 'Oswald', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background 0.2s;
+  white-space: nowrap;
 }
 
 .feedback__button:hover {
-  background-color: #0056b3;
+  background-color: var(--accent-hover);
 }
 
 @media (max-width: 500px) {
   .company__container {
-    gap: 0;
-    padding: 0;
+    gap: 8px;
+  }
+
+  .container {
+    padding: 40px 16px 24px;
+  }
+
+  .feedback__section {
+    flex-direction: column;
+    text-align: center;
+    padding: 24px 20px;
   }
 }

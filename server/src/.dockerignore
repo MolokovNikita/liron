@@ -1,0 +1,5 @@
+.env
+config/ormpath.env
+config/config_.json
+node_modules
+npm-debug.log

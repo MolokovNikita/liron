@@ -154,12 +154,13 @@ export default function Mattresses() {
       <StructuredData company={company} mattresses={mattresses} />
       <Header />
       <div className={styles.page__title}>{company.toUpperCase()}</div>
-      <div className={styles.path__container}>
-        <i>
-          <Link to="/">Главная</Link> - <Link to="/catalog">Каталог</Link> -{" "}
-          <span>{company.toUpperCase()}</span>
-        </i>
-      </div>
+      <nav className={styles.breadcrumbs} aria-label="breadcrumb">
+        <Link to="/" className={styles.breadcrumb__link}>Главная</Link>
+        <span className={styles.breadcrumb__sep}>›</span>
+        <Link to="/catalog" className={styles.breadcrumb__link}>Каталог</Link>
+        <span className={styles.breadcrumb__sep}>›</span>
+        <span className={styles.breadcrumb__current}>{company.toUpperCase()}</span>
+      </nav>
 
       <div
         className={

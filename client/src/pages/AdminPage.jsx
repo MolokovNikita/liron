@@ -26,6 +26,11 @@ export default function AdminPage() {
   const [showReviewForm, setShowReviewForm] = useState(false);
 
   useEffect(() => {
+    document.body.style.paddingTop = "0";
+    return () => { document.body.style.paddingTop = ""; };
+  }, []);
+
+  useEffect(() => {
     if (localStorage.getItem("admin_auth") === "true") {
       setIsAuthenticated(true);
       loadData();
@@ -113,107 +118,113 @@ export default function AdminPage() {
   const TABS = [
     { key: "companies", label: "Компании" },
     { key: "mattresses", label: "Матрасы" },
-    { key: "clothingTypes", label: "Типы тканей" },
+    { key: "clothingTypes", label: "Ткани" },
     { key: "reviews", label: "Отзывы" },
     { key: "gallery", label: "Галерея" },
     { key: "settings", label: "Настройки" },
   ];
 
   return (
-    <div className={styles.adminContainer}>
-      <div className={styles.adminHeader}>
-        <h1>Админ-панель</h1>
-        <button onClick={handleLogout} className={styles.logoutBtn}>
-          Выйти
-        </button>
-      </div>
+    <div className={styles.adminShell}>
+      {/* Sidebar */}
+      <aside className={styles.sidebar}>
+        <div className={styles.sidebarLogo}>
+          <img src="/main_logo.png" alt="LIRON" className={styles.sidebarLogoImg} />
+        </div>
+        <nav className={styles.sidebarNav}>
+          {TABS.map((tab) => (
+            <button
+              key={tab.key}
+              className={`${styles.sidebarItem} ${activeTab === tab.key ? styles.sidebarItemActive : ""}`}
+              onClick={() => setActiveTab(tab.key)}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </nav>
+      </aside>
 
-      <div className={styles.tabs}>
-        {TABS.map((tab) => (
-          <button
-            key={tab.key}
-            className={activeTab === tab.key ? styles.active : ""}
-            onClick={() => setActiveTab(tab.key)}
-          >
-            {tab.label}
-          </button>
-        ))}
-      </div>
+      {/* Main area */}
+      <div className={styles.mainWrapper}>
+        <header className={styles.topBar}>
+          <div />
+          <div className={styles.topBarActions}>
+            <a href="/" className={styles.topBarLink}>← На сайт</a>
+            <button onClick={handleLogout} className={styles.logoutBtn}>Выйти</button>
+          </div>
+        </header>
 
-      {loading && <div className={styles.loadingBar}>Загрузка...</div>}
+        {loading && <div className={styles.loadingBar}>Загрузка...</div>}
 
-      <div className={styles.content}>
-        {activeTab === "companies" && (
-          <CompaniesTab
-            companies={companies}
-            onEdit={(c) => { setEditingCompany(c); setShowCompanyForm(true); }}
-            onDelete={async (id) => {
-              if (!confirm("Удалить компанию?")) return;
-              try {
-                await axios.delete(`${config.API_URL}/admin/companies/${id}`);
-                loadData();
-              } catch { alert("Ошибка удаления"); }
-            }}
-            onAdd={() => { setEditingCompany(null); setShowCompanyForm(true); }}
-            showForm={showCompanyForm}
-            onCloseForm={() => setShowCompanyForm(false)}
-            editingCompany={editingCompany}
-            onSave={loadData}
-          />
-        )}
-
-        {activeTab === "mattresses" && (
-          <MattressesTab
-            mattresses={mattresses}
-            companies={companies}
-            types={types}
-            shapes={shapes}
-            rigidities={rigidities}
-            clothingTypes={clothingTypes}
-            onEdit={(m) => { setEditingMattress(m); setShowMattressForm(true); }}
-            onDelete={async (id) => {
-              if (!confirm("Удалить матрас?")) return;
-              try {
-                await axios.delete(`${config.API_URL}/admin/mattresses/${id}`);
-                loadData();
-              } catch { alert("Ошибка удаления"); }
-            }}
-            onAdd={() => { setEditingMattress(null); setShowMattressForm(true); }}
-            showForm={showMattressForm}
-            onCloseForm={() => setShowMattressForm(false)}
-            editingMattress={editingMattress}
-            onSave={loadData}
-          />
-        )}
-
-        {activeTab === "clothingTypes" && (
-          <ClothingTypesTab clothingTypes={clothingTypes} onRefresh={loadData} />
-        )}
-
-        {activeTab === "reviews" && (
-          <ReviewsTab
-            reviews={reviews}
-            onDelete={async (filename) => {
-              if (!confirm("Удалить отзыв?")) return;
-              try {
-                await axios.delete(`${config.API_URL}/admin/reviews/${filename}`);
-                loadData();
-              } catch { alert("Ошибка удаления"); }
-            }}
-            onAdd={() => setShowReviewForm(true)}
-            showForm={showReviewForm}
-            onCloseForm={() => setShowReviewForm(false)}
-            onSave={loadData}
-          />
-        )}
-
-        {activeTab === "gallery" && (
-          <GalleryTab gallery={gallery} onRefresh={loadData} />
-        )}
-
-        {activeTab === "settings" && (
-          <SettingsTab mattresses={mattresses} />
-        )}
+        <main className={styles.mainContent}>
+          {activeTab === "companies" && (
+            <CompaniesTab
+              companies={companies}
+              onEdit={(c) => { setEditingCompany(c); setShowCompanyForm(true); }}
+              onDelete={async (id) => {
+                if (!confirm("Удалить компанию?")) return;
+                try {
+                  await axios.delete(`${config.API_URL}/admin/companies/${id}`);
+                  loadData();
+                } catch { alert("Ошибка удаления"); }
+              }}
+              onAdd={() => { setEditingCompany(null); setShowCompanyForm(true); }}
+              showForm={showCompanyForm}
+              onCloseForm={() => setShowCompanyForm(false)}
+              editingCompany={editingCompany}
+              onSave={loadData}
+            />
+          )}
+          {activeTab === "mattresses" && (
+            <MattressesTab
+              mattresses={mattresses}
+              companies={companies}
+              types={types}
+              shapes={shapes}
+              rigidities={rigidities}
+              clothingTypes={clothingTypes}
+              onRigiditiesChange={setRigidities}
+              onEdit={(m) => { setEditingMattress(m); setShowMattressForm(true); }}
+              onDelete={async (id) => {
+                if (!confirm("Удалить матрас?")) return;
+                try {
+                  await axios.delete(`${config.API_URL}/admin/mattresses/${id}`);
+                  loadData();
+                } catch { alert("Ошибка удаления"); }
+              }}
+              onAdd={() => { setEditingMattress(null); setShowMattressForm(true); }}
+              showForm={showMattressForm}
+              onCloseForm={() => setShowMattressForm(false)}
+              editingMattress={editingMattress}
+              onSave={loadData}
+            />
+          )}
+          {activeTab === "clothingTypes" && (
+            <ClothingTypesTab clothingTypes={clothingTypes} onRefresh={loadData} />
+          )}
+          {activeTab === "reviews" && (
+            <ReviewsTab
+              reviews={reviews}
+              onDelete={async (filename) => {
+                if (!confirm("Удалить отзыв?")) return;
+                try {
+                  await axios.delete(`${config.API_URL}/admin/reviews/${filename}`);
+                  loadData();
+                } catch { alert("Ошибка удаления"); }
+              }}
+              onAdd={() => setShowReviewForm(true)}
+              showForm={showReviewForm}
+              onCloseForm={() => setShowReviewForm(false)}
+              onSave={loadData}
+            />
+          )}
+          {activeTab === "gallery" && (
+            <GalleryTab gallery={gallery} onRefresh={loadData} />
+          )}
+          {activeTab === "settings" && (
+            <SettingsTab mattresses={mattresses} />
+          )}
+        </main>
       </div>
     </div>
   );
@@ -455,7 +466,7 @@ function CompanyForm({ company, onClose, onSave }) {
 }
 
 // ─── Матрасы ──────────────────────────────────────────────────────────────────
-function MattressesTab({ mattresses, companies, types, shapes, rigidities, clothingTypes, onEdit, onDelete, onAdd, showForm, onCloseForm, editingMattress, onSave }) {
+function MattressesTab({ mattresses, companies, types, shapes, rigidities, clothingTypes, onEdit, onDelete, onAdd, showForm, onCloseForm, editingMattress, onSave, onRigiditiesChange }) {
   return (
     <div className={styles.tabContent}>
       <div className={styles.tabHeader}>
@@ -473,6 +484,7 @@ function MattressesTab({ mattresses, companies, types, shapes, rigidities, cloth
           clothingTypes={clothingTypes}
           onClose={onCloseForm}
           onSave={onSave}
+          onRigiditiesChange={onRigiditiesChange}
         />
       )}
 
@@ -520,7 +532,7 @@ function MattressesTab({ mattresses, companies, types, shapes, rigidities, cloth
   );
 }
 
-function MattressForm({ mattress, companies, types, shapes, rigidities, clothingTypes: allClothingTypes, onClose, onSave }) {
+function MattressForm({ mattress, companies, types, shapes, rigidities, clothingTypes: allClothingTypes, onClose, onSave, onRigiditiesChange }) {
   // Определяем начальный порядок выбранных типов тканей из связи
   const initialSelectedClothing = mattress?.ClothingTypes
     ? [...mattress.ClothingTypes]
@@ -547,6 +559,8 @@ function MattressForm({ mattress, companies, types, shapes, rigidities, clothing
   const [existingImages, setExistingImages] = useState([]);
   const [uploadingImages, setUploadingImages] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [newRigidityName, setNewRigidityName] = useState("");
+  const [creatingRigidity, setCreatingRigidity] = useState(false);
 
   useEffect(() => {
     if (mattress?.id) {
@@ -564,6 +578,31 @@ function MattressForm({ mattress, companies, types, shapes, rigidities, clothing
   const handleRigidityChange = (e) => {
     const selected = Array.from(e.target.selectedOptions, (o) => parseInt(o.value));
     setFormData((prev) => ({ ...prev, rigidity_ids: selected }));
+  };
+
+  const handleCreateRigidity = async () => {
+    const rigidityName = newRigidityName.trim();
+    if (!rigidityName) return;
+
+    setCreatingRigidity(true);
+    try {
+      const response = await axios.post(`${config.API_URL}/admin/rigidities`, {
+        rigidity_name: rigidityName,
+      });
+      const createdRigidity = response.data;
+      onRigiditiesChange((prev) => [...prev, createdRigidity].sort((a, b) => a.id - b.id));
+      setFormData((prev) => ({
+        ...prev,
+        rigidity_ids: prev.rigidity_ids.includes(createdRigidity.id)
+          ? prev.rigidity_ids
+          : [...prev.rigidity_ids, createdRigidity.id],
+      }));
+      setNewRigidityName("");
+    } catch (error) {
+      alert(error.response?.data?.error || "Ошибка при создании жёсткости");
+    } finally {
+      setCreatingRigidity(false);
+    }
   };
 
   const handleDeleteExistingImage = async (filename) => {
@@ -664,6 +703,28 @@ function MattressForm({ mattress, companies, types, shapes, rigidities, clothing
             {rigidities.map((r) => <option key={r.id} value={r.id}>{r.rigidity_name}</option>)}
           </select>
           <small>Удерживайте Ctrl/Cmd для выбора нескольких</small>
+          <div className={styles.inlineCreateRow}>
+            <input
+              type="text"
+              value={newRigidityName}
+              onChange={(e) => setNewRigidityName(e.target.value)}
+              placeholder="Новая жёсткость"
+              onKeyDown={(e) => {
+                if (e.key === "Enter") {
+                  e.preventDefault();
+                  handleCreateRigidity();
+                }
+              }}
+            />
+            <button
+              type="button"
+              onClick={handleCreateRigidity}
+              className={styles.secondaryBtn}
+              disabled={creatingRigidity || !newRigidityName.trim()}
+            >
+              {creatingRigidity ? "Добавление..." : "Добавить"}
+            </button>
+          </div>
         </div>
 
         <div className={styles.formGroup}>

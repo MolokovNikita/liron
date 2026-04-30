@@ -1,117 +1,162 @@
+/* ─── REVIEWS PAGE ─── */
 .reviews {
-    padding: 20px;
-    margin-bottom: 50px;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px 32px 60px;
 }
 
 .reviews__title {
-    margin-top: 40px;
-    text-align: center;
-    font-size: 36px;
-    margin-bottom: 20px;
-    padding-bottom: 8px;
-    border-bottom: 2px solid #ddd;
+  font-family: 'Oswald', sans-serif;
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-top: 0;
+  padding-top: 60px;
+  text-align: center;
+  margin-bottom: 40px;
+  padding-bottom: 0;
+  border-bottom: none;
+  color: var(--text);
+}
+
+.reviews__title::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 3px;
+  background: var(--accent);
+  border-radius: 2px;
+  margin: 0 auto 16px;
 }
 
 .reviews__container {
-    max-width: 800px;
-    margin: 0 auto;
-    border-radius: 15px;
-    padding: 20px;
+  max-width: 100%;
+  margin: 0 auto;
+  border-radius: var(--radius-lg);
+  padding: 0;
 }
 
 .apply__review__container {
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 10px;
-    margin-bottom: 20px;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  gap: 12px;
 }
 
 .apply__review__container p {
-    font-size: 20px;
+  font-size: 16px;
+  color: var(--text-sec);
 }
 
 .apply_review__btn {
-    background: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+  background: var(--accent);
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: background 0.2s;
 }
 
 .apply_review__btn:hover {
-    background: #0056b3;
+  background: var(--accent-hover);
 }
 
 .reviews__info {
-    text-align: center;
-    margin-bottom: 15px;
+  text-align: center;
+  margin-bottom: 12px;
 }
 
 .reviews__user {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.gallery__wrapper {
-    height: 600px;
+  font-family: 'Oswald', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text);
 }
 
 .reviews__date {
-    font-size: 14px;
-    color: gray;
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-top: 4px;
+}
+
+.gallery__wrapper {
+  height: 500px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid var(--border);
 }
 
 .reviews__carousel {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
 }
 
 .reviews__carouselButton {
-    background: none;
-    border: none;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 10px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px 16px;
+  color: var(--text);
+  transition: all 0.2s;
 }
 
 .reviews__carouselButton:hover {
-    background-color: #dedede;
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
 }
 
 .reviews__image {
-    object-fit: contain;
-    width: 400px;
-    height: 300px;
-    border-radius: 10px;
+  object-fit: contain;
+  width: 100%;
+  max-width: 400px;
+  height: 300px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 .reviews__navigation {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  gap: 12px;
 }
 
 .reviews__navButton {
-    background: #007bff;
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+  background: var(--accent);
+  color: white;
+  padding: 10px 24px;
+  border: none;
+  border-radius: var(--radius);
+  cursor: pointer;
+  font-family: 'Oswald', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: background 0.2s;
 }
 
 .reviews__navButton:hover {
-    background: #0056b3;
+  background: var(--accent-hover);
 }
 
 @media (max-width: 768px) {
-    .reviews {
-        padding: 0;
-    }
+  .reviews {
+    padding: 24px 16px 40px;
+  }
 }
